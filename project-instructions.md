@@ -286,6 +286,7 @@ Each skill produces its own standalone markdown file. Skills are never appended 
 /outputs/01-airflow-synthesis.md
 /outputs/02-airflow-learning-path.md
 /outputs/03-sql-fundamentals-module-content.md
+/outputs/07-sql-fundamentals-html.html
 ```
 
 ### Output File Structure — Per Skill Section Headers

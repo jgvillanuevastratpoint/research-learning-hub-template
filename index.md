@@ -46,7 +46,7 @@
 | 4 | Visual Generator | [outputs/glue-athena-airflow/04-glue-athena-airflow-visuals.md](./outputs/glue-athena-airflow/04-glue-athena-airflow-visuals.md) | #review: APPROVED |
 | 5 | Quiz Generator | [outputs/glue-athena-airflow/05-glue-athena-airflow-quiz.md](./outputs/glue-athena-airflow/05-glue-athena-airflow-quiz.md) | #review: APPROVED |
 | 6 | Rubric Generator | [outputs/glue-athena-airflow/06-glue-athena-airflow-rubric.md](./outputs/glue-athena-airflow/06-glue-athena-airflow-rubric.md) | #review: APPROVED |
-| 7 | HTML Generator | [outputs/glue-athena-airflow/03-glue-athena-airflow-module-content.html](./outputs/glue-athena-airflow/03-glue-athena-airflow-module-content.html) | #review: APPROVED |
+| 7 | HTML Generator | [outputs/glue-athena-airflow/07-glue-athena-airflow-html.html](./outputs/glue-athena-airflow/07-glue-athena-airflow-html.html) | #review: APPROVED |
 
 ---
 
