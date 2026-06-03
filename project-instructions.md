@@ -179,7 +179,7 @@ Use the correct skill for each task. If unsure which applies, ask before proceed
 | **Skill 5: Quiz Generator** | Generate end-of-path assessment | Full completed learning path | 10-item multiple choice quiz covering all days |
 | **Skill 6: Rubric Generator** | Generate quiz rubric and/or hands-on activity rubric | Quiz content + hands-on activity description | Scored rubric with labels, descriptors, and recommended actions |
 | **Skill xx: End Workflow** | Finalize project — update status tags, index, decision log, and generate completion summary | All 6 prior outputs + owner confirmation | Approved output files, finalized index + decision log, completion summary |
-| **Skill 7: Capstone Generator** | *(Future — not yet active)* | TBD | TBD |
+| **Skill 7: HTML Generator** | Convert approved module content markdown into a standalone styled HTML document with TOC and rendered diagrams | Approved `03-*-module-content.md` (#review: APPROVED) | Styled HTML file + PNG diagram images |
 
 ---
 
@@ -277,6 +277,7 @@ Each skill produces its own standalone markdown file. Skills are never appended 
 | Skill 4: Visual Generator | `04` | `visuals` |
 | Skill 5: Quiz Generator | `05` | `quiz` |
 | Skill 6: Rubric Generator | `06` | `rubric` |
+| Skill 7: HTML Generator | `07` | `html` |
 | Skill xx: End Workflow | `xx` | `end-workflow` |
 
 ### Examples
@@ -299,6 +300,7 @@ Each skill file uses the section header matching its output:
 | Skill 4 | `## Visuals` |
 | Skill 5 | `## Quiz` |
 | Skill 6 | `## Rubrics` |
+| Skill 7 | *(No section header — HTML is the output format itself)* |
 | Skill xx | `## Completion Summary` |
 
 Every file follows this template:
