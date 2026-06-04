@@ -60,7 +60,7 @@ Examples, case studies, and hands-on activities should draw from these domains u
 7. **Never rebuild the whole document** when only one part needs to change — operate on the specific module or section only
 8. **Update `index.md` and `decision-log.md` after each skill completes** — add links to new output files, update statuses, and log decisions made during that skill; keep both files as an accurate, navigable project map
 9. **Always apply constraints** (see below) regardless of what is being built
-10. **When Skill 1 (Research Synthesizer) is triggered** — before executing, ask the owner whether to overwrite `/decision-log.md` and `/index.md` with fresh templates (clear data rows, keep headers/table structure), or keep existing entries. This fires at the very start of the sequence before any synthesis begins. After confirmation, populate the **Inputs** section in `/index.md` with all files found in the `input/` directory, listing each file name and a brief topic description.
+10. **When Skill 1 (Research Synthesizer) is triggered** — before executing, ask the owner whether to overwrite `/index.md` with fresh templates (clear data rows, keep headers/table structure), or keep existing entries. This fires at the very start of the sequence before any synthesis begins. After confirmation, populate the **Inputs** section in `/index.md` with all files found in the `input/` directory, listing each file name and a brief topic description.
 
 11. **When a project is started** — populate the **Inputs** section in `/index.md` with all files found in the `input/` directory. Each file gets a row with its path and a short description of its content. If no `input/` directory exists, create it.
 
