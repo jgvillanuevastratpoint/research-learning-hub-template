@@ -41,7 +41,7 @@
 | # | Skill | File | Status |
 |---|-------|------|--------|
 | 1 | Research Synthesizer | [outputs/glue-athena-airflow/01-glue-athena-airflow-synthesis.md](./outputs/glue-athena-airflow/01-glue-athena-airflow-synthesis.md) | #review: DRAFT |
-| 2 | Learning Path Architect | [outputs/glue-athena-airflow/02-glue-athena-airflow-learning-path.md](./outputs/glue-athena-airflow/02-glue-athena-airflow-learning-path.md) | #review: APPROVED |
+| 2 | Learning Path Architect | [outputs/glue-athena-airflow/02-glue-athena-airflow-learning-path.md](./outputs/glue-athena-airflow/02-glue-athena-airflow-learning-path.md) | #review: DRAFT |
 | 3 | Module Content Builder | [outputs/glue-athena-airflow/03-glue-athena-airflow-module-content.md](./outputs/glue-athena-airflow/03-glue-athena-airflow-module-content.md) | #review: APPROVED |
 | 4 | Visual Generator | [outputs/glue-athena-airflow/04-glue-athena-airflow-visuals.md](./outputs/glue-athena-airflow/04-glue-athena-airflow-visuals.md) | #review: APPROVED |
 | 5 | Quiz Generator | [outputs/glue-athena-airflow/05-glue-athena-airflow-quiz.md](./outputs/glue-athena-airflow/05-glue-athena-airflow-quiz.md) | #review: APPROVED |
