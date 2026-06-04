@@ -173,13 +173,13 @@ Use the correct skill for each task. If unsure which applies, ask before proceed
 | Skill | Purpose | Input | Output |
 |---|---|---|---|
 | **Skill 1: Research Synthesizer** | Synthesize existing sources into structured insights. Starts with decision gate: confirm index.md and decision-log.md state before proceeding. | Owner's collected sources | Concept map + key insights + suggested topic list |
-| **Skill 2: Learning Path Architect** | Build the full day-by-day learning path skeleton | Confirmed topic list + audience + duration | Structured learning path with visual flags |
-| **Skill 3: Module Content Builder** | Write content for one module at a time | Single day/module | What / How / Why + supplemental reading links |
+| **Skill 2: Learning Path Architect** | Build the full day-by-day learning path skeleton with Gantt chart, domain metadata, and table format | Confirmed topic list + audience + duration + skill domains | Metadata block + Gantt timeline + table skeleton with domain, delivery method, pace, and flags |
+| **Skill 3: Module Content Builder** | Write full content for all modules at once with tags front matter, metadata block, and training timeline Gantt | Confirmed learning path skeleton + clarified hands-on activities | Tags YAML + metadata table + phase-block Gantt + full day-by-day content with reading links, hands-on, and visual flags |
 | **Skill 4: Visual Generator** | Generate diagrams for flagged modules | Concept needing a visual | Diagram type recommendation + generated visual |
 | **Skill 5: Quiz Generator** | Generate end-of-path assessment | Full completed learning path | 10-item multiple choice quiz covering all days |
 | **Skill 6: Rubric Generator** | Generate quiz rubric and/or hands-on activity rubric | Quiz content + hands-on activity description | Scored rubric with labels, descriptors, and recommended actions |
 | **Skill xx: End Workflow** | Finalize project — update status tags, index, decision log, and generate completion summary | All 6 prior outputs + owner confirmation | Approved output files, finalized index + decision log, completion summary |
-| **Skill 7: Capstone Generator** | *(Future — not yet active)* | TBD | TBD |
+| **Skill 7: HTML Generator** | Convert approved module content markdown into a standalone styled HTML document with TOC and rendered diagrams | Approved `03-*-module-content.md` (#review: APPROVED) | Styled HTML file + PNG diagram images |
 
 ---
 
@@ -277,6 +277,7 @@ Each skill produces its own standalone markdown file. Skills are never appended 
 | Skill 4: Visual Generator | `04` | `visuals` |
 | Skill 5: Quiz Generator | `05` | `quiz` |
 | Skill 6: Rubric Generator | `06` | `rubric` |
+| Skill 7: HTML Generator | `07` | `html` |
 | Skill xx: End Workflow | `xx` | `end-workflow` |
 
 ### Examples
@@ -285,6 +286,7 @@ Each skill produces its own standalone markdown file. Skills are never appended 
 /outputs/01-airflow-synthesis.md
 /outputs/02-airflow-learning-path.md
 /outputs/03-sql-fundamentals-module-content.md
+/outputs/07-sql-fundamentals-html.html
 ```
 
 ### Output File Structure — Per Skill Section Headers
@@ -299,6 +301,7 @@ Each skill file uses the section header matching its output:
 | Skill 4 | `## Visuals` |
 | Skill 5 | `## Quiz` |
 | Skill 6 | `## Rubrics` |
+| Skill 7 | *(No section header — HTML is the output format itself)* |
 | Skill xx | `## Completion Summary` |
 
 Every file follows this template:

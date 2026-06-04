@@ -22,32 +22,37 @@ Owner final notes (optional): [Any wrap-up notes, post-mortem observations, or n
 
 Instructions:
 
-1. READ the current `/index.md`, `/decision-log.md`, and `/project-instructions.md` for the project.
+1. READ the current `/index.md`, `/decision-log.md`, '/README.md', and `/project-instructions.md` for the project.
 
 2. UPDATE all output files in `/outputs/[topic]/` from `#review: DRAFT` to `#review: APPROVED`.
    - Read each file, change the first line, and write it back.
    - If any file already says `#review: APPROVED`, leave it unchanged.
    - If any file says `#review: NEEDS FIX`, ask the owner to confirm it is resolved before changing to `#review: APPROVED`.
 
-3. UPDATE `/index.md`:
+3. UPDATE `/README.md` .
+   - Read /skill.
+   - Update as necessary. Make sure to capture the updates in the instructions.
+
+4. UPDATE `/index.md`:
    - Ensure the **Inputs** section lists all files found in the `input/` directory with file paths and topic descriptions. If the section is empty, populate it.
    - Change the Status column for every output file in this project from `#review: DRAFT` to `#review: APPROVED`.
    - Ensure the **Skills** table includes all 7 skills (1–6 + xx End Workflow) with correct file links.
    - If the project has a decision log section, make sure the link is present.
 
-4. UPDATE `/project-instructions.md` (if needed):
+5. UPDATE `/project-instructions.md` (if needed):
    - Ensure the **Skills Available** table includes Skill xx (End Workflow) with its purpose, input, and output.
    - Ensure the **Descriptor Mapping** table includes Skill xx (`xx` → `end-workflow`).
    - Ensure the **Section Headers** table includes Skill xx (`## Completion Summary`).
    - Ensure the **Workflow** diagram includes Skill xx after Checkpoint 3.
+   
 
-5. APPEND a final entry to `/decision-log.md`:
+6. APPEND a final entry to `/decision-log.md`:
    - Date: today's date
    - Decision: "Project completed — all skills finalized"
    - Rationale: "All 6 skills complete. Owner confirmed at Checkpoint 3."
    - Made By: "Owner"
 
-5. GENERATE a completion summary with this format and append it below the existing content:
+7. GENERATE a completion summary with this format and append it below the existing content:
 
    ---
 
@@ -70,7 +75,7 @@ Instructions:
 
    ---
 
-6. DISPLAY the completion summary to the owner in the chat.
+8. DISPLAY the completion summary to the owner in the chat.
 
 ---
 
