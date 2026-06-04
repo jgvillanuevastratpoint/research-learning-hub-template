@@ -174,7 +174,7 @@ Use the correct skill for each task. If unsure which applies, ask before proceed
 |---|---|---|---|
 | **Skill 1: Research Synthesizer** | Synthesize existing sources into structured insights. Starts with decision gate: confirm index.md and decision-log.md state before proceeding. | Owner's collected sources | Concept map + key insights + suggested topic list |
 | **Skill 2: Learning Path Architect** | Build the full day-by-day learning path skeleton with Gantt chart, domain metadata, and table format | Confirmed topic list + audience + duration + skill domains | Metadata block + Gantt timeline + table skeleton with domain, delivery method, pace, and flags |
-| **Skill 3: Module Content Builder** | Write content for one module at a time | Single day/module | What / How / Why + supplemental reading links |
+| **Skill 3: Module Content Builder** | Write full content for all modules at once with tags front matter, metadata block, and training timeline Gantt | Confirmed learning path skeleton + clarified hands-on activities | Tags YAML + metadata table + phase-block Gantt + full day-by-day content with reading links, hands-on, and visual flags |
 | **Skill 4: Visual Generator** | Generate diagrams for flagged modules | Concept needing a visual | Diagram type recommendation + generated visual |
 | **Skill 5: Quiz Generator** | Generate end-of-path assessment | Full completed learning path | 10-item multiple choice quiz covering all days |
 | **Skill 6: Rubric Generator** | Generate quiz rubric and/or hands-on activity rubric | Quiz content + hands-on activity description | Scored rubric with labels, descriptors, and recommended actions |

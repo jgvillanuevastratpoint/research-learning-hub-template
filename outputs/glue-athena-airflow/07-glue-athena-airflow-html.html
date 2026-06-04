@@ -45,41 +45,95 @@
       margin: 2.5rem 0;
     }
 
-    .module-heading {
+    .section-heading {
       text-align: center;
       font-size: 1.1rem; font-weight: 600; color: #4a5568;
       letter-spacing: 0.04em; text-transform: uppercase;
       margin: 1rem 0 0.5rem;
     }
 
-    .index-section {
+    /* ---------- Metadata Card ---------- */
+    .metadata-card {
       background: #fff;
       border: 1px solid #e2e8f0;
       border-radius: 12px;
-      padding: 1.5rem 2rem;
+      padding: 1.25rem 1.5rem;
       margin: 1.5rem 0;
       box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     }
-    .index-title {
-      font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
-      color: #4a5568; letter-spacing: 0.04em; margin-bottom: 0.75rem;
-      padding-bottom: 0.5rem; border-bottom: 2px solid #3182ce;
+    .metadata-card .meta-title {
+      font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+      color: #4a5568; letter-spacing: 0.04em; margin-bottom: 0.6rem;
+      padding-bottom: 0.4rem; border-bottom: 2px solid #3182ce;
     }
-    .index-list {
-      list-style: none; padding: 0; margin: 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 0.35rem 1.5rem;
+    .metadata-table { width: 100%; border-collapse: collapse; }
+    .metadata-table td {
+      padding: 0.3rem 0.5rem;
+      font-size: 0.88rem;
+      vertical-align: top;
     }
-    .index-list li {
-      font-size: 0.88rem; padding: 0.3rem 0;
+    .metadata-table td:first-child {
+      width: 30%;
+      font-weight: 600; color: #4a5568;
+      white-space: nowrap;
     }
-    .index-list a {
+    .metadata-table td:last-child { color: #2d3748; }
+
+    /* ---------- Gantt Block ---------- */
+    .gantt-block {
+      background: #1a202c;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+    .gantt-label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: #68d391; margin-bottom: 0.75rem;
+    }
+    .gantt-block img {
+      display: block; max-width: 100%; height: auto;
+      border-radius: 6px;
+    }
+
+    /* ---------- TOC Table ---------- */
+    .toc-wrapper {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .toc-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .toc-table thead th {
+      background: #1a365d;
+      color: #fff;
+      padding: 0.55rem 0.6rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .toc-table thead th:first-child { border-radius: 6px 0 0 0; }
+    .toc-table thead th:last-child { border-radius: 0 6px 0 0; }
+    .toc-table tbody tr:nth-child(even) { background: #f7fafc; }
+    .toc-table tbody tr:hover { background: #edf2f7; }
+    .toc-table td {
+      padding: 0.45rem 0.6rem;
+      border-bottom: 1px solid #e2e8f0;
+      color: #2d3748;
+    }
+    .toc-table a {
       color: #2b6cb0; text-decoration: none; font-weight: 600;
-      margin-right: 0.35rem;
     }
-    .index-list a:hover { text-decoration: underline; }
-    .index-topic { color: #4a5568; }
+    .toc-table a:hover { text-decoration: underline; }
+
+
 
     .day-card {
       background: #fff;
@@ -199,32 +253,59 @@
     <p class="subtitle">03 — glue-athena-airflow — Module Content Builder</p>
   </header>
 
-  <p class="module-heading">Module Content</p>
+  <p class="section-heading">Module Content</p>
 
-  <div class="index-section">
-    <h3 class="index-title">Table of Contents</h3>
-    <ul class="index-list">
-      <li><a href="#day-1">Day 1</a><span class="index-topic">S3 Storage &amp; The Medallion Architecture</span></li>
-      <li><a href="#day-2">Day 2</a><span class="index-topic">AWS Glue Data Catalog &amp; Crawlers</span></li>
-      <li><a href="#day-3">Day 3</a><span class="index-topic">AWS Lake Formation &amp; Column-Level Security</span></li>
-      <li><a href="#day-4">Day 4</a><span class="index-topic">Apache Iceberg — ACID Transactions on the Data Lake</span></li>
-      <li><a href="#day-5">Day 5</a><span class="index-topic">Hands-on — S3 Environment &amp; Lake Formation Setup</span></li>
-      <li><a href="#day-6">Day 6</a><span class="index-topic">AWS Glue PySpark — DynamicFrames vs DataFrames</span></li>
-      <li><a href="#day-7">Day 7</a><span class="index-topic">DQDL — Declarative Data Quality Rules</span></li>
-      <li><a href="#day-8">Day 8</a><span class="index-topic">Quarantine Pattern &amp; Bad Data Handling</span></li>
-      <li><a href="#day-9">Day 9</a><span class="index-topic">Performance Tuning — Partitioning, Compression &amp; Grouping</span></li>
-      <li><a href="#day-10">Day 10</a><span class="index-topic">Hands-on — Glue ETL Job with Data Quality</span></li>
-      <li><a href="#day-11">Day 11</a><span class="index-topic">Airflow Concepts — DAGs, Operators, Sensors</span></li>
-      <li><a href="#day-12">Day 12</a><span class="index-topic">Amazon MWAA Environment Setup &amp; Dependencies</span></li>
-      <li><a href="#day-13">Day 13</a><span class="index-topic">Advanced DAGs — XComs, Variables, Error Handling</span></li>
-      <li><a href="#day-14">Day 14</a><span class="index-topic">Hands-on — Building an MWAA DAG</span></li>
-      <li><a href="#day-15">Day 15</a><span class="index-topic">IAM Roles &amp; Least-Privilege Policies for Glue / Athena [GAP]</span></li>
-      <li><a href="#day-16">Day 16</a><span class="index-topic">Athena Workgroups &amp; Cost Management</span></li>
-      <li><a href="#day-17">Day 17</a><span class="index-topic">SQL for Iceberg — MERGE, UPDATE, Time Travel</span></li>
-      <li><a href="#day-18">Day 18</a><span class="index-topic">QuickSight Dashboards &amp; Data Dictionary</span></li>
-      <li><a href="#day-19">Day 19</a><span class="index-topic">Capstone — Part 1 (Storage, Catalog &amp; ETL)</span></li>
-      <li><a href="#day-20">Day 20</a><span class="index-topic">Capstone — Part 2 (Orchestration, Dashboard &amp; Final Testing)</span></li>
-    </ul>
+  <div class="metadata-card">
+    <div class="meta-title">Metadata</div>
+    <table class="metadata-table">
+      <tr><td>Title</td><td>AWS Glue, Athena &amp; Airflow — Serverless Data Analytics Pipeline</td></tr>
+      <tr><td>Version</td><td>v1.0</td></tr>
+      <tr><td>Date Created</td><td>2026-06-01</td></tr>
+      <tr><td>Author</td><td>Instructional Designer</td></tr>
+      <tr><td>Target Audience</td><td>Junior data engineers with basic Python and SQL knowledge</td></tr>
+      <tr><td>Prerequisites</td><td>Python basics, SQL fundamentals, AWS console familiarity</td></tr>
+      <tr><td>Tools Needed</td><td>AWS account, S3, AWS Glue, Lake Formation, Athena, MWAA, QuickSight</td></tr>
+      <tr><td>Skill Domains</td><td>AWS Infrastructure, Data Engineering, ETL, Orchestration, Analytics, BI, Governance</td></tr>
+      <tr><td>Total Duration</td><td>20 days / 40 hours</td></tr>
+      <tr><td>Suggested Pace</td><td>Moderate (2 hrs/day)</td></tr>
+    </table>
+    <!-- tags: topic-slug=glue-athena-airflow, skill-domains=[aws-infrastructure data-engineering etl orchestration analytics bi governance], audience=junior-data-engineer, difficulty=intermediate, delivery-methods=[lecture hands-on-lab workshop capstone], total-days=20, status=approved -->
+  </div>
+
+  <div class="gantt-block">
+    <div class="gantt-label">Training Timeline</div>
+    <img src="images/gantt.png" alt="Training timeline Gantt chart showing 4 phases: Storage & Catalog, ETL & Quality, Orchestration, Analytics & Capstone">
+  </div>
+
+  <div class="toc-wrapper">
+    <p class="section-heading" style="text-align:left;text-transform:none;letter-spacing:0;font-size:0.95rem;margin:0 0 0.75rem 0;">Table of Contents</p>
+    <table class="toc-table">
+      <thead>
+        <tr><th>#</th><th>Topic</th><th>Skill Domain</th><th>Delivery Method</th><th>Suggested Pace</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><a href="#day-1">Day 1</a></td><td>S3 Storage &amp; The Medallion Architecture</td><td>AWS Infrastructure</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-2">Day 2</a></td><td>AWS Glue Data Catalog &amp; Crawlers</td><td>Data Engineering</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-3">Day 3</a></td><td>AWS Lake Formation &amp; Column-Level Security</td><td>Governance</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-4">Day 4</a></td><td>Apache Iceberg — ACID Transactions on the Data Lake</td><td>AWS Infrastructure</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-5">Day 5</a></td><td>Hands-on — S3 Environment &amp; Lake Formation Setup</td><td>AWS Infrastructure, Governance</td><td>Hands-on Lab</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-6">Day 6</a></td><td>AWS Glue PySpark — DynamicFrames vs DataFrames</td><td>ETL</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-7">Day 7</a></td><td>DQDL — Declarative Data Quality Rules</td><td>ETL</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-8">Day 8</a></td><td>Quarantine Pattern &amp; Bad Data Handling</td><td>ETL</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-9">Day 9</a></td><td>Performance Tuning — Partitioning, Compression &amp; Grouping</td><td>Data Engineering</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-10">Day 10</a></td><td>Hands-on — Glue ETL Job with Data Quality</td><td>ETL, Data Engineering</td><td>Hands-on Lab</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-11">Day 11</a></td><td>Airflow Concepts — DAGs, Operators, Sensors</td><td>Orchestration</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-12">Day 12</a></td><td>Amazon MWAA Environment Setup &amp; Dependencies</td><td>Orchestration, AWS Infrastructure</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-13">Day 13</a></td><td>Advanced DAGs — XComs, Variables, Error Handling</td><td>Orchestration</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-14">Day 14</a></td><td>Hands-on — Building an MWAA DAG</td><td>Orchestration, AWS Infrastructure</td><td>Hands-on Lab</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-15">Day 15</a></td><td>IAM Roles &amp; Least-Privilege Policies for Glue / Athena [GAP]</td><td>Governance, AWS Infrastructure</td><td>Workshop</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-16">Day 16</a></td><td>Athena Workgroups &amp; Cost Management</td><td>Analytics, Governance</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-17">Day 17</a></td><td>SQL for Iceberg — MERGE, UPDATE, Time Travel</td><td>Analytics</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-18">Day 18</a></td><td>QuickSight Dashboards &amp; Data Dictionary</td><td>BI</td><td>Lecture</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-19">Day 19</a></td><td>Capstone — Part 1 (Storage, Catalog &amp; ETL)</td><td>All Domains</td><td>Capstone</td><td>Moderate</td></tr>
+        <tr><td><a href="#day-20">Day 20</a></td><td>Capstone — Part 2 (Orchestration, Dashboard &amp; Final Testing)</td><td>All Domains</td><td>Capstone</td><td>Moderate</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <hr class="section-divider">

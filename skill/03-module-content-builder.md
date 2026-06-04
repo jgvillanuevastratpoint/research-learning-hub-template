@@ -35,7 +35,76 @@ Do not begin writing module content until all hands-on activities are clarified.
 ---
 
 Once all hands-on activities are confirmed, build ALL modules at once using
-the following structure for each day:
+the following structure:
+
+### Tags Front Matter
+
+Start the file with YAML front matter between `---` delimiters for machine-
+parseable content tagging (enables backlinks in the future):
+
+```
+#review: DRAFT
+---
+tags:
+  topic-slug: [topic-slug]
+  skill-domains: [domain1, domain2, ...]
+  audience: [target-audience]
+  difficulty: [beginner | intermediate | advanced]
+  delivery-methods: [method1, method2, ...]
+  total-days: [number]
+  status: draft
+---
+```
+
+### Metadata Block
+
+After the title and subtitle, add a metadata table:
+
+```
+## Metadata
+
+| Field | Value |
+|---|---|
+| **Title** | [Learning Path Title] |
+| **Version** | v1.0 |
+| **Date Created** | [Date] |
+| **Author** | [Role or Name] |
+| **Target Audience** | [Audience description] |
+| **Knowledge Prerequisites** | [Prerequisites] |
+| **Tools Needed** | [Tools if technical] |
+| **Skill Domains** | [Domains covered] |
+| **Total Duration** | [X days / X hours] |
+| **Suggested Pace** | [Pace description] |
+```
+
+### Training Timeline — Gantt Chart
+
+After the metadata table and before the module content, add a Gantt chart
+grouped by phase blocks (not individual days). Extract the phase groupings
+from the Skill 2 skeleton. Use 4-6 blocks maximum.
+
+```
+### Training Timeline
+
+```mermaid
+gantt
+    title [Learning Path Title]
+    dateFormat  D
+    axisFormat  Day %e
+    section [Phase 1 Name]
+    [Phase Label] :p1, 1, 5d
+    section [Phase 2 Name]
+    [Phase Label] :p2, 6, 5d
+    section [Phase 3 Name]
+    [Phase Label] :p3, 11, 5d
+    section [Phase 4 Name]
+    [Phase Label] :p4, 16, 5d
+```
+```
+
+### Day-by-Day Content
+
+Use the following structure for each day:
 
 ---
 
@@ -69,6 +138,9 @@ Constraints:
 - Do not write the quiz yet — that is Skill 5
 - Do not generate visuals yet — flag them for Skill 4
 - Do not rewrite or restructure days that are not being edited
+- Tags front matter must be present before the H1 title
+- The Gantt chart must use phase/section blocks, not individual day bars
+- The metadata table must be included between the subtitle and the module content
 
 ---
 
@@ -84,6 +156,9 @@ Quiz Generator. If visuals are needed, trigger Skill 4 for flagged modules."
 
 | Output | Description |
 |---|---|
+| **Tags Front Matter** | YAML tags block for backlinks and content discovery |
+| **Metadata Table** | Title, version, date, audience, prerequisites, tools, domains, duration, pace |
+| **Training Timeline Gantt** | Phase-block Gantt chart showing the learning path at a glance |
 | **Hands-on Clarification Questions** | One message listing all [HANDS-ON RECOMMENDED] days with a question for each — asked before any writing begins |
 | **Full Module Content** | All days written at once — Core Idea / Why It Matters / How It Works, supplemental reading, hands-on activity (if applicable), visual placeholder (if flagged) |
 | **Visual Placeholders** | Modules flagged [VISUAL RECOMMENDED] will have a [VISUAL PENDING — Skill 4] marker with a description of what the diagram should show |
@@ -154,6 +229,6 @@ Day 5: Scheduling, Dependencies, and Monitoring [HANDS-ON RECOMMENDED] [NO VISUA
 
 ---
 
-*Skill 3 of 5 — Research & Learning Hub*
+*Skill 3 of 7 — Research & Learning Hub*
 *Input comes from → Skill 2: Learning Path Architect (Checkpoint 2 confirmed)*
-*Output feeds into → Skill 4: Visual Generator (if flagged) and Skill 5: Quiz Generator*
+*Output feeds into → Skill 4: Visual Generator (if flagged), Skill 5: Quiz Generator, and Skill 7: HTML Generator*

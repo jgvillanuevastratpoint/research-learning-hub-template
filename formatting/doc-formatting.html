@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Document Template</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 11pt;
+      color: #000000;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page {
+      max-width: 750px;
+      margin: 0 auto;
+      padding: 60px 72px;
+    }
+
+    /* TITLE */
+    h1.doc-title {
+      font-size: 26pt;
+      font-weight: 700;
+      color: #1F4E79;
+      text-align: center;
+      margin: 0 0 36px 0;
+      line-height: 1.3;
+    }
+
+    /* SECTION HEADINGS */
+    h2.section-heading {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #1F4E79;
+      text-transform: uppercase;
+      margin: 28px 0 8px 0;
+      letter-spacing: 0.03em;
+    }
+
+    /* BODY TEXT */
+    p {
+      font-size: 11pt;
+      color: #000000;
+      margin: 0 0 8px 0;
+      line-height: 1.5;
+    }
+
+    /* NUMBERED LIST */
+    ol.main-list {
+      margin: 6px 0 12px 0;
+      padding-left: 28px;
+      list-style-type: decimal;
+    }
+
+    ol.main-list > li {
+      font-size: 11pt;
+      color: #000000;
+      margin-bottom: 4px;
+      line-height: 1.5;
+    }
+
+    /* LETTERED SUB-LIST */
+    ol.sub-list {
+      margin: 4px 0 4px 0;
+      padding-left: 24px;
+      list-style-type: lower-alpha;
+    }
+
+    ol.sub-list > li {
+      font-size: 11pt;
+      color: #000000;
+      margin-bottom: 2px;
+      line-height: 1.5;
+    }
+
+    /* SECTION DIVIDER */
+    .section-divider {
+      border: none;
+      border-top: 1px solid #d0d0d0;
+      margin: 24px 0;
+    }
+
+    /* PLACEHOLDER STYLING */
+    .placeholder {
+      color: #555;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- TITLE -->
+    <h1 class="doc-title">Document Title Here</h1>
+
+    <hr class="section-divider">
+
+    <!-- SECTION 1 -->
+    <h2 class="section-heading">Section 1: Section Heading Here</h2>
+    <p>Introductory paragraph or instructions go here as regular body text. Keep it concise and professional.</p>
+    <ol class="main-list">
+      <li>First numbered item
+        <ol class="sub-list">
+          <li><span class="placeholder">[Sub-item A]</span></li>
+          <li><span class="placeholder">[Sub-item B]</span></li>
+          <li><span class="placeholder">[Sub-item C]</span></li>
+        </ol>
+      </li>
+      <li>Second numbered item
+        <ol class="sub-list">
+          <li><span class="placeholder">[Sub-item A]</span></li>
+          <li><span class="placeholder">[Sub-item B]</span></li>
+        </ol>
+      </li>
+      <li>Third numbered item</li>
+    </ol>
+
+    <hr class="section-divider">
+
+    <!-- SECTION 2 -->
+    <h2 class="section-heading">Section 2: Another Section Heading</h2>
+    <p>Body text goes here. You can write multiple sentences or paragraphs as needed.</p>
+    <ol class="main-list">
+      <li>First item</li>
+      <li>Second item
+        <ol class="sub-list">
+          <li><span class="placeholder">[Detail one]</span></li>
+          <li><span class="placeholder">[Detail two]</span></li>
+        </ol>
+      </li>
+      <li>Third item</li>
+    </ol>
+
+    <hr class="section-divider">
+
+    <!-- SECTION 3 -->
+    <h2 class="section-heading">Section 3: Section Heading</h2>
+    <p>Content here.</p>
+    <ol class="main-list">
+      <li>Item one</li>
+      <li>Item two</li>
+    </ol>
+
+  </div>
+</body>
+</html>

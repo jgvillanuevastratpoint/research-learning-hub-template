@@ -30,11 +30,12 @@ Anyone responsible for:
 | `README.md` | This file — start here |
 | `project-instructions.md` | The AI instructions — paste this into your Claude Project settings |
 | `skill/01-research-synthesizer.md` | Skill 1 — synthesize your sources into a concept map and topic list |
-| `skill/02-learning-path-architect.md` | Skill 2 — build the day-by-day learning path skeleton |
-| `skill/03-module-content-builder.md` | Skill 3 — write all module content (What / How / Why + reading links) |
+| `skill/02-learning-path-architect.md` | Skill 2 — build the day-by-day learning path skeleton with metadata block, Gantt chart, and table format |
+| `skill/03-module-content-builder.md` | Skill 3 — write module content with tags front matter, metadata table, and Gantt chart |
 | `skill/04-visual-generator.md` | Skill 4 — generate Mermaid diagrams for flagged modules |
 | `skill/05-quiz-generator.md` | Skill 5 — generate the end-of-path quiz covering all days |
 | `skill/06-rubric-generator.md` | Skill 6 — generate quiz rubric and/or hands-on activity rubric |
+| `skill/07-html-generator.md` | Skill 7 — build a standalone HTML page from markdown output with metadata card, Gantt image, and table TOC |
 | `skill/xx-end-workflow.md` | Skill xx — finalize project: update status tags, index, decision log, completion summary |
 
 ---
@@ -95,7 +96,10 @@ STEP 6 → Skill 6: Rubric Generator
 
               ↓ CHECKPOINT 3 — Final review + validate all links
 
-STEP 7 → Skill xx: End Workflow
+STEP 7 → Skill 7: HTML Generator
+         Build a standalone HTML page with metadata card, Gantt chart image, and table of contents.
+
+STEP 8 → Skill xx: End Workflow
          Automates status tag updates, index, decision log, completion summary.
 
 DONE — Ready to publish or deliver
@@ -116,9 +120,9 @@ Every skill produces its own standalone markdown file. Skills are never appended
 
 | Part | Example |
 |---|---|---|
-| sequence | `01`, `02`, `03`, `xx` |
+| sequence | `01`, `02`, `03`, `07`, `xx` |
 | topic-slug | `airflow`, `data-pipelines`, `sql-fundamentals` |
-| descriptor | `synthesis`, `learning-path`, `module-content`, `visuals`, `quiz`, `rubric`, `end-workflow` |
+| descriptor | `synthesis`, `learning-path`, `module-content`, `visuals`, `quiz`, `rubric`, `html`, `end-workflow` |
 
 ### Example Folder
 ```
@@ -130,6 +134,7 @@ Every skill produces its own standalone markdown file. Skills are never appended
         ├── 04-glue-athena-airflow-visuals.md
         ├── 05-glue-athena-airflow-quiz.md
         ├── 06-glue-athena-airflow-rubric.md
+        ├── 07-glue-athena-airflow-html.html
         └── xx-glue-athena-airflow-end-workflow.md
 ```
 

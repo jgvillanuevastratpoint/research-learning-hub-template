@@ -1,7 +1,53 @@
 #review: APPROVED
+---
+tags:
+  topic-slug: glue-athena-airflow
+  skill-domains: [aws-infrastructure, data-engineering, etl, orchestration, analytics, bi, governance]
+  audience: junior-data-engineer
+  difficulty: intermediate
+  delivery-methods: [lecture, hands-on-lab, workshop, capstone]
+  total-days: 20
+  status: approved
+---
 
 # AWS Glue, Athena & Airflow — Serverless Data Analytics Pipeline
 ### 03 — glue-athena-airflow — Module Content Builder
+
+---
+
+## Metadata
+
+| Field | Value |
+|---|---|
+| **Title** | AWS Glue, Athena & Airflow — Serverless Data Analytics Pipeline |
+| **Version** | v1.0 |
+| **Date Created** | 2026-06-01 |
+| **Author** | Instructional Designer |
+| **Target Audience** | Junior data engineers with basic Python and SQL knowledge |
+| **Knowledge Prerequisites** | Python basics, SQL fundamentals, AWS console familiarity |
+| **Tools Needed** | AWS account, S3, AWS Glue, Lake Formation, Athena, MWAA, QuickSight |
+| **Skill Domains** | AWS Infrastructure, Data Engineering, ETL, Orchestration, Analytics, BI, Governance |
+| **Total Duration** | 20 days / 40 hours |
+| **Suggested Pace** | Moderate (2 hrs/day) |
+
+---
+
+## Training Timeline
+
+```mermaid
+gantt
+    title AWS Glue, Athena & Airflow — Timeline
+    dateFormat  D
+    axisFormat  Day %e
+    section Storage & Catalog
+    Block 1 — Days 1–5 :p1, 1, 5d
+    section ETL & Quality
+    Block 2 — Days 6–10 :p2, 6, 5d
+    section Orchestration
+    Block 3 — Days 11–15 :p3, 11, 5d
+    section Analytics & Capstone
+    Block 4 — Days 16–20 :p4, 16, 5d
+```
 
 ---
 
