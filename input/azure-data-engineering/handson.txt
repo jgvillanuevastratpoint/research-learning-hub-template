@@ -1,0 +1,67 @@
+Your Markdown file is ready
+[file-tag: code-generated-file-0-1783318956466046071]
+
+Here is the hands-on lab guide converted completely into clean, copy-pasteable Markdown:
+
+```markdown
+# Hands-On Lab: Serverless Data Engineering Pipeline
+## Analyzing the Data Analyst Job Market (Budget-Friendly Edition)
+
+This hands-on lab guides you through building a complete cloud data pipeline using the cheapest, most efficient services in Azure. It is designed to maximize learning while minimizing cost by using 100% serverless configurations.
+
+* **Estimated Cost:** Less than \$0.05 total per execution.
+* **Verified Dataset:** [Kaggle Data Analyst Jobs Dataset by Larxel](https://www.kaggle.com/datasets/andrewmvd/data-analyst-jobs) (2,250+ Glassdoor job listings with Salary Estimates, Locations, Ratings, and Job Descriptions).
+
+---
+
+## Step 1: Set Up Storage Tier (ADLS Gen2)
+We avoid managed database instances to eliminate hourly runtime fees. Instead, we use flat object storage configured for enterprise big data.
+
+1. Log into the Azure Portal.
+2. Create a standard Azure Storage Account named `stjobs[yourname]` (replace `yourname` with your unique initials).
+3. Under the **Advanced** configuration tab, check **Enable hierarchical namespace** (this explicitly converts standard Blob storage into a high-performance **ADLS Gen2** instance).
+4. Set the redundancy tier to **LRS (Locally Redundant Storage)** to use the cheapest cloud replication option.
+5. Once deployed, open the Storage Browser and create a container named `jobmarket`.
+
+---
+
+## Step 2: Serverless Processing & Orchestration (ADF)
+We will upload the source text file and orchestrate a low-cost file optimization block using Azure Data Factory.
+
+1. Download the `DataAnalyst.csv` file from the verified Kaggle link above.
+2. Search for and create an **Azure Data Factory (ADF)** instance under your subscription. 
+3. Open **ADF Studio** and navigate to the **Author** tab to create a new pipeline.
+4. Build a simple **Copy Data Activity**:
+   * **Source:** Point an HTTP or Local File dataset to your downloaded `DataAnalyst.csv`.
+   * **Sink:** Select your **ADLS Gen2** (`jobmarket`) dataset. Change the output copy format from standard text/CSV to **Parquet**.
+5. Click **Debug** to execute the pipeline.
+   > 💡 **FinOps Tip:** The pipeline compresses the raw text fields into a highly optimized, columnar `.parquet` binary. The processing time takes under 20 seconds, costing less than **\$0.002**.
+
+---
+
+## Step 3: Zero-Infrastructure Relational Analytics (Synapse)
+Instead of renting a dedicated data warehouse server (which charges a flat hourly fee regardless of usage), we use a serverless SQL engine that evaluates query parameters on-demand.
+
+1. Go to your Synapse Workspace (or navigate directly inside Azure Storage Explorer / Azure Portal Storage Browser).
+2. Right-click the newly generated `.parquet` file in your `jobmarket` container.
+3. Select **New SQL Script** $\rightarrow$ **Select TOP 100 rows**.
+4. Run the following code block to extract data insight structures without setting up an active SQL infrastructure database engine:
+
+```sql
+-- Query to identify top-tier average ratings and parse location fields
+SELECT 
+    [Job_Title],
+    [Company_Name],
+    [Rating],
+    [Location]
+FROM 
+    OPENROWSET(
+        BULK 'https://stjobs[yourname].dfs.core.windows.net/jobmarket/*.parquet',
+        FORMAT = 'PARQUET'
+    ) AS [jobs]
+WHERE [Rating] >= 4.0 
+ORDER BY [Rating] DESC;
+
+
+
+📊 Step 4: Optional Activity — Business Intelligence Data VisualizationTo close out an end-to-end user framework, let's connect the conformed data processing layer directly to a business intelligence dashboard.Option A: The Completely Free Route (Power BI Desktop)Download and open Power BI Desktop locally on your machine.Click Get Data $\rightarrow$ Azure $\rightarrow$ Azure Data Lake Storage Gen2.Input your storage URL path: https://stjobs[yourname].dfs.core.windows.net/jobmarket/.Select your processed Parquet file and click Load.Option B: The Integrated SaaS Route (Microsoft Fabric / Power BI Service)If your training environment uses Microsoft Fabric, open your target Workspace.Select your synchronized Lakehouse or Warehouse schema shortcut tool.Click New Report directly from your target file reference framework.Recommended Visualization Build Criteria:Construct a simple one-page Executive Job Market Overview layout featuring:Card Visual: Total count of unique Job Openings found in the dataset (COUNT(Job_Title)).Bar Chart: Top 10 cities recruiting Data Analysts based on the Location string values.Scatter Plot / Matrix: Evaluating Company_Name relative to their Glassdoor Rating score to isolate top workplaces.🛠️ Lab Cleanup VerificationBecause this lab leverages 100% serverless configurations (ADLS Gen2 file blocks, Data Factory on-demand actions, Synapse Serverless parsing engines, and local or SaaS BI viewing features), there are zero compute servers running in your subscription. You can leave this environment exactly as it is without turning off pipelines, shutting down servers, or worrying about racking up surprise charges over the weekend.

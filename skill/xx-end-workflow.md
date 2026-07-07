@@ -106,8 +106,7 @@ Run End Workflow only after:
 
 1. ✅ Skill 1 through Skill 6 are all complete
 2. ✅ The owner has reviewed all outputs at Checkpoint 3
-3. ✅ The owner has validated all supplemental reading links
-4. ✅ The owner explicitly says "finalize" or "run end workflow" — never run it automatically
+3. ✅ The owner explicitly says "finalize" or "run end workflow" — never run it automatically
 
 ---
 

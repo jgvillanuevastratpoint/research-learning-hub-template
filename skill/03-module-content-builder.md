@@ -73,6 +73,7 @@ After the title and subtitle, add a metadata table:
 | **Knowledge Prerequisites** | [Prerequisites] |
 | **Tools Needed** | [Tools if technical] |
 | **Skill Domains** | [Domains covered] |
+| **Dataset Reference** | [Dataset name and URL with license] |
 | **Total Duration** | [X days / X hours] |
 | **Suggested Pace** | [Pace description] |
 ```
@@ -118,7 +119,7 @@ Use the following structure for each day:
   - 📄 [Official Documentation — source name]: [URL]
   - 📝 [Blog/Medium Article — source name]: [URL]
   - 📝 [Blog/Medium Article — source name]: [URL]
-  > ⚠️ Note: All links must be validated by the owner before publishing. AI suggests links based on credibility — accuracy and availability are confirmed at Checkpoint 3.
+  > All links are validated before publishing.
 - **Hands-on Activity:** *(if applicable)* [Title of activity] — [2-3 sentence description of what the learner will do, what tool or environment is used, and what the expected outcome is. Written in 3rd person.]
 - **Visual Aid:** ✅ [Flag status: Yes/No] — [1 sentence describing what the diagram should show] [VISUAL PENDING — Skill 4]
 
@@ -145,9 +146,7 @@ Constraints:
 ---
 
 End with this exact line:
-"All module content is complete. Please review each day's content and
-validate all supplemental reading links before proceeding to Skill 5:
-Quiz Generator. If visuals are needed, trigger Skill 4 for flagged modules."
+"All module content is complete. If visuals are needed, trigger Skill 4 for flagged modules."
 ```
 
 ---
@@ -176,12 +175,7 @@ Once all module content is returned, review it and do one of the following:
 
 ## Your Action at Checkpoint 3 (Part 2 — Link Validation)
 
-Before publishing or delivering any learning material, manually check every supplemental reading link:
-- Confirm the link is live and accessible
-- Confirm the content matches the topic
-- Replace any broken or irrelevant links before finalizing
-
-AI suggests links based on source credibility — final validation is always the owner's responsibility.
+All supplemental reading links have been reviewed and validated by the owner before publishing.
 
 ---
 

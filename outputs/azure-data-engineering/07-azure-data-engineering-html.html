@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azure Data Engineering Training</title>
+  <!-- tags: topic-slug=azure-data-engineering, skill-domains=data-engineering cloud-computing data-pipelines data-warehousing, audience=junior-data-engineers, difficulty=beginner, delivery-methods=lecture workshop hands-on-lab project, total-days=15, status=draft -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: #f5f7fa;
+      color: #1a202c;
+      line-height: 1.6;
+    }
+    .container { max-width: 960px; margin: 0 auto; padding: 20px; position: relative; }
+
+    .review-badge {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      background: #38a169;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 4px;
+      z-index: 100;
+      letter-spacing: 0.5px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a365d, #2b6cb0);
+      color: #fff;
+      padding: 40px 32px;
+      border-radius: 10px;
+      margin-bottom: 24px;
+    }
+    header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+    header .subtitle { font-size: 16px; opacity: 0.85; }
+
+    .metadata-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .metadata-table { width: 100%; border-collapse: collapse; }
+    .metadata-table td { padding: 6px 12px; font-size: 14px; vertical-align: top; }
+    .metadata-table td:first-child { color: #718096; font-weight: 500; width: 200px; }
+    .metadata-table td:last-child { color: #2d3748; }
+
+    .gantt-block {
+      background: #1e293b;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .gantt-label {
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .gantt-block img { max-width: 100%; height: auto; display: block; }
+
+    .section-heading {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a365d;
+      margin-bottom: 12px;
+    }
+
+    .toc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .toc-table thead th {
+      background: #1a365d;
+      color: #fff;
+      padding: 10px 12px;
+      text-align: left;
+      position: sticky;
+      top: 0;
+    }
+    .toc-table tbody tr:nth-child(even) { background: #f7fafc; }
+    .toc-table tbody tr:hover { background: #edf2f7; }
+    .toc-table td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; }
+    .toc-table a { color: #2b6cb0; text-decoration: none; font-weight: 500; }
+    .toc-table a:hover { text-decoration: underline; }
+
+    .day-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      padding: 24px 28px;
+      margin-bottom: 20px;
+    }
+    .day-card h2 {
+      font-size: 20px;
+      color: #1a365d;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+    .field { margin-bottom: 14px; }
+    .field-label {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 3px;
+      margin-bottom: 4px;
+    }
+    .field-label.obj { background: #bee3f8; color: #2b6cb0; }
+    .field-label.core { background: #c6f6d5; color: #276749; }
+    .field-label.why { background: #fbd38d; color: #9c4221; }
+    .field-label.how { background: #d6bcfa; color: #553c9a; }
+    .field-label.handson { background: #fefcbf; color: #975a16; }
+    .field-content { font-size: 14px; color: #2d3748; line-height: 1.7; }
+
+    .supplemental {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      font-size: 14px;
+    }
+    .supplemental p { margin-bottom: 4px; }
+    .supplemental a { color: #2b6cb0; text-decoration: none; }
+    .supplemental a:hover { text-decoration: underline; }
+    .supplemental .note { color: #718096; font-size: 12px; margin-top: 6px; }
+
+    .diagram-block {
+      background: #1e293b;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .diagram-block img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+
+    blockquote {
+      border-left: 4px solid #2b6cb0;
+      background: #ebf8ff;
+      padding: 10px 16px;
+      margin-bottom: 14px;
+      border-radius: 0 6px 6px 0;
+      font-size: 14px;
+      color: #2d3748;
+    }
+
+    .handson-block {
+      margin-bottom: 14px;
+    }
+    .handson-block .field-content { font-weight: 500; }
+
+    .field-content ul, .field-content ol { margin-left: 20px; margin-top: 4px; }
+    .field-content li { margin-bottom: 2px; }
+    .field-content code {
+      background: #edf2f7;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 13px;
+      font-family: "Cascadia Code", "Fira Code", monospace;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #718096;
+      font-size: 13px;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 32px;
+    }
+    .outro {
+      text-align: center;
+      padding: 20px;
+      background: #edf2f7;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-size: 14px;
+      color: #4a5568;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 12px; }
+      header { padding: 24px 16px; }
+      header h1 { font-size: 22px; }
+      .day-card { padding: 16px; }
+      .metadata-table td { display: block; width: 100%; }
+      .metadata-table td:first-child { width: 100%; }
+      .toc-table { font-size: 12px; }
+      .toc-table th, .toc-table td { padding: 6px 8px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="review-badge">#review: DRAFT</div>
+
+  <header>
+    <h1>Azure Data Engineering Training</h1>
+    <p class="subtitle">03 — Azure Data Engineering — Module Content</p>
+  </header>
+
+  <div class="metadata-card">
+    <table class="metadata-table">
+      <tr><td>Title</td><td>Azure Data Engineering Training</td></tr>
+      <tr><td>Version</td><td>v1.0</td></tr>
+      <tr><td>Date Created</td><td>2026-07-06</td></tr>
+      <tr><td>Author</td><td>Technical Curriculum Designer</td></tr>
+      <tr><td>Target Audience</td><td>Junior data engineers with foundational data knowledge</td></tr>
+      <tr><td>Knowledge Prerequisites</td><td>Medallion Architecture, ETL/ELT fundamentals, Apache Spark &amp; SQL basics, cloud computing fundamentals</td></tr>
+      <tr><td>Tools Needed</td><td>Azure subscription (trial or sandbox), ADLS Gen2, Azure Data Factory, Azure Databricks, Synapse Analytics, Power BI Desktop, Azure Key Vault</td></tr>
+      <tr><td>Skill Domains</td><td>Storage, Orchestration, Big Data Processing, Warehousing, Security, Governance, FinOps</td></tr>
+      <tr><td>Dataset Reference</td><td><a href="https://berkeleyearth.org/data/" target="_blank">Berkeley Earth Global Temperature Anomalies</a> — CC BY-NC 4.0</td></tr>
+      <tr><td>Total Duration</td><td>15 days / 120 hours</td></tr>
+      <tr><td>Suggested Pace</td><td>8 hours per day — mix of lecture, workshop, and hands-on lab</td></tr>
+    </table>
+    <!-- tags: topic-slug=azure-data-engineering, skill-domains=data-engineering cloud-computing data-pipelines data-warehousing, audience=junior-data-engineers, difficulty=beginner, delivery-methods=lecture workshop hands-on-lab project, total-days=15, status=draft -->
+  </div>
+
+  <div class="gantt-block">
+    <div class="gantt-label">Training Timeline</div>
+    <img src="images/gantt.png" alt="Azure Data Engineering — 3-Week Schedule Gantt Chart">
+  </div>
+
+  <p class="section-heading">Table of Contents</p>
+  <table class="toc-table">
+    <thead>
+      <tr><th>#</th><th>Topic</th><th>Skill Domain</th><th>Delivery Method</th><th>Suggested Pace</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><a href="#day-1">Day 1</a></td><td>Azure Data Engineering Overview, Cloud &amp; Lakehouse Concepts</td><td>Data Engineering</td><td>Lecture + Demo</td><td>8h</td></tr>
+      <tr><td><a href="#day-2">Day 2</a></td><td>ADLS Gen2 — Storage Tiers, Lifecycle Management &amp; File Formats</td><td>Storage</td><td>Lecture + Demo</td><td>8h</td></tr>
+      <tr><td><a href="#day-3">Day 3</a></td><td>Batch vs Streaming Data Storage, Data Lake Design &amp; Partitioning</td><td>Storage</td><td>Lecture + Workshop</td><td>8h</td></tr>
+      <tr><td><a href="#day-4">Day 4</a></td><td>Azure Data Factory — Pipelines, Activities &amp; Debugging</td><td>Orchestration</td><td>Workshop</td><td>8h</td></tr>
+      <tr><td><a href="#day-5">Day 5</a></td><td>ADF Triggers, Variables &amp; Integration Runtimes</td><td>Orchestration</td><td>Workshop</td><td>8h</td></tr>
+      <tr><td><a href="#day-6">Day 6</a></td><td>Pipeline Monitoring, Troubleshooting &amp; Batch Ingestion Patterns</td><td>Orchestration</td><td>Workshop</td><td>8h</td></tr>
+      <tr><td><a href="#day-7">Day 7</a></td><td>Azure Databricks Environments &amp; Cluster Configuration</td><td>Processing</td><td>Lecture + Demo</td><td>8h</td></tr>
+      <tr><td><a href="#day-8">Day 8</a></td><td>PySpark Data Transformation with Delta Lake</td><td>Processing</td><td>Workshop</td><td>8h</td></tr>
+      <tr><td><a href="#day-9">Day 9</a></td><td>Data Virtualization vs Physical Ingestion, Job Clusters &amp; Cost Optimization</td><td>Processing</td><td>Lecture + Workshop</td><td>8h</td></tr>
+      <tr><td><a href="#day-10">Day 10</a></td><td>Synapse Analytics — Serverless SQL &amp; Data Virtualization</td><td>Warehousing</td><td>Workshop</td><td>8h</td></tr>
+      <tr><td><a href="#day-11">Day 11</a></td><td>Data Warehousing Design (Star Schema) &amp; Dedicated SQL Pools</td><td>Warehousing</td><td>Lecture + Demo</td><td>8h</td></tr>
+      <tr><td><a href="#day-12">Day 12</a></td><td>Microsoft Fabric — OneLake, Notebooks &amp; Warehouse</td><td>Warehousing</td><td>Lecture + Demo</td><td>8h</td></tr>
+      <tr><td><a href="#day-13">Day 13</a></td><td>Security — Key Vault, RBAC, ACLs &amp; Private Endpoints</td><td>Security</td><td>Lecture + Workshop</td><td>8h</td></tr>
+      <tr><td><a href="#day-14">Day 14</a></td><td>Governance &amp; FinOps — Purview, Cost Management &amp; Budget Alerts</td><td>Governance</td><td>Lecture + Workshop</td><td>8h</td></tr>
+      <tr><td><a href="#day-15">Day 15</a></td><td>Capstone — End-to-End Serverless Data Pipeline Project</td><td>Capstone</td><td>Project</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== DAY 1 ===== -->
+  <section class="day-card" id="day-1">
+    <h2>Day 1: Azure Data Engineering Overview, Cloud &amp; Lakehouse Concepts</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Describe the Azure data engineering landscape, core services, and the lakehouse architecture pattern.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">The modern Azure data ecosystem is composed of specialized PaaS services (ADLS Gen2, ADF, Databricks, Synapse) converging toward a unified SaaS platform (Microsoft Fabric). Each service targets a distinct phase of the data lifecycle — storage, ingestion, transformation, warehousing, and analytics — and engineers must understand how these services interconnect to build reliable pipelines.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">Junior engineers entering Azure environments encounter a fragmented toolset where choosing the wrong service or architecture pattern leads to excessive costs, poor performance, and maintenance overhead. Understanding the landscape prevents costly architectural rewrites and enables engineers to make informed design decisions from the start.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">A batch data pipeline flows sequentially through storage (ADLS Gen2), orchestration (ADF), processing (Databricks or Synapse Spark), serving (Synapse SQL or Fabric), and visualization (Power BI). Cost-aware design principles — such as decoupling storage from compute and using serverless configurations — apply at every layer to minimize operational spend.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction" target="_blank">Official Documentation — Azure Data Lake Storage Gen2 Introduction</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/azure-data-engineering-comprehensive-guide" target="_blank">Medium — Azure Data Engineering: A Comprehensive Guide for 2026</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/choosing-the-right-data-service-in-azure" target="_blank">Microsoft Tech Community — Choosing the Right Azure Data Service</a></p>
+
+    </div>
+    <div class="field"><span class="field-label">Hands-on Activity</span><div class="field-content"><em>Not applicable — theory day.</em></div></div>
+    <blockquote>This architecture diagram illustrates the end-to-end Azure data engineering ecosystem. Data flows from sources through Azure Data Factory (ingestion) into ADLS Gen2 (storage), then to Azure Databricks (processing) and Synapse Analytics (warehousing), and finally to Power BI (visualization). Security and governance are provided by Azure Key Vault and Microsoft Purview, while Azure Monitor handles observability across all layers.</blockquote>
+    <div class="diagram-block"><img src="images/diagram-1.png" alt="Day 1 - Azure Data Engineering Overview Architecture Diagram"></div>
+  </section>
+
+  <!-- ===== DAY 2 ===== -->
+  <section class="day-card" id="day-2">
+    <h2>Day 2: ADLS Gen2 — Storage Tiers, Lifecycle Management &amp; File Formats</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Provision an ADLS Gen2 storage account and configure storage tiers, lifecycle policies, and file format transformations.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">ADLS Gen2 combines the low-cost scalability of Azure Blob Storage with a Hierarchical Namespace (HNS) that organizes files into true directory structures. This HNS capability dramatically accelerates file system operations for analytics engines by enabling atomic directory renames and efficient partition pruning natively at the storage layer.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">Storage is the foundation of every data pipeline — misconfigured storage tiers or poorly chosen file formats cascade cost and performance issues into every downstream phase. Engineers who master ADLS Gen2 provisioning, lifecycle policy automation, and format selection prevent the most common sources of data lake degradation.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">Storage accounts with HNS enabled allow data to be organized in directory trees rather than flat blob key prefixes. Data moves automatically across Hot, Cool, and Archive tiers through lifecycle management policies triggered on age or modification timestamps. File formats such as Parquet (columnar, compressed) and Delta Lake (Parquet + transaction log) optimize storage for analytics workloads.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/storage-lifecycle-management-concepts" target="_blank">Official Documentation — Blob Storage Lifecycle Management</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/adls-gen2-vs-blob-storage-comparison" target="_blank">Medium — ADLS Gen2 vs Blob Storage: When to Use Which</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/introduction-to-delta-lake-on-azure" target="_blank">Azure Blog — Introduction to Delta Lake on Azure</a></p>
+
+    </div>
+    <div class="handson-block"><span class="field-label handson">Hands-on Activity</span><div class="field-content">Provision ADLS Gen2 and Stage Raw Data — Learners create a storage account with HNS enabled, configure Hot → Cool lifecycle policies, upload the Berkeley Earth temperature CSV to a bronze/ container, and inspect the HNS directory structure using Storage Browser.</div></div>
+    <blockquote>This diagram shows the structure of an ADLS Gen2 storage account with Hierarchical Namespace enabled. Data is organized into directories and containers, with lifecycle policies automatically transitioning data across Hot, Cool, and Archive tiers.</blockquote>
+    <div class="diagram-block"><img src="images/diagram-2.png" alt="Day 2 - ADLS Gen2 Architecture Diagram"></div>
+  </section>
+
+  <!-- ===== DAY 3 ===== -->
+  <section class="day-card" id="day-3">
+    <h2>Day 3: Batch vs Streaming Data Storage, Data Lake Design &amp; Partitioning</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Design a data lake directory structure with Hive-style partitioning strategies and evaluate batch versus streaming storage requirements.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">Data lake directory design directly determines query performance and cost. Hive-style partitioning (e.g., <code>year=2026/month=07/day=06/</code>) enables partition pruning, where query engines skip irrelevant directories entirely rather than scanning the full dataset. The small file problem — millions of tiny files overwhelming compute master nodes — must be mitigated through compaction strategies that merge files into 128MB–512MB blocks.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">Unstructured data lakes with no partitioning strategy become unqueryable as they grow — every scan reads the entire dataset, driving up Synapse Serverless and Databricks costs linearly with data volume. Engineers who design partitioning and compaction plans upfront protect pipeline performance and keep query costs predictable.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">Data arrives in either batch (scheduled bulk transfers at regular intervals) or streaming (continuous event ingestion). For batch pipelines, directory structures follow <code>/{source}/{layer}/{key=value}/</code> conventions that allow downstream engines to prune partitions automatically. Compaction routines run as scheduled ADF pipelines or Databricks jobs, merging fragmented files into optimized Parquet blocks.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/databricks/delta/partitioning" target="_blank">Official Documentation — Partitioning and Optimizing Data Lakes</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/data-lake-partitioning-best-practices" target="_blank">Medium — Data Lake Partitioning Strategies for Azure</a></p>
+      <p>📝 <a href="https://towardsdatascience.com/small-file-problem-data-lakes" target="_blank">Towards Data Science — The Small File Problem in Data Lakes</a></p>
+
+    </div>
+    <div class="handson-block"><span class="field-label handson">Hands-on Activity</span><div class="field-content">Design Partitioned Layout and Convert to Parquet — Using the Day 2 storage account, learners design a Hive-partitioned directory structure under silver/weather/year=*/country=*/, copy a subset of temperature rows, and convert CSV to Parquet format using ADF Copy Activity.</div></div>
+    <blockquote>This flowchart shows the data lake directory design process, starting with the batch vs streaming decision. The batch path follows Hive-style partitioning and includes compaction logic to address the small file problem.</blockquote>
+    <div class="diagram-block"><img src="images/diagram-3.png" alt="Day 3 - Data Lake Design Flowchart"></div>
+  </section>
+
+  <!-- ===== DAY 4 ===== -->
+  <section class="day-card" id="day-4">
+    <h2>Day 4: Azure Data Factory — Pipelines, Activities &amp; Debugging</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Build and debug a basic ADF pipeline with copy activity and dataset configuration.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">Azure Data Factory is a serverless visual data integration service where pipelines are composed of linked services (connection strings), datasets (structural references to data), and activities (execution actions such as Copy, Web, and Execute Notebook). Integration Runtimes (IR) handle connectivity — Azure IR for cloud-to-cloud, Self-Hosted IR for on-premises sources behind firewalls.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">ADF is the central orchestration hub in most Azure data environments — nearly every pipeline begins or passes through an ADF activity. Engineers who cannot build, parameterize, and debug ADF pipelines effectively cannot deploy production data workflows reliably.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">A pipeline begins at a trigger, executes activities in dependency order, and logs each run to the ADF Monitor hub. The Copy activity moves data between a source and sink linked service, handling format conversion, schema mapping, and fault tolerance. Debug mode runs a pipeline on-demand without requiring a published trigger, enabling rapid iteration during development.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/data-factory/introduction" target="_blank">Official Documentation — Azure Data Factory Introduction</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/azure-data-factory-pipelines-beginners-guide" target="_blank">Medium — ADF Pipelines: A Beginner's Guide</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/adf-pipeline-design-best-practices" target="_blank">Azure Blog — Best Practices for ADF Pipeline Design</a></p>
+
+    </div>
+    <div class="handson-block"><span class="field-label handson">Hands-on Activity</span><div class="field-content">Build ADF Pipeline for Bronze Ingestion — Learners create an ADF instance, configure linked services pointing to the Day 2 storage account, build a Copy Data pipeline that moves the raw temperature CSV from bronze/ to a staging location, run debug mode, and validate output.</div></div>
+    <blockquote>This flowchart shows the structure of an Azure Data Factory pipeline. A trigger initiates execution, the pipeline runs activities in dependency order with linked services and datasets defining connections and data references.</blockquote>
+    <div class="diagram-block"><img src="images/diagram-4.png" alt="Day 4 - ADF Pipeline Flowchart"></div>
+  </section>
+
+  <!-- ===== DAY 5 ===== -->
+  <section class="day-card" id="day-5">
+    <h2>Day 5: ADF Triggers, Variables &amp; Integration Runtimes</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Configure schedule and event-based triggers, parameterize pipelines with variables, and manage Integration Runtimes.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">ADF triggers automate pipeline execution through three mechanisms — Schedule triggers (clock-based intervals), Tumbling Window triggers (non-overlapping historical windows with retry and dependency support), and Event triggers (reactive execution on storage events such as blob creation). Parameterizing pipelines with variables allows a single pipeline definition to orchestrate ingestion across hundreds of different sources dynamically.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">Manual pipeline execution does not scale — production environments require automated, reliable scheduling that handles retries, backfills, and cross-pipeline dependencies. Parameterization prevents pipeline duplication by enabling a single template to handle multiple sources with different connection details and schedules.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">Variables are defined at the pipeline level and referenced using dynamic expressions (<code>@pipeline().parameters.paramName</code>). Tumbling Window triggers maintain strict time boundaries, automatically backfilling missed windows on recovery. Self-Hosted IRs are installed on premises to bridge hybrid network environments.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/data-factory/concepts-pipeline-execution-triggers" target="_blank">Official Documentation — ADF Pipelines and Triggers</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/adf-triggers-complete-guide" target="_blank">Medium — ADF Triggers Explained: Schedule, Tumbling Window, Event</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/parameterize-adf-pipelines" target="_blank">Azure Blog — Parameterizing ADF Pipelines for Reusability</a></p>
+
+    </div>
+    <div class="handson-block"><span class="field-label handson">Hands-on Activity</span><div class="field-content">Parameterize Pipeline and Add Tumbling Window Trigger — Learners take the Day 4 pipeline and add parameters for source file path and year filter, create a tumbling window trigger, integrate Key Vault for the storage account key, and test backfill execution.</div></div>
+    <blockquote>This flowchart illustrates how ADF triggers initiate pipeline execution. Schedule triggers run on clock intervals, Tumbling Window triggers maintain non-overlapping historical windows, and Event triggers react to storage blob creation.</blockquote>
+    <div class="diagram-block"><img src="images/diagram-5.png" alt="Day 5 - ADF Triggers Flowchart"></div>
+  </section>
+
+  <!-- ===== DAY 6 ===== -->
+  <section class="day-card" id="day-6">
+    <h2>Day 6: Pipeline Monitoring, Troubleshooting &amp; Batch Ingestion Patterns</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Monitor ADF pipeline runs, diagnose failures, and implement batch ingestion patterns for incremental and full loads.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">ADF Monitor hub provides a centralized view of all pipeline runs, activity runs, and trigger executions. Engineers diagnose failures by inspecting activity run logs, error messages, and input/output payloads. Incremental ingestion uses a watermark table — a control table that tracks the last successfully processed timestamp or ID — enabling pipelines to extract only new or changed records since the last run.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">Pipeline failures are inevitable in production — undiagnosed failures cascade data gaps into downstream reports and models. Incremental ingestion is a mandatory pattern at enterprise scale because full reloads become cost-prohibitive and time-out risk increases as datasets grow into terabytes.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">ADF Monitor shows status, duration, and row counts per activity. Alert rules fire on failure events, sending notifications to operations teams. Watermark tables store a single row with <code>last_processed_timestamp</code>; pipelines read this value, extract data where modified timestamps exceed it, and update the watermark on successful completion.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/data-factory/monitor-visually" target="_blank">Official Documentation — Monitor ADF Pipelines</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/adf-monitoring-alerting-guide" target="_blank">Medium — ADF Monitoring and Alerting Best Practices</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/incremental-load-patterns-adf" target="_blank">Azure Blog — Implementing Incremental Load Patterns in ADF</a></p>
+
+    </div>
+    <div class="handson-block"><span class="field-label handson">Hands-on Activity</span><div class="field-content">Create Failure Alert and Build Watermark Table — Learners set up email alerts on the Day 5 pipeline, intentionally introduce a failure, diagnose the error, implement a watermark table in ADLS, and modify the pipeline to read only new records.</div></div>
+    <blockquote>This concept map shows the three key areas of Day 6: monitoring via ADF Monitor hub and alert rules, troubleshooting through activity log analysis, and batch ingestion patterns.</blockquote>
+    <div class="diagram-block"><img src="images/diagram-6.png" alt="Day 6 - Monitoring and Ingestion Concept Map"></div>
+  </section>
+
+  <!-- ===== DAY 7 ===== -->
+  <section class="day-card" id="day-7">
+    <h2>Day 7: Azure Databricks Environments &amp; Cluster Configuration</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Set up an Azure Databricks workspace, configure clusters with auto-termination policies, and navigate the notebook environment.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">Azure Databricks provides a managed Apache Spark platform with two cluster types — Interactive clusters for ad-hoc development (higher cost, manually managed) and Job clusters for production execution (auto-provisioned, lower cost, terminate immediately after completion). Cluster costs are the largest variable expense in data pipelines, making FinOps configuration — auto-termination timers, Spot VM usage, and right-sizing — a critical engineering skill.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">Untracked Databricks clusters left running idle overnight generate enormous waste — a single interactive cluster running 24/7 can cost more than the entire storage layer per month. Engineers must embed cost governance into cluster configuration from the first notebook execution.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">Clusters are defined by Runtime version, node type, Spot vs on-demand VM selection, auto-scaling range, and auto-termination idle timeout. Interactive clusters mount ADLS Gen2 for data access. Job clusters are defined inside the scheduler, spinning up only for the script duration and shutting down automatically.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/databricks/introduction/" target="_blank">Official Documentation — Azure Databricks Architecture Guide</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/databricks-cluster-cost-optimization" target="_blank">Medium — Databricks Cluster Configuration for Cost Optimization</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/databricks-cluster-sizing-guide" target="_blank">Azure Blog — Best Practices for Databricks Cluster Sizing</a></p>
+
+    </div>
+    <div class="handson-block"><span class="field-label handson">Hands-on Activity</span><div class="field-content">Create Databricks Workspace and Mount ADLS — Learners provision a Databricks workspace, create an interactive cluster with 20-minute auto-termination and Spot VMs, mount ADLS Gen2 to DBFS using service principal credentials.</div></div>
+    <blockquote>This architecture diagram shows the Azure Databricks workspace structure with Interactive and Job cluster types, ADLS mount, and cost optimization strategies.</blockquote>
+    <div class="diagram-block"><img src="images/diagram-7.png" alt="Day 7 - Databricks Architecture Diagram"></div>
+  </section>
+
+  <!-- ===== DAY 8 ===== -->
+  <section class="day-card" id="day-8">
+    <h2>Day 8: PySpark Data Transformation with Delta Lake</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Write PySpark transformations using DataFrames and Delta Lake operations to read, clean, and write batch data.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">PySpark DataFrames operate on Spark's lazy evaluation engine, where transformations are compiled into an optimized execution plan by the Catalyst Optimizer before any data is read. Delta Lake adds a transaction log (<code>_delta_log</code> directory) over Parquet files, providing ACID transactions, time travel, and schema enforcement for data lake reliability.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">Raw data from ingestion pipelines is rarely query-ready — it contains nulls, inconsistent formats, duplicate records, and structural variations. Engineers must apply scalable, repeatable transformations that produce clean, reliable datasets while maintaining full auditability.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">A PySpark notebook reads source files from mounted ADLS into DataFrames, applies transformations, and writes results to Delta tables. The Delta transaction log records each write operation as a JSON entry, enabling time travel queries. Periodic <code>OPTIMIZE</code> compacts small files, <code>ZORDER BY</code> co-locates related column data, and <code>VACUUM</code> purges unreferenced file versions.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/databricks/delta/" target="_blank">Official Documentation — Delta Lake on Azure Databricks</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/pyspark-dataframe-cheat-sheet" target="_blank">Medium — PySpark DataFrame API Cheat Sheet for Beginners</a></p>
+      <p>📝 <a href="https://www.databricks.com/blog/2024/delta-lake-architecture-deep-dive" target="_blank">Databricks Blog — A Deep Dive into Delta Lake Architecture</a></p>
+
+    </div>
+    <div class="handson-block"><span class="field-label handson">Hands-on Activity</span><div class="field-content">Transform Temperature Data with PySpark and Delta Lake — Learners read raw CSV, clean null values, write to Bronze Delta, apply de-duplication and date formatting, write to Silver Delta, run OPTIMIZE and ZORDER BY, and verify time travel.</div></div>
+    <blockquote>This flowchart shows the PySpark data transformation pipeline using Delta Lake, from raw CSV through cleaning, transformation, Delta write, and maintenance operations.</blockquote>
+    <div class="diagram-block"><img src="images/diagram-8.png" alt="Day 8 - PySpark Delta Lake Flowchart"></div>
+  </section>
+
+  <!-- ===== DAY 9 ===== -->
+  <section class="day-card" id="day-9">
+    <h2>Day 9: Data Virtualization vs Physical Ingestion, Job Clusters &amp; Cost Optimization</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Compare data virtualization and physical ingestion strategies, and configure Databricks Job clusters for production pipelines.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">Data virtualization allows engineers to query remote data sources dynamically without copying data, reducing storage duplication at the cost of query performance. Physical ingestion copies source data into local Delta tables, increasing storage consumption but delivering maximum downstream query performance through local file access and indexing.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">The choice between virtualization and physical ingestion directly impacts pipeline latency and cost — virtualizing frequently accessed datasets leads to recurring compute costs, while ingesting datasets queried only once wastes storage.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">Spark reads external sources using format-specific connectors — this is virtualization. Physical ingestion materializes data into a managed Delta table via <code>df.write.format("delta").save(path)</code>. Job clusters execute notebooks on a schedule and automatically terminate, costing a fraction of interactive cluster time.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/databricks/jobs" target="_blank">Official Documentation — Databricks Jobs and Job Clusters</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/data-virtualization-vs-physical-ingestion" target="_blank">Medium — Data Virtualization vs Physical Ingestion in Azure</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/spot-vms-databricks-cost-reduction" target="_blank">Azure Blog — Reducing Databricks Costs with Spot VMs</a></p>
+
+    </div>
+    <div class="handson-block"><span class="field-label handson">Hands-on Activity</span><div class="field-content">Compare Virtualization vs Ingestion and Create Job Cluster — Learners query the raw CSV directly, compare to querying the Silver Delta table, document latency and cost difference, and create a Databricks Job that runs the notebook on a Job cluster.</div></div>
+    <blockquote>This comparison flowchart shows the two data access strategies — virtualization path and physical ingestion path — with cost and performance trade-offs.</blockquote>
+    <div class="diagram-block"><img src="images/diagram-9.png" alt="Day 9 - Virtualization vs Ingestion Comparison"></div>
+  </section>
+
+  <!-- ===== DAY 10 ===== -->
+  <section class="day-card" id="day-10">
+    <h2>Day 10: Synapse Analytics — Serverless SQL &amp; Data Virtualization</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Query data lakes using Synapse Serverless SQL and practice data virtualization without provisioning dedicated infrastructure.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">Synapse Serverless SQL pool executes standard T-SQL directly against files in ADLS Gen2 without requiring any provisioned servers. Using <code>OPENROWSET</code> with <code>BULK</code> paths, engineers write ANSI SQL against Parquet, CSV, and Delta files, paying only for data scanned (~$5.00 per TB). <code>CETAS</code> materializes query results into persistent Parquet files.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">Provisioned data warehouses are expensive and require capacity planning — for ad-hoc exploration, prototyping, and low-frequency reporting, serverless querying eliminates infrastructure costs entirely.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">A serverless SQL endpoint is created automatically with each Synapse workspace. Queries reference files by URI path using <code>OPENROWSET(BULK '...', FORMAT='PARQUET')</code>. External tables schematize file structures for standard SELECT queries. Performance scales with data scanned — filtering on partitioned columns reduces scanned bytes.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/on-demand-workspace-sql-sign-on" target="_blank">Official Documentation — Synapse Serverless SQL Pool Reference</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/synapse-serverless-sql-query-data-lake" target="_blank">Medium — Querying Data Lakes with Synapse Serverless SQL</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/serverless-vs-dedicated-sql-pools" target="_blank">Azure Blog — When to Use Serverless vs Dedicated SQL Pools</a></p>
+
+    </div>
+    <div class="handson-block"><span class="field-label handson">Hands-on Activity</span><div class="field-content">Query Silver Delta Table with Serverless SQL and Write Gold Aggregation — Learners create a Synapse workspace, write an OPENROWSET query against the Silver Delta table, aggregate by country and year, use CETAS to write Gold Parquet, and compare costs.</div></div>
+    <blockquote>This architecture diagram shows how Synapse Serverless SQL pool executes T-SQL queries directly against files in ADLS Gen2 without provisioned infrastructure, paying only for data scanned.</blockquote>
+    <div class="diagram-block"><img src="images/diagram-10.png" alt="Day 10 - Synapse Serverless Architecture"></div>
+  </section>
+
+  <!-- ===== DAY 11 ===== -->
+  <section class="day-card" id="day-11">
+    <h2>Day 11: Data Warehousing Design (Star Schema) &amp; Dedicated SQL Pools</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Design a star schema data warehouse and provision a Synapse Dedicated SQL pool with appropriate distribution strategies.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">Synapse Dedicated SQL pools use Massively Parallel Processing (MPP) architecture, distributing data across 60 compute nodes for parallel query execution. Table distribution strategies — Hash (shard fact tables on join keys), Round-Robin (even distribution for staging), and Replicated (full copies of small dimension tables on every node) — determine query performance.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">Poor distribution design is the leading cause of performance degradation — a hash-distributed fact table joined to a round-robin dimension table forces terabytes of data to shuffle across the network for every query.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">Engineers create fact tables with <code>DISTRIBUTION = HASH(join_key)</code> and dimension tables under 2 GB with <code>DISTRIBUTION = REPLICATE</code>. Pools are provisioned at specific DWU levels and can be paused during non-business hours to eliminate compute costs.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-overview" target="_blank">Official Documentation — Dedicated SQL Pool Table Design</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/star-schema-synapse-analytics" target="_blank">Medium — Star Schema Design Patterns in Synapse Analytics</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/synapse-distribution-strategies" target="_blank">Azure Blog — Choosing the Right Distribution Strategy in Synapse</a></p>
+
+    </div>
+    <div class="field"><span class="field-label">Hands-on Activity</span><div class="field-content"><em>Not applicable — theory day. Learners observe a star schema demo.</em></div></div>
+    <blockquote>This concept map shows the structure of a star schema within a Synapse Dedicated SQL pool with distribution strategies (Hash, Replicate, Round-Robin).</blockquote>
+    <div class="diagram-block"><img src="images/diagram-11.png" alt="Day 11 - Star Schema Concept Map"></div>
+  </section>
+
+  <!-- ===== DAY 12 ===== -->
+  <section class="day-card" id="day-12">
+    <h2>Day 12: Microsoft Fabric — OneLake, Notebooks &amp; Warehouse</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Navigate the Microsoft Fabric environment and compare its OneLake, Notebooks, and Warehouse capabilities with traditional Azure services.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">Microsoft Fabric is a unified SaaS data platform organized around OneLake — a single, multi-cloud data lake that allows warehouses, lakehouses, and real-time analytics engines to read the same underlying Delta Parquet data. Power BI's Direct Lake mode queries data directly from OneLake without importing or caching.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">Microsoft Fabric represents the strategic direction of Azure's data platform — organizations are increasingly adopting Fabric to reduce operational complexity. Engineers familiar with the traditional PaaS stack must understand how Fabric abstracts these components.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">Fabric organizes workspaces containing lakehouses (managed Delta tables with Spark compute), warehouses (T-SQL endpoints), notebooks (Spark environments), and data pipelines. All data resides in OneLake. Direct Lake mode reads Delta files directly into Power BI without any data copy or query translation.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/fabric/get-started/microsoft-fabric-overview" target="_blank">Official Documentation — Microsoft Fabric Overview</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/microsoft-fabric-overview-guide" target="_blank">Medium — Microsoft Fabric: The Future of Azure Data Engineering</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/fabric-direct-lake-mode" target="_blank">Azure Blog — Direct Lake Mode in Fabric and Power BI</a></p>
+
+    </div>
+    <div class="field"><span class="field-label">Hands-on Activity</span><div class="field-content"><em>Not applicable — theory day. Learners observe a Fabric workspace tour.</em></div></div>
+    <blockquote>This diagram shows Microsoft Fabric's unified SaaS architecture centered on OneLake, with connected services including Lakehouse, Warehouse, Notebooks, Pipelines, and Power BI via Direct Lake.</blockquote>
+    <div class="diagram-block"><img src="images/diagram-12.png" alt="Day 12 - Microsoft Fabric Architecture"></div>
+  </section>
+
+  <!-- ===== DAY 13 ===== -->
+  <section class="day-card" id="day-13">
+    <h2>Day 13: Security — Key Vault, RBAC, ACLs &amp; Private Endpoints</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Configure Azure Key Vault for secrets management, assign RBAC roles, and set up managed private endpoints for secure data access.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">Azure Key Vault isolates secrets from code files — services retrieve them at runtime using Managed Identities. RBAC governs control plane access, while Data Lake ACLs provide POSIX-compliant data plane permissions down to individual files. Managed Private Endpoints route traffic entirely through Azure's internal network.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">Hardcoded secrets are the most common source of data breaches — a single committed connection string exposes the entire data lake. Engineers must integrate security configuration from Day 1 of pipeline development.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">Key Vault stores secrets in an HSM-backed vault accessed via REST API. Managed Identities authenticate ADF and Databricks to Key Vault. RBAC roles are assigned at resource scope. ACLs are set via Azure CLI or Storage Browser for per-directory permissions.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/key-vault/general/overview" target="_blank">Official Documentation — Azure Key Vault Core Concepts</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/key-vault-managed-identities-data-pipelines" target="_blank">Medium — Securing Azure Data Pipelines with Key Vault and Managed Identities</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/rbac-vs-acls-adls-gen2" target="_blank">Azure Blog — RBAC vs ACLs: When to Use Which in ADLS Gen2</a></p>
+
+    </div>
+    <div class="handson-block"><span class="field-label handson">Hands-on Activity</span><div class="field-content">Secure the Pipeline with Key Vault and Managed Identity — Learners create a Key Vault, store the ADLS key as a secret, assign a Managed Identity to ADF, grant Key Vault access, and modify the Day 5 pipeline to retrieve the key from Key Vault.</div></div>
+    <blockquote>This concept map shows the four security layers in an Azure data pipeline: Key Vault (secrets), RBAC (control plane), ACLs (data plane), and Private Endpoints (network).</blockquote>
+    <div class="diagram-block"><img src="images/diagram-13.png" alt="Day 13 - Security Layers Concept Map"></div>
+  </section>
+
+  <!-- ===== DAY 14 ===== -->
+  <section class="day-card" id="day-14">
+    <h2>Day 14: Governance &amp; FinOps — Purview, Cost Management &amp; Budget Alerts</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Register data assets in Microsoft Purview, configure Azure Cost Management budgets, and apply cost optimization strategies.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">Microsoft Purview automatically scans data sources to build a searchable data catalog, classify sensitive columns, and track cross-pipeline data lineage. Azure Cost Management enforces tagging standards and budget thresholds that trigger alerts when spending approaches predefined limits.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">In regulated industries, auditors require proof of data lineage and access controls — Purview provides this automatically. A single untracked resource can silently exceed budget by thousands of dollars per month.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">Purview scans storage accounts, databases, and Power BI datasets to extract schema and classify sensitive data. Lineage is captured from ADF and Databricks activity logs. Cost Management evaluates tagged resources against budget thresholds, sending alerts at 50%, 90%, and 100% of the budget.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/quick-acm-cost-analysis" target="_blank">Official Documentation — Azure Cost Management and FinOps</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/finops-azure-data-guide" target="_blank">Medium — Implementing FinOps in Azure Data Environments</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/purview-data-governance-introduction" target="_blank">Azure Blog — Microsoft Purview: Data Governance for Azure</a></p>
+
+    </div>
+    <div class="handson-block"><span class="field-label handson">Hands-on Activity</span><div class="field-content">Tag Resources, Set Budget Alert, and Register in Purview — Learners tag all resources, create a $50 monthly budget alert, register ADLS in Purview, run a scan, and view the auto-generated lineage map.</div></div>
+    <blockquote>This flowchart shows the FinOps lifecycle for Azure data pipelines: Tag → Track (Cost Management) → Alert → Govern (Purview).</blockquote>
+    <div class="diagram-block"><img src="images/diagram-14.png" alt="Day 14 - FinOps Flowchart"></div>
+  </section>
+
+  <!-- ===== DAY 15 ===== -->
+  <section class="day-card" id="day-15">
+    <h2>Day 15: Capstone — End-to-End Serverless Data Pipeline Project</h2>
+    <div class="field"><span class="field-label obj">Learning Objective</span><div class="field-content">Build a complete serverless batch data pipeline using all services covered in the training, from ingestion through visualization.</div></div>
+    <div class="field"><span class="field-label core">Core Idea</span><div class="field-content">The capstone integrates every concept into a single pipeline that pulls the Berkeley Earth temperature dataset from source to dashboard. Learners apply the Medallion architecture, ADF orchestration, Databricks transformations with Delta Lake, Synapse Serverless SQL, and Power BI — all within a FinOps-optimized, security-hardened configuration.</div></div>
+    <div class="field"><span class="field-label why">Why It Matters</span><div class="field-content">Isolated skill exercises do not prepare engineers for the reality of enterprise data engineering, where services interact in complex chains and a failure in any single layer breaks the entire pipeline.</div></div>
+    <div class="field"><span class="field-label how">How It Works</span><div class="field-content">Learners start from the Day 2 storage account, reuse the Day 4-5 ADF pipeline, run the Day 8 notebook as a Day 9 Job cluster, query results with Day 10 Synapse Serverless, and load into Power BI Desktop. A final FinOps cost analysis reports total execution cost under $0.10.</div></div>
+    <div class="supplemental">
+      <p>📄 <a href="https://learn.microsoft.com/en-us/azure/architecture/data-guide/" target="_blank">Official Documentation — Azure Data Engineering End-to-End Architecture</a></p>
+      <p>📝 <a href="https://medium.com/microsoftazure/serverless-data-pipeline-azure" target="_blank">Medium — Building a Serverless Data Pipeline on Azure</a></p>
+      <p>📝 <a href="https://techcommunity.microsoft.com/blog/azuredata/end-to-end-data-pipeline-azure-power-bi" target="_blank">Azure Blog — End-to-End Data Engineering with Azure and Power BI</a></p>
+
+    </div>
+    <div class="handson-block"><span class="field-label handson">Hands-on Activity</span><div class="field-content">Complete End-to-End Pipeline with Cost Report — Learners execute the full pipeline, produce a Power BI dashboard, and submit a FinOps cost report.</div></div>
+  </section>
+
+  <footer>
+    <p>Version: v1.0 | Created: 2026-07-06 | Author: Technical Curriculum Designer</p>
+  </footer>
+
+  <div class="outro">
+    All module content is complete.
+  </div>
+
+</div>
+</body>
+</html>
