@@ -20,7 +20,7 @@
 | Target Audience | Junior data engineers with foundational data knowledge |
 | Knowledge Prerequisites | Medallion Architecture, ETL/ELT fundamentals, Apache Spark & SQL basics, cloud computing fundamentals |
 | Tools Needed | Azure subscription (trial or sandbox), ADLS Gen2, ADF, Azure Databricks, Synapse Analytics, Power BI Desktop, Azure Key Vault |
-| Dataset Reference | Berkeley Earth Global Temperature Anomalies — https://berkeleyearth.org/data/ (CC BY-NC 4.0) |
+| Dataset Reference | Climate Change Global Temperature Data — https://www.kaggle.com/datasets/sachinsarkar/climate-change-global-temperature-data (Kaggle, CC BY-NC 4.0) |
 | Total Duration | 15 days (120 hours) |
 
 ### Training Timeline

@@ -619,7 +619,7 @@ graph TD
 ```mermaid
 graph LR
     subgraph "Provision"
-        TAG["Tag Resources<br/>Environment:Training<br/>Project:WeatherPipeline"]
+        TAG["Tag Resources<br/>Environment:Training<br/>Project:ClimatePipeline"]
     end
 
     subgraph "Track"

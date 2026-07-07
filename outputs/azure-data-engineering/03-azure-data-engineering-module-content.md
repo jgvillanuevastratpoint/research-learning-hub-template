@@ -1,4 +1,4 @@
-#review: DRAFT
+#review: APPROVED
 ---
 tags:
   topic-slug: azure-data-engineering
@@ -8,7 +8,7 @@ tags:
   delivery-methods: [lecture, workshop, hands-on-lab, project]
   total-days: 15
   status: draft
-  dataset: Berkeley Earth Global Temperature Anomalies (https://berkeleyearth.org/data/)
+  dataset: Kaggle Climate Change Global Temperature Data (https://www.kaggle.com/datasets/sachinsarkar/climate-change-global-temperature-data)
 ---
 
 # Azure Data Engineering Training
@@ -28,7 +28,7 @@ tags:
 | **Knowledge Prerequisites** | Medallion Architecture, ETL/ELT fundamentals, Apache Spark & SQL basics, cloud computing fundamentals |
 | **Tools Needed** | Azure subscription (trial or sandbox), ADLS Gen2, Azure Data Factory, Azure Databricks, Synapse Analytics, Power BI Desktop, Azure Key Vault |
 | **Skill Domains** | Storage, Orchestration, Big Data Processing, Warehousing, Security, Governance, FinOps |
-| **Dataset Reference** | [Berkeley Earth Global Temperature Anomalies](https://berkeleyearth.org/data/) — CC BY-NC 4.0 |
+| **Dataset Reference** | [Climate Change Global Temperature Data](https://www.kaggle.com/datasets/sachinsarkar/climate-change-global-temperature-data) — Kaggle, derived from Berkeley Earth (CC BY-NC 4.0) |
 | **Total Duration** | 15 days / 120 hours |
 | **Suggested Pace** | 8 hours per day — mix of lecture, workshop, and hands-on lab |
 
@@ -77,8 +77,6 @@ gantt
 - **How It Works:** A batch data pipeline flows sequentially through storage (ADLS Gen2), orchestration (ADF), processing (Databricks or Synapse Spark), serving (Synapse SQL or Fabric), and visualization (Power BI). Cost-aware design principles — such as decoupling storage from compute and using serverless configurations — apply at every layer to minimize operational spend.
 - **Supplemental Reading:**
   - 📄 [Official Documentation — Azure Data Lake Storage Gen2 Introduction]: https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction
-  - 📝 [Medium — Azure Data Engineering: A Comprehensive Guide for 2026]: https://medium.com/microsoftazure/azure-data-engineering-comprehensive-guide
-  - 📝 [Microsoft Tech Community — Choosing the Right Azure Data Service]: https://techcommunity.microsoft.com/blog/azuredata/choosing-the-right-data-service-in-azure
 
 - **Hands-on Activity:** *(Not applicable — theory day.)*
 - **Visual Aid:** ✅ Yes — Architecture diagram showing the Azure data ecosystem: ADLS Gen2, ADF, Databricks, Synapse, Fabric, and Power BI with data flow arrows.
@@ -143,10 +141,7 @@ gantt
 - **How It Works:** Storage accounts with HNS enabled allow data to be organized in directory trees rather than flat blob key prefixes. Data moves automatically across Hot, Cool, and Archive tiers through lifecycle management policies triggered on age or modification timestamps. File formats such as Parquet (columnar, compressed) and Delta Lake (Parquet + transaction log) optimize storage for analytics workloads.
 - **Supplemental Reading:**
   - 📄 [Official Documentation — Blob Storage Lifecycle Management]: https://learn.microsoft.com/en-us/azure/storage/blobs/storage-lifecycle-management-concepts
-  - 📝 [Medium — ADLS Gen2 vs Blob Storage: When to Use Which]: https://medium.com/microsoftazure/adls-gen2-vs-blob-storage-comparison
-  - 📝 [Azure Blog — Introduction to Delta Lake on Azure]: https://techcommunity.microsoft.com/blog/azuredata/introduction-to-delta-lake-on-azure
-
-- **Hands-on Activity:** **Provision ADLS Gen2 and Stage Raw Data** — Learners create a storage account with HNS enabled, configure Hot → Cool lifecycle policies, upload the Berkeley Earth temperature CSV to a `bronze/` container, and inspect the HNS directory structure using Storage Browser. The output is a configured storage layer ready for the Day 3 hands-on.
+- **Hands-on Activity:** **Provision ADLS Gen2 and Stage Raw Data** — Learners create a storage account with HNS enabled, configure Hot → Cool lifecycle policies, upload the Kaggle climate temperature CSV (`GlobalTemperatures.csv`) to a `bronze/` container, and inspect the HNS directory structure using Storage Browser. The output is a configured storage layer ready for the Day 3 hands-on.
 - **Visual Aid:** ✅ Yes — Architecture diagram showing ADLS Gen2 hierarchy: Blob ↔ HNS, Hot/Cool/Archive tiers, lifecycle policy flow arrows.
 
   > This diagram shows the structure of an ADLS Gen2 storage account with Hierarchical Namespace enabled. Data is organized into directories and containers, with lifecycle policies automatically transitioning data across Hot, Cool, and Archive tiers. Supported file formats include CSV, Parquet, and Delta Lake (Parquet with a transaction log).
@@ -155,7 +150,7 @@ gantt
   graph TD
       subgraph "ADLS Gen2 Storage Account"
           HNS["Hierarchical Namespace (HNS)"]
-          CONTAINER["Container: jobmarket"]
+           CONTAINER["Container: climatedata"]
           CONTAINER --> DIR1["bronze/"]
           CONTAINER --> DIR2["silver/"]
           CONTAINER --> DIR3["gold/"]
@@ -196,11 +191,10 @@ gantt
 - **Why It Matters:** Unstructured data lakes with no partitioning strategy become unqueryable as they grow — every scan reads the entire dataset, driving up Synapse Serverless and Databricks costs linearly with data volume. Engineers who design partitioning and compaction plans upfront protect pipeline performance and keep query costs predictable.
 - **How It Works:** Data arrives in either batch (scheduled bulk transfers at regular intervals) or streaming (continuous event ingestion). For batch pipelines, directory structures follow `/{source}/{layer}/{key=value}/` conventions that allow downstream engines to prune partitions automatically. Compaction routines run as scheduled ADF pipelines or Databricks jobs, merging fragmented files into optimized Parquet blocks.
 - **Supplemental Reading:**
-  - 📄 [Official Documentation — Partitioning and Optimizing Data Lakes]: https://learn.microsoft.com/en-us/azure/databricks/delta/partitioning
-  - 📝 [Medium — Data Lake Partitioning Strategies for Azure]: https://medium.com/@krthiak/roadmap-to-become-data-engineer-of-azure-for-2026-6f4379c063f8
+  - 📄 [Official Documentation — Data Lake Storage Best Practices]: https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices
   - 📝 [The Small File Problem in Data Lakes]: https://alper-korukcu.medium.com/small-files-big-problems-the-silent-killer-of-data-lake-performance-a448db657c94
 
-- **Hands-on Activity:** **Design Partitioned Layout and Convert to Parquet** — Using the Day 2 storage account, learners design a Hive-partitioned directory structure under `silver/weather/year=*/country=*/`, copy a subset of temperature rows, and convert CSV to Parquet format using ADF Copy Activity. The output is a partitioned Silver layer ready for Day 4 pipeline orchestration.
+- **Hands-on Activity:** **Design Partitioned Layout and Convert to Parquet** — Using the Day 2 storage account, learners design a Hive-partitioned directory structure under `silver/climate/year=*/` using the `dt` column from `GlobalTemperatures.csv`, load a subset of the Kaggle dataset into the partitioned directory, and convert CSV to Parquet format using ADF Copy Activity. The output is a partitioned Silver layer ready for Day 4 pipeline orchestration.
 - **Visual Aid:** ✅ Yes — Flowchart showing data lake directory tree with Hive-style partition path and leaf files.
 
   > This flowchart shows the data lake directory design process, starting with the batch vs streaming decision. The batch path follows Hive-style partitioning (`source/layer/year=YYYY/month=MM/day=DD/`) and includes compaction logic to address the small file problem. The streaming path routes to event-based storage for continuous ingestion.
@@ -246,10 +240,10 @@ gantt
 - **How It Works:** A pipeline begins at a trigger, executes activities in dependency order, and logs each run to the ADF Monitor hub. The Copy activity moves data between a source and sink linked service, handling format conversion, schema mapping, and fault tolerance. Debug mode runs a pipeline on-demand without requiring a published trigger, enabling rapid iteration during development.
 - **Supplemental Reading:**
   - 📄 [Official Documentation — Azure Data Factory Introduction]: https://learn.microsoft.com/en-us/azure/data-factory/introduction
-  - 📝 [ADF Pipelines: A Beginner's Guide]: https://www.datacamp.com/tutorial/azure-data-factory
-  - 📝 [Best Practices for ADF Pipeline Design]: https://medium.com/optimizing-azure-data-factory-pipelines-best/optimizing-azure-data-factory-pipelines-best-practices-and-common-pitfalls-4ed706d825eb
+  - 📄 [Official Documentation — ADF Quickstart]: https://learn.microsoft.com/en-us/azure/data-factory/quickstart-create-data-factory-portal
+  - 📄 [Official Documentation — ADF Visual Authoring]: https://learn.microsoft.com/en-us/azure/data-factory/author-visually
 
-- **Hands-on Activity:** **Build ADF Pipeline for Bronze Ingestion** — Learners create an ADF instance, configure linked services pointing to the Day 2 storage account, build a Copy Data pipeline that moves the raw temperature CSV from `bronze/` to a staging location, run debug mode, and validate output in Storage Browser. The output is a reusable pipeline that feeds the Day 5 parameterization exercise.
+- **Hands-on Activity:** **Build ADF Pipeline for Bronze Ingestion** — Learners create an ADF instance, configure linked services pointing to the Day 2 storage account, build a Copy Data pipeline that moves the raw CSV from `bronze/` to a staging location, run debug mode, and validate output in Storage Browser. The output is a reusable pipeline that feeds the Day 5 parameterization exercise.
 - **Visual Aid:** ✅ Yes — Flowchart diagram showing ADF pipeline activity flow: Trigger → Copy Activity → Sink with dependency chains.
 
   > This flowchart shows the structure of an Azure Data Factory pipeline. A trigger initiates execution, the pipeline runs activities in dependency order with linked services and datasets defining connections and data references. Integration Runtimes handle connectivity, and each run is logged to the Monitor hub for debugging and validation.
@@ -299,8 +293,8 @@ gantt
 - **How It Works:** Variables are defined at the pipeline level and referenced using dynamic expressions (`@pipeline().parameters.paramName`). Tumbling Window triggers maintain strict time boundaries, automatically backfilling missed windows on recovery. Self-Hosted IRs are installed on premises to bridge hybrid network environments, connecting to databases that cannot be exposed to the public internet.
 - **Supplemental Reading:**
   - 📄 [Official Documentation — ADF Pipelines and Triggers]: https://learn.microsoft.com/en-us/azure/data-factory/concepts-pipeline-execution-triggers
-  - 📝 [ADF Triggers]: https://learn.microsoft.com/en-us/azure/data-factory/concepts-pipeline-execution-triggers
-  - 📝 [Parameterization in Azure Data Factory: Make Your Pipelines Smarter and Reusable]: https://medium.com/towards-data-engineering/parameterization-in-azure-data-factory-make-your-pipelines-smarter-and-reusable-aefde1265a13
+  - 📝 [Integration Runtime in Azure Data Factory]: https://learn.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime
+  - 📄 [Official Documentation — ADF Expression Functions]: https://learn.microsoft.com/en-us/azure/data-factory/how-to-expression-language-functions
 
 - **Hands-on Activity:** **Parameterize Pipeline and Add Tumbling Window Trigger** — Learners take the Day 4 pipeline and add parameters for source file path and year filter, create a tumbling window trigger that runs daily, integrate Key Vault for the storage account key (preview of Day 13), and test backfill execution. The output is a parameterized, scheduled pipeline that feeds the Day 6 monitoring exercise.
 - **Visual Aid:** ✅ Yes — Flowchart showing trigger-to-execution: Trigger → Pipeline → Parameterized Activities → Sink with dynamic expression callout.
@@ -353,9 +347,9 @@ gantt
 - **How It Works:** ADF Monitor shows status (Succeeded, Failed, In Progress, Cancelled), duration, and row counts per activity. Alert rules fire on failure events, sending email or webhook notifications to operations teams. Watermark tables store a single row with `last_processed_timestamp`; pipelines read this value, extract data where modified timestamps exceed it, and update the watermark on successful completion.
 - **Supplemental Reading:**
   - 📄 [Official Documentation — Monitor ADF Pipelines]: https://learn.microsoft.com/en-us/azure/data-factory/monitor-visually
-  - 📝 [mplementing Incremental Load Patterns in ADF]: https://medium.com/@amarficusoft/handling-incremental-data-loads-in-azure-data-factory-adf-a-comprehensive-guide-038c01b0a204
+  - 📄 [Official Documentation — Incremental Copy Tutorial]: https://learn.microsoft.com/en-us/azure/data-factory/tutorial-incremental-copy-portal
 
-- **Hands-on Activity:** **Create Failure Alert and Build Watermark Table** — Learners set up email alerts on the Day 5 pipeline, intentionally introduce a failure (wrong file path), diagnose the error in Monitor hub, then implement a watermark table in ADLS (stored as JSON) that tracks last processed date, and modify the pipeline to read only new records since the watermark timestamp. The output is a monitored, incremental-load pipeline feeding the Day 7 Databricks workspace.
+- **Hands-on Activity:** **Create Failure Alert and Build Watermark Table** — Learners set up email alerts on the Day 5 pipeline, intentionally introduce a failure (wrong file path), diagnose the error in Monitor hub, then implement a watermark table in ADLS (stored as JSON) that tracks last processed date, and modify the pipeline to read only new records since the watermark timestamp using the Kaggle dataset ingestion. The output is a monitored, incremental-load pipeline feeding the Day 7 Databricks workspace.
 - **Visual Aid:** ✅ Yes — Concept map showing batch ingestion patterns: full load, incremental load with watermark, upsert with merge.
 
   > This concept map shows the three key areas of Day 6 learning: monitoring via ADF Monitor hub and alert rules, troubleshooting through activity log analysis, and batch ingestion patterns including full load, incremental load with watermark tables, and upsert using Delta Lake merge operations.
@@ -408,7 +402,7 @@ gantt
 - **How It Works:** Clusters are defined by Databricks Runtime version, node type (memory-optimized or compute-optimized), Spot vs on-demand VM selection, auto-scaling range, and auto-termination idle timeout. Interactive clusters mount ADLS Gen2 via service principal credentials for data access. Job clusters are defined inside the Job scheduler, spinning up only for the script duration and shutting down automatically.
 - **Supplemental Reading:**
   - 📄 [Official Documentation — Azure Databricks Architecture Guide]: https://learn.microsoft.com/en-us/azure/databricks/introduction/
-  - 📝 [Databricks Cluster Configuration for Cost Optimization]: https://docs.databricks.com/aws/en/lakehouse-architecture/cost-optimization/
+  - 📝 [Databricks Cost Optimization on Azure]: https://learn.microsoft.com/en-us/azure/databricks/lakehouse-architecture/cost-optimization
 
 - **Hands-on Activity:** **Create Databricks Workspace and Mount ADLS** — Learners provision a Databricks workspace, create an interactive cluster with 20-minute auto-termination and Spot VMs, mount the Day 2 ADLS Gen2 account to DBFS using service principal credentials, and navigate the notebook interface. The output is a configured Databricks environment with mounted storage ready for the Day 8 PySpark exercise.
 - **Visual Aid:** ✅ Yes — Architecture diagram showing Databricks workspace layout: workspace → clusters (interactive vs job) → notebooks → ADLS mount.
@@ -467,7 +461,7 @@ gantt
 - **Supplemental Reading:**
   - 📄 [Official Documentation — Delta Lake on Azure Databricks]: https://learn.microsoft.com/en-us/azure/databricks/delta/
 
-- **Hands-on Activity:** **Transform Temperature Data with PySpark and Delta Lake** — Learners read the raw temperature CSV from the ADLS mount, clean null values, enforce schema, write to a Bronze Delta table, read Bronze and apply de-duplication and date formatting, write to a Silver Delta table, run `OPTIMIZE` and `ZORDER BY` on the Silver table, and verify time travel by querying table history. The output is a cleaned Silver Delta table that feeds the Day 9 virtualization comparison.
+ - **Hands-on Activity:** **Transform Climate Data with PySpark and Delta Lake** — Learners read the raw `GlobalTemperatures.csv` from the ADLS mount, clean null values and uncertainty columns, enforce schema, write to a Bronze Delta table, read Bronze and apply de-duplication and date formatting, write to a Silver Delta table partitioned by year, run `OPTIMIZE` and `ZORDER BY` on the Silver table, and verify time travel by querying table history. The output is a cleaned Silver Delta table that feeds the Day 9 virtualization comparison.
 - **Visual Aid:** ✅ Yes — Flowchart showing PySpark transformation pipeline: Read → Clean → Transform → Write Delta → Optimize → ZORDER.
 
   > This flowchart shows the PySpark data transformation pipeline using Delta Lake. Raw CSV data is read from Bronze, cleaned and transformed through DataFrame operations (filter, dropNulls, withColumn), then written to a Silver Delta table. The Delta transaction log enables time travel. Maintenance operations include OPTIMIZE for compaction, ZORDER BY for data co-location, and VACUUM for old version cleanup.
@@ -571,7 +565,7 @@ gantt
 - **Supplemental Reading:**
   - 📄 [Official Documentation — Synapse Serverless SQL Pool Reference]: https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/on-demand-workspace-overview
 
-- **Hands-on Activity:** **Query Silver Delta Table with Serverless SQL and Write Gold Aggregation** — Learners create a Synapse workspace, write an `OPENROWSET` query against the Silver Delta table from Day 8, aggregate average temperature by country and year, use `CETAS` to write the aggregation as a Gold Parquet file, and compare the cost of scanning the full table vs scanning only the Gold aggregated file. The output is a Gold layer dataset and a cost comparison report feeding Day 11.
+- **Hands-on Activity:** **Query Silver Delta Table with Serverless SQL and Write Gold Aggregation** — Learners create a Synapse workspace, write an `OPENROWSET` query against the Silver Delta table from Day 8, aggregate average temperature by year across the Kaggle dataset, use `CETAS` to write the aggregation as a Gold Parquet file, and compare the cost of scanning the full table vs scanning only the Gold aggregated file. The output is a Gold layer dataset and a cost comparison report feeding Day 11.
 - **Visual Aid:** ✅ Yes — Architecture diagram showing serverless query flow: Client → Synapse Serverless → ADLS/Delta query → returned results, with cost callout.
 
   > This architecture diagram shows how Synapse Serverless SQL pool executes T-SQL queries directly against files in ADLS Gen2 without provisioned infrastructure. Users connect via Synapse Studio or SSMS, write OPENROWSET queries against Parquet or Delta files, and pay only for data scanned (~$5.00/TB). CETAS materializes query results into persistent Parquet files in the Gold layer.
@@ -723,7 +717,7 @@ gantt
 - **Why It Matters:** Hardcoded secrets are the most common source of data breaches in cloud environments — a single committed connection string exposes the entire data lake. Engineers must integrate security configuration from Day 1 of pipeline development, not as a hardening step before production deployment.
 - **How It Works:** Key Vault stores secrets in an HSM-backed vault accessed via REST API. Services like ADF and Databricks authenticate to Key Vault using Managed Identities (Azure AD identities assigned to the resource itself). RBAC roles (Storage Blob Data Contributor, Contributor, Reader) are assigned at the resource group or resource scope. ACLs are set using Azure CLI or Storage Browser for fine-grained directory-level permissions. Managed Private Endpoints route traffic entirely through Azure's internal network, bypassing the public internet.
 - **Supplemental Reading:**
-  - 📄 [Official Documentation — Azure Key Vault Core Concepts]: https://learn.microsoft.com/en-us/azure/key-vault/general/overviewkey-vault-managed-identities-data-pipelines
+  - 📄 [Official Documentation — Azure Key Vault Core Concepts]: https://learn.microsoft.com/en-us/azure/key-vault/general/basic-concepts
   - 📝 [ RBAC vs ACLs]: https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control-model
 
 - **Hands-on Activity:** **Secure the Pipeline with Key Vault and Managed Identity** — Learners create a Key Vault, store the ADLS storage account key as a secret, assign a Managed Identity to the ADF instance, grant the identity Key Vault access, modify the Day 5 pipeline to retrieve the storage key from Key Vault instead of hardcoding, and verify the pipeline runs successfully. The output is a fully secured ADF pipeline that feeds the Day 14 governance exercise.
@@ -779,11 +773,11 @@ gantt
 - **Learning Objective:** Register data assets in Microsoft Purview, configure Azure Cost Management budgets, and apply cost optimization strategies.
 - **Core Idea:** Microsoft Purview automatically scans data sources to build a searchable data catalog, classify sensitive columns, and track cross-pipeline data lineage — showing which upstream sources and transformations produced a given dataset. Azure Cost Management enforces tagging standards and budget thresholds that trigger alerts or automated shutdowns when spending approaches predefined limits.
 - **Why It Matters:** In regulated industries, auditors require proof of data lineage, classification, and access controls — Purview provides this automatically. On the cost side, a single untracked resource can silently exceed budget by thousands of dollars per month. Engineers must embed both governance and cost visibility into their operational workflows.
-- **How It Works:** Purview registers data sources by scanning storage accounts, databases, and Power BI datasets, extracting schema metadata and sample data patterns to classify sensitive information (e.g., PII, financial data). Lineage is captured from ADF and Databricks activity logs. Cost Management evaluates tagged resources against budget thresholds, sending alert emails when spending reaches 50%, 90%, and 100% of the budget. Tags such as `Environment:Training`, `Project:WeatherPipeline` enable cost attribution per workload.
+- **How It Works:** Purview registers data sources by scanning storage accounts, databases, and Power BI datasets, extracting schema metadata and sample data patterns to classify sensitive information (e.g., PII, financial data). Lineage is captured from ADF and Databricks activity logs. Cost Management evaluates tagged resources against budget thresholds, sending alert emails when spending reaches 50%, 90%, and 100% of the budget. Tags such as `Environment:Training`, `Project:ClimatePipeline` enable cost attribution per workload.
 - **Supplemental Reading:**
   - 📄 [Official Documentation — Azure Cost Management and FinOps]: https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/quick-acm-cost-analysis
 
-- **Hands-on Activity:** **Tag Resources, Set Budget Alert, and Register in Purview** — Learners tag all provisioned resources with `Project:WeatherPipeline` and `Environment:Training`, create a $50 monthly budget alert in Cost Management, register the ADLS Gen2 and Dedicated SQL pool in Purview, run a scan, and view the auto-generated lineage map showing ADF → Databricks → Synapse data flow. The output is a tagged, budget-monitored, and cataloged environment ready for the Day 15 capstone.
+- **Hands-on Activity:** **Tag Resources, Set Budget Alert, and Register in Purview** — Learners tag all provisioned resources with `Project:ClimatePipeline` and `Environment:Training`, create a $50 monthly budget alert in Cost Management, register the ADLS Gen2 and Dedicated SQL pool in Purview, run a scan, and view the auto-generated lineage map showing ADF → Databricks → Synapse data flow across the Kaggle climate pipeline. The output is a tagged, budget-monitored, and cataloged environment ready for the Day 15 capstone.
 - **Visual Aid:** ✅ Yes — Flowchart showing FinOps lifecycle: Provision → Tag → Track (Cost Management) → Alert → Optimize, with budget threshold milestones.
 
   > This flowchart shows the FinOps lifecycle for Azure data pipelines. Resources are tagged with metadata (environment, project, owner) at provisioning time. Cost Management evaluates tagged resources against budget thresholds (50%, 90%, 100%), triggering alerts or automated actions. Purview scans data sources for classification and lineage, creating a searchable data catalog.
@@ -791,7 +785,7 @@ gantt
   ```mermaid
   graph LR
       subgraph "Provision"
-          TAG["Tag Resources<br/>Environment:Training<br/>Project:WeatherPipeline"]
+          TAG["Tag Resources<br/>Environment:Training<br/>Project:ClimatePipeline"]
       end
 
       subgraph "Track"
@@ -829,10 +823,26 @@ gantt
 
 #### Day 15: Capstone — End-to-End Serverless Data Pipeline Project
 
-- **Learning Objective:** Build a complete serverless batch data pipeline using all services covered in the training, from ingestion through visualization.
-- **Core Idea:** The capstone integrates every concept covered across all 14 days into a single pipeline that pulls the Berkeley Earth temperature dataset from source to dashboard. Learners apply the Medallion architecture (Bronze → Silver → Gold), ADF orchestration with triggers and monitoring, Databricks transformations with Delta Lake, Synapse Serverless SQL for gold aggregation, and Power BI for visualization — all within a FinOps-optimized, security-hardened configuration.
-- **Why It Matters:** Isolated skill exercises do not prepare engineers for the reality of enterprise data engineering, where services interact in complex chains and a failure in any single layer breaks the entire pipeline. The capstone validates that learners can operate across the full Azure data stack independently.
-- **How It Works:** Learners start from the Day 2 ADLS storage account, reuse the Day 4-5 ADF pipeline (already wired to Key Vault from Day 13), run the Day 8 Databricks notebook as a Day 9 Job cluster, query results with Day 10 Synapse Serverless, and load the Gold aggregated dataset into Power BI Desktop. A final FinOps cost analysis reports the total execution cost of the entire pipeline (< $0.10 expected).
+- **Learning Objective:** Assemble a complete serverless batch pipeline — from Kaggle source to Power BI dashboard — by integrating the ADLS, ADF, Databricks, Synapse, Key Vault, and Cost Management services configured across Days 2–14.
+- **Core Idea:** The capstone integrates every concept covered across all 14 days into a single pipeline that ingests the Kaggle Climate Change dataset (`GlobalTemperatures.csv`) through the Medallion architecture (Bronze → Silver → Gold), orchestrated by ADF and transformed in Databricks, served by Synapse Serverless SQL, and visualized in Power BI — all within a FinOps-optimized, security-hardened configuration.
+- **Why It Matters:** Isolated skill exercises do not prepare engineers for the reality of enterprise data engineering, where services interact in complex chains and a failure in any single layer breaks the entire pipeline. The capstone validates that learners can operate across the full Azure data stack independently, end to end.
+- **How It Works:** Learners start from the Day 2 ADLS storage account containing the raw Kaggle CSV, reuse the Day 4–5 ADF pipeline (already wired to Key Vault from Day 13) to ingest new data on a schedule, run the Day 8 Databricks transformation notebook as a Day 9 Job cluster, query the Silver Delta table with Day 10 Synapse Serverless SQL to produce Gold aggregated views, and load Gold into Power BI Desktop for a final line-chart dashboard of global temperature anomalies.
+
+##### Capstone Deliverables and Success Criteria
+
+The learner must submit the following four artefacts for evaluation:
+
+| # | Deliverable | Description | Success Criterion |
+|---|-------------|-------------|-------------------|
+| 1 | **ADF Pipeline Definition** | Exported ARM template or JSON of the pipeline containing the Copy activity, the Tumbling Window trigger, and the Key Vault-linked connection. | Pipeline runs without hardcoded secrets; trigger backfills at least one missed window on re-activation. |
+| 2 | **Databricks Notebook** | Exported `.ipynb` or `.html` of the PySpark notebook that reads the Bronze CSV, applies cleaning (null drop, date parsing), writes a Silver Delta table, runs `OPTIMIZE` and `ZORDER BY`, and verifies time travel. | Notebook executes against a Job cluster in under 10 minutes; Delta table history shows at least two versions. |
+| 3 | **Gold Aggregation Script** | Synapse Serverless SQL script (`.sql`) that uses `OPENROWSET` to query the Silver table and `CETAS` to write at least one aggregated Gold Parquet file (e.g., average temperature by decade). | Query completes in under 30 seconds scanning fewer than 1 GB; CETAS output is queryable from a second `OPENROWSET` call. |
+| 4 | **Power BI Dashboard** | `.pbix` file or screenshot showing a time-series line chart of the Gold aggregation with a title, axis labels, and a data point tooltip. | Chart renders correctly from the Gold Parquet source; date axis is continuous and properly sorted. |
+
+Additional expectations:
+- All provisioned resources carry the `Project:ClimatePipeline` and `Environment:Training` tags.
+- The total estimated execution cost of the end-to-end pipeline is reported (target: < $0.10).
+- Access to the storage account flows through managed identities — no storage account keys appear in connection strings.
 
 
 
