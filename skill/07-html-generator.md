@@ -47,7 +47,7 @@ Before generating the HTML, do the following:
 Generate the HTML following these specifications:
 
 ### File naming
-Save to: `outputs/[topic-slug]/03-[topic-slug]-module-content.html`
+Save to: `outputs/[topic-slug]/07-[topic-slug]-module-content.html`
 Images saved to: `outputs/[topic-slug]/images/`
 
 ### HTML structure (top-to-bottom order)
@@ -91,19 +91,17 @@ Images saved to: `outputs/[topic-slug]/images/`
       <thead>
         <tr>
           <th>#</th>
+          <th>Domain</th>
           <th>Topic</th>
-          <th>Skill Domain</th>
-          <th>Delivery Method</th>
-          <th>Suggested Pace</th>
+          <th>Delivery Format</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><a href="#day-1">Day 1</a></td>
-          <td>[Topic]</td>
           <td>[Domain]</td>
-          <td>[Method]</td>
-          <td>[Pace]</td>
+          <td>[Topic]</td>
+          <td>[Lecture / Workshop / Lab]</td>
         </tr>
         [...repeat for each day]
       </tbody>
@@ -136,13 +134,14 @@ Images saved to: `outputs/[topic-slug]/images/`
 
 ### CSS design requirements
 - System font stack (Segoe UI, system-ui, sans-serif)
-- Light gray background (#f5f7fa), white day cards with rounded corners and subtle shadow
+- Pure white background (#ffffff) to keep the page clean and bright
+- Off-white day cards (#f8fafc) with subtle rounded corners and soft border (#e2e8f0)
 - Dark blue gradient header (#1a365d → #2b6cb0) with white text
 - Fixed review status badge in top-right corner (green for APPROVED)
 - Color-coded field labels: blue (Objective), green (Core Idea), orange (Why), purple (How), amber (Hands-on)
 - Supplemental Reading in a light gray bordered box
 - Blockquotes with left blue accent border and light blue background
-- Mermaid diagrams rendered as PNG images in dark-themed containers
+- Mermaid diagrams rendered as PNG images in light-themed containers with white background — diagrams must use a light/neutral theme, not dark, so all text and lines are clearly readable
 - Responsive layout for mobile (<640px)
 
 ### Metadata card CSS
@@ -151,7 +150,7 @@ Images saved to: `outputs/[topic-slug]/images/`
 - Hidden HTML comment with tags for scraping
 
 ### Gantt image CSS
-- Dark-themed container similar to mermaid blocks
+- White/light container with a subtle border
 - Image at full width with `max-width: 100%; height: auto;`
 - "Training Timeline" label above the image
 
@@ -168,14 +167,17 @@ Images saved to: `outputs/[topic-slug]/images/`
 - Render to PNG using the mermaid.ink API (`https://mermaid.ink/img/{base64}`):
   - Base64 encode the diagram text (remove common leading whitespace)
   - Use URL-safe base64 (replace + with -, / with _, strip = padding)
+  - **Do NOT append `?theme=dark`** to the URL — use the default light theme so all text and lines are clearly readable on a white background
 - Save as `images/diagram-1.png` through `images/diagram-N.png` for content diagrams
 - Save Gantt chart as `images/gantt.png`
 - Replace mermaid code blocks in HTML with `<img src="images/diagram-N.png">`
 - Do NOT include the Mermaid.js CDN script — images are self-contained
 
 ### Table of Contents
-- Extract from the markdown: Day number, Topic, Skill Domain, Delivery Method, Suggested Pace
-- If the markdown has no domain/method/pace columns, generate the TOC with just "#" and "Topic" columns
+- Extract from the markdown: Day number, Domain, Topic, Delivery Format
+- Domain is the skill domain (e.g., Storage, Orchestration, Processing, Warehousing, Security, Governance, Capstone)
+- Delivery Format is how the day is delivered (e.g., Lecture + Demo, Workshop, Lecture + Workshop, Project)
+- If the markdown has no domain/format columns, generate the TOC with just "#" and "Topic" columns
 - Build an HTML `<table>` with `<thead>` and `<tbody>`
 - Each day number links to `#day-X`
 
@@ -203,7 +205,7 @@ Constraints:
 ---
 
 End with this exact summary:
-"HTML file generated at [filepath]. Images saved to [images path]. Open the HTML file in any browser to preview."
+"HTML file generated at outputs/[topic-slug]/07-[topic-slug]-module-content.html. Images saved to outputs/[topic-slug]/images/. Open the HTML file in any browser to preview."
 ```
 
 ---
@@ -251,6 +253,6 @@ outputs/glue-athena-airflow/03-glue-athena-airflow-module-content.md
 
 ---
 
-*Skill 7 of 7 — Research & Learning Hub*
+*Skill 7 of 9 — Research & Learning Hub*
 *Input comes from → Skill 3: Module Content Builder (#review: APPROVED)*
 *Output feeds into → Published deliverable (HTML format)*
