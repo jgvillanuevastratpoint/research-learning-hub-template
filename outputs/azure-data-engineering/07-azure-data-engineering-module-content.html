@@ -24,7 +24,8 @@
 
   .gantt-block { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 24px; text-align: center; }
   .gantt-label { color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
-  .gantt-block img { max-width: 100%; height: auto; border-radius: 6px; }
+  .gantt-block a { display: block; }
+  .gantt-block img { max-width: 100%; width: 100%; height: auto; border-radius: 6px; cursor: zoom-in; }
 
   .section-heading { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: #1a365d; }
   .toc-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin-bottom: 24px; }
@@ -52,8 +53,10 @@
   .reading-box .reading-item a { color: #2b6cb0; text-decoration: none; }
   .reading-box .reading-item a:hover { text-decoration: underline; }
 
-  .diagram-container { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 14px 0; text-align: center; }
-  .diagram-container img { max-width: 100%; height: auto; border-radius: 4px; }
+  .diagram-container { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; margin: 14px 0; text-align: center; }
+  .diagram-container a { display: block; }
+  .diagram-container img { width: 100%; height: auto; border-radius: 4px; cursor: zoom-in; }
+  .diagram-hint { font-size: 11px; color: #94a3b8; margin-top: 6px; }
 
   .visual-flag { background: #f8fafc; border-left: 3px solid #2b6cb0; padding: 8px 14px; font-size: 13px; color: #2c5282; margin: 10px 0; border-radius: 0 6px 6px 0; }
 
@@ -106,7 +109,7 @@
     </div>
     <div class="gantt-block">
       <div class="gantt-label">Training Timeline</div>
-      <img src="images/gantt.png" alt="Training timeline Gantt chart">
+      <a href="images/gantt.png" target="_blank"><img src="images/gantt.png" alt="Training timeline Gantt chart"></a>
     </div>
     <p class="section-heading">Table of Contents</p>
     <table class="toc-table">
@@ -140,7 +143,7 @@
       <div class="reading-box">
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction" target="_blank">Official Documentation — Azure Data Lake Storage Gen2 Introduction</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-1.png" alt="Diagram for Day 1"></div>
+      <div class="diagram-container"><a href="images/diagram-1.png" target="_blank"><img src="images/diagram-1.png" alt="Diagram for Day 1"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="visual-flag">✅ Yes — Architecture diagram showing the Azure data ecosystem: ADLS Gen2, ADF, Databricks, Synapse, Fabric, and Power BI with data flow arrows.</div>
     </section>
     <section class="day-card" id="day-2">
@@ -152,7 +155,7 @@
       <div class="reading-box">
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/storage-lifecycle-management-concepts" target="_blank">Official Documentation — Blob Storage Lifecycle Management</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-2.png" alt="Diagram for Day 2"></div>
+      <div class="diagram-container"><a href="images/diagram-2.png" target="_blank"><img src="images/diagram-2.png" alt="Diagram for Day 2"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="field"><div class="field-label hands-on">Hands-on Activity</div><div class="field-value">Provision ADLS Gen2 and Stage Raw Data — Learners create a storage account with HNS enabled, configure Hot → Cool lifecycle policies, upload the Kaggle climate temperature CSV (GlobalTemperatures.csv) to a bronze/ container, and inspect the HNS directory structure using Storage Browser. The output is a configured storage layer ready for the Day 3 hands-on.</div></div>
       <div class="visual-flag">✅ Yes — Architecture diagram showing ADLS Gen2 hierarchy: Blob ↔ HNS, Hot/Cool/Archive tiers, lifecycle policy flow arrows.</div>
     </section>
@@ -166,7 +169,7 @@
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices" target="_blank">Official Documentation — Data Lake Storage Best Practices</a></div>
         <div class="reading-item">📄 <a href="https://alper-korukcu.medium.com/small-files-big-problems-the-silent-killer-of-data-lake-performance-a448db657c94" target="_blank">The Small File Problem in Data Lakes</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-3.png" alt="Diagram for Day 3"></div>
+      <div class="diagram-container"><a href="images/diagram-3.png" target="_blank"><img src="images/diagram-3.png" alt="Diagram for Day 3"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="field"><div class="field-label hands-on">Hands-on Activity</div><div class="field-value">Design Partitioned Layout and Convert to Parquet — Using the Day 2 storage account, learners design a Hive-partitioned directory structure under silver/climate/year=*/ using the dt column from GlobalTemperatures.csv, load a subset of the Kaggle dataset into the partitioned directory, and convert CSV to Parquet format using ADF Copy Activity. The output is a partitioned Silver layer ready for Day 4 pipeline orchestration.</div></div>
       <div class="visual-flag">✅ Yes — Flowchart showing data lake directory tree with Hive-style partition path and leaf files.</div>
     </section>
@@ -181,7 +184,7 @@
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/data-factory/quickstart-create-data-factory-portal" target="_blank">Official Documentation — ADF Quickstart</a></div>
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/data-factory/author-visually" target="_blank">Official Documentation — ADF Visual Authoring</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-4.png" alt="Diagram for Day 4"></div>
+      <div class="diagram-container"><a href="images/diagram-4.png" target="_blank"><img src="images/diagram-4.png" alt="Diagram for Day 4"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="field"><div class="field-label hands-on">Hands-on Activity</div><div class="field-value">Build ADF Pipeline for Bronze Ingestion — Learners create an ADF instance, configure linked services pointing to the Day 2 storage account, build a Copy Data pipeline that moves the raw CSV from bronze/ to a staging location, run debug mode, and validate output in Storage Browser. The output is a reusable pipeline that feeds the Day 5 parameterization exercise.</div></div>
       <div class="visual-flag">✅ Yes — Flowchart diagram showing ADF pipeline activity flow: Trigger → Copy Activity → Sink with dependency chains.</div>
     </section>
@@ -196,7 +199,7 @@
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime" target="_blank">Integration Runtime in Azure Data Factory</a></div>
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/data-factory/how-to-expression-language-functions" target="_blank">Official Documentation — ADF Expression Functions</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-5.png" alt="Diagram for Day 5"></div>
+      <div class="diagram-container"><a href="images/diagram-5.png" target="_blank"><img src="images/diagram-5.png" alt="Diagram for Day 5"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="field"><div class="field-label hands-on">Hands-on Activity</div><div class="field-value">Parameterize Pipeline and Add Tumbling Window Trigger — Learners take the Day 4 pipeline and add parameters for source file path and year filter, create a tumbling window trigger that runs daily, integrate Key Vault for the storage account key (preview of Day 13), and test backfill execution. The output is a parameterized, scheduled pipeline that feeds the Day 6 monitoring exercise.</div></div>
       <div class="visual-flag">✅ Yes — Flowchart showing trigger-to-execution: Trigger → Pipeline → Parameterized Activities → Sink with dynamic expression callout.</div>
     </section>
@@ -210,6 +213,7 @@
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/data-factory/monitor-visually" target="_blank">Official Documentation — Monitor ADF Pipelines</a></div>
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/data-factory/tutorial-incremental-copy-portal" target="_blank">Official Documentation — Incremental Copy Tutorial</a></div>
       </div>
+      <div class="diagram-container"><a href="images/diagram-6.png" target="_blank"><img src="images/diagram-6.png" alt="Diagram for Day 6"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="field"><div class="field-label hands-on">Hands-on Activity</div><div class="field-value">Create Failure Alert and Build Watermark Table — Learners set up email alerts on the Day 5 pipeline, intentionally introduce a failure (wrong file path), diagnose the error in Monitor hub, then implement a watermark table in ADLS (stored as JSON) that tracks last processed date, and modify the pipeline to read only new records since the watermark timestamp using the Kaggle dataset ingestion. The output is a monitored, incremental-load pipeline feeding the Day 7 Databricks workspace.</div></div>
       <div class="visual-flag">✅ Yes — Concept map showing batch ingestion patterns: full load, incremental load with watermark, upsert with merge.</div>
     </section>
@@ -223,7 +227,7 @@
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/databricks/introduction/" target="_blank">Official Documentation — Azure Databricks Architecture Guide</a></div>
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/databricks/lakehouse-architecture/cost-optimization" target="_blank">Databricks Cost Optimization on Azure</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-7.png" alt="Diagram for Day 7"></div>
+      <div class="diagram-container"><a href="images/diagram-7.png" target="_blank"><img src="images/diagram-7.png" alt="Diagram for Day 7"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="field"><div class="field-label hands-on">Hands-on Activity</div><div class="field-value">Create Databricks Workspace and Mount ADLS — Learners provision a Databricks workspace, create an interactive cluster with 20-minute auto-termination and Spot VMs, mount the Day 2 ADLS Gen2 account to DBFS using service principal credentials, and navigate the notebook interface. The output is a configured Databricks environment with mounted storage ready for the Day 8 PySpark exercise.</div></div>
       <div class="visual-flag">✅ Yes — Architecture diagram showing Databricks workspace layout: workspace → clusters (interactive vs job) → notebooks → ADLS mount.</div>
     </section>
@@ -236,7 +240,7 @@
       <div class="reading-box">
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/databricks/delta/" target="_blank">Official Documentation — Delta Lake on Azure Databricks</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-8.png" alt="Diagram for Day 8"></div>
+      <div class="diagram-container"><a href="images/diagram-8.png" target="_blank"><img src="images/diagram-8.png" alt="Diagram for Day 8"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="field"><div class="field-label hands-on">Hands-on Activity</div><div class="field-value">Transform Climate Data with PySpark and Delta Lake — Learners read the raw GlobalTemperatures.csv from the ADLS mount, clean null values and uncertainty columns, enforce schema, write to a Bronze Delta table, read Bronze and apply de-duplication and date formatting, write to a Silver Delta table partitioned by year, run OPTIMIZE and ZORDER BY on the Silver table, and verify time travel by querying table history. The output is a cleaned Silver Delta table that feeds the Day 9 virtualization comparison.</div></div>
       <div class="visual-flag">✅ Yes — Flowchart showing PySpark transformation pipeline: Read → Clean → Transform → Write Delta → Optimize → ZORDER.</div>
     </section>
@@ -250,7 +254,7 @@
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/databricks/jobs" target="_blank">Official Documentation — Databricks Jobs and Job Clusters</a></div>
         <div class="reading-item">📄 <a href="https://accelario.com/blog/virtual-database-vs-physical-database-a-detailed-analysis/" target="_blank">Data Virtualization vs Physical Ingestion</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-9.png" alt="Diagram for Day 9"></div>
+      <div class="diagram-container"><a href="images/diagram-9.png" target="_blank"><img src="images/diagram-9.png" alt="Diagram for Day 9"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="field"><div class="field-label hands-on">Hands-on Activity</div><div class="field-value">Compare Virtualization vs Ingestion and Create Job Cluster — Learners query the raw CSV directly (virtualization) and time the execution, compare it to querying the Day 8 Silver Delta table (physical ingestion), document the latency and cost difference using estimated DBU consumption, then create a Databricks Job that runs the Day 8 notebook on a Job cluster. The output is a cost comparison report and a scheduled Job that feeds the Day 10 Synapse exercise.</div></div>
       <div class="visual-flag">✅ Yes — Comparison diagram: virtualization path (query external source directly, no storage copy) vs physical ingestion path (copy to Delta, local query) with cost and performance trade-offs.</div>
     </section>
@@ -263,7 +267,7 @@
       <div class="reading-box">
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/synapse-analytics/sql/on-demand-workspace-overview" target="_blank">Official Documentation — Synapse Serverless SQL Pool Reference</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-10.png" alt="Diagram for Day 10"></div>
+      <div class="diagram-container"><a href="images/diagram-10.png" target="_blank"><img src="images/diagram-10.png" alt="Diagram for Day 10"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="field"><div class="field-label hands-on">Hands-on Activity</div><div class="field-value">Query Silver Delta Table with Serverless SQL and Write Gold Aggregation — Learners create a Synapse workspace, write an OPENROWSET query against the Silver Delta table from Day 8, aggregate average temperature by year across the Kaggle dataset, use CETAS to write the aggregation as a Gold Parquet file, and compare the cost of scanning the full table vs scanning only the Gold aggregated file. The output is a Gold layer dataset and a cost comparison report feeding Day 11.</div></div>
       <div class="visual-flag">✅ Yes — Architecture diagram showing serverless query flow: Client → Synapse Serverless → ADLS/Delta query → returned results, with cost callout.</div>
     </section>
@@ -276,7 +280,7 @@
       <div class="reading-box">
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-tables-overview" target="_blank">Official Documentation — Dedicated SQL Pool Table Design</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-11.png" alt="Diagram for Day 11"></div>
+      <div class="diagram-container"><a href="images/diagram-11.png" target="_blank"><img src="images/diagram-11.png" alt="Diagram for Day 11"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="visual-flag">✅ Yes — Concept map showing star schema structure: central fact table connected to dimension tables with distribution annotations (Hash, Replicate, Round-Robin).</div>
     </section>
     <section class="day-card" id="day-12">
@@ -288,7 +292,7 @@
       <div class="reading-box">
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/fabric/get-started/microsoft-fabric-overview" target="_blank">Official Documentation — Microsoft Fabric Overview</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-12.png" alt="Diagram for Day 12"></div>
+      <div class="diagram-container"><a href="images/diagram-12.png" target="_blank"><img src="images/diagram-12.png" alt="Diagram for Day 12"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="visual-flag">✅ Yes — Architecture diagram showing Fabric services: OneLake at center, surrounded by Lakehouse, Warehouse, Notebooks, Pipelines, and Power BI with Direct Lake arrows.</div>
     </section>
     <section class="day-card" id="day-13">
@@ -301,7 +305,7 @@
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/key-vault/general/basic-concepts" target="_blank">Official Documentation — Azure Key Vault Core Concepts</a></div>
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control-model" target="_blank"> RBAC vs ACLs</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-13.png" alt="Diagram for Day 13"></div>
+      <div class="diagram-container"><a href="images/diagram-13.png" target="_blank"><img src="images/diagram-13.png" alt="Diagram for Day 13"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="field"><div class="field-label hands-on">Hands-on Activity</div><div class="field-value">Secure the Pipeline with Key Vault and Managed Identity — Learners create a Key Vault, store the ADLS storage account key as a secret, assign a Managed Identity to the ADF instance, grant the identity Key Vault access, modify the Day 5 pipeline to retrieve the storage key from Key Vault instead of hardcoding, and verify the pipeline runs successfully. The output is a fully secured ADF pipeline that feeds the Day 14 governance exercise.</div></div>
       <div class="visual-flag">✅ Yes — Concept map showing security layers: Key Vault (secrets) → RBAC (control plane) → ACLs (data plane) → Private Endpoints (network) with service icons.</div>
     </section>
@@ -314,7 +318,7 @@
       <div class="reading-box">
         <div class="reading-item">📄 <a href="https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/quick-acm-cost-analysis" target="_blank">Official Documentation — Azure Cost Management and FinOps</a></div>
       </div>
-      <div class="diagram-container"><img src="images/diagram-14.png" alt="Diagram for Day 14"></div>
+      <div class="diagram-container"><a href="images/diagram-14.png" target="_blank"><img src="images/diagram-14.png" alt="Diagram for Day 14"></a><div class="diagram-hint">Click diagram to open full size</div></div>
       <div class="field"><div class="field-label hands-on">Hands-on Activity</div><div class="field-value">Tag Resources, Set Budget Alert, and Register in Purview — Learners tag all provisioned resources with Project:ClimatePipeline and Environment:Training, create a $50 monthly budget alert in Cost Management, register the ADLS Gen2 and Dedicated SQL pool in Purview, run a scan, and view the auto-generated lineage map showing ADF → Databricks → Synapse data flow across the Kaggle climate pipeline. The output is a tagged, budget-monitored, and cataloged environment ready for the Day 15 capstone.</div></div>
       <div class="visual-flag">✅ Yes — Flowchart showing FinOps lifecycle: Provision → Tag → Track (Cost Management) → Alert → Optimize, with budget threshold milestones.</div>
     </section>
@@ -325,6 +329,14 @@
       <div class="field"><div class="field-label why">Why It Matters</div><div class="field-value">Isolated skill exercises do not prepare engineers for the reality of enterprise data engineering, where services interact in complex chains and a failure in any single layer breaks the entire pipeline. The capstone validates that learners can operate across the full Azure data stack independently, end to end.</div></div>
       <div class="field"><div class="field-label how">How It Works</div><div class="field-value">Learners start from the Day 2 ADLS storage account containing the raw Kaggle CSV, reuse the Day 4–5 ADF pipeline (already wired to Key Vault from Day 13) to ingest new data on a schedule, run the Day 8 Databricks transformation notebook as a Day 9 Job cluster, query the Silver Delta table with Day 10 Synapse Serverless SQL to produce Gold aggregated views, and load Gold into Power BI Desktop for a final line-chart dashboard of global temperature anomalies.</div></div>
     </section>
+    <div class="related-docs">
+      <h3>Related Documents</h3>
+      <table><thead><tr><th>Document</th><th>Location</th></tr></thead><tbody>
+        <tr><td><strong>Published HTML</strong></td><td><code>outputs/azure-data-engineering/07-azure-data-engineering-module-content.html — generated by Skill 7</code></td></tr>
+        <tr><td><strong>Capstone Project Brief</strong></td><td><code>outputs/azure-data-engineering/08-azure-data-engineering-capstone.md — generated by Skill 8</code></td></tr>
+        <tr><td><strong>Hands-On Activities</strong></td><td><code>outputs/azure-data-engineering/09-azure-data-engineering-hands-on-activities.md — generated by Skill 9</code></td></tr>
+      </tbody></table>
+    </div>
     <footer>
       <p>Version: v1.0 | Date: 2026-07-06 | Author: Technical Curriculum Designer</p>
     </footer>
