@@ -67,6 +67,13 @@
   .related-docs td { padding: 6px 10px; border-bottom: 1px solid #f1f5f9; }
   .related-docs code { background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
 
+  .quiz-section { background: #f8fafc; border-radius: 12px; padding: 28px; margin-bottom: 20px; border: 1px solid #e2e8f0; border-left: 4px solid #d69e2e; }
+  .quiz-section h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #1a365d; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+  .quiz-section ol { padding-left: 24px; }
+  .quiz-section li { margin-bottom: 16px; font-size: 14px; color: #2d3748; line-height: 1.5; }
+  .quiz-section li ol { margin-top: 6px; list-style-type: upper-alpha; padding-left: 24px; }
+  .quiz-section li ol li { margin-bottom: 4px; font-size: 13px; }
+
   footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 13px; margin-top: 12px; }
   .outro { text-align: center; padding: 16px; color: #64748b; font-size: 14px; font-style: italic; }
 
@@ -328,6 +335,71 @@
       <div class="field"><div class="field-label core">Core Idea</div><div class="field-value">The capstone integrates every concept covered across all 14 days into a single pipeline that ingests the Kaggle Climate Change dataset (GlobalTemperatures.csv) through the Medallion architecture (Bronze → Silver → Gold), orchestrated by ADF and transformed in Databricks, served by Synapse Serverless SQL, and visualized in Power BI — all within a FinOps-optimized, security-hardened configuration.</div></div>
       <div class="field"><div class="field-label why">Why It Matters</div><div class="field-value">Isolated skill exercises do not prepare engineers for the reality of enterprise data engineering, where services interact in complex chains and a failure in any single layer breaks the entire pipeline. The capstone validates that learners can operate across the full Azure data stack independently, end to end.</div></div>
       <div class="field"><div class="field-label how">How It Works</div><div class="field-value">Learners start from the Day 2 ADLS storage account containing the raw Kaggle CSV, reuse the Day 4–5 ADF pipeline (already wired to Key Vault from Day 13) to ingest new data on a schedule, run the Day 8 Databricks transformation notebook as a Day 9 Job cluster, query the Silver Delta table with Day 10 Synapse Serverless SQL to produce Gold aggregated views, and load Gold into Power BI Desktop for a final line-chart dashboard of global temperature anomalies.</div></div>
+    </section>
+    <section class="quiz-section">
+      <h2>Quiz</h2>
+      <ol>
+      <li>What feature converts standard Azure Blob Storage into ADLS Gen2 and enables true file system directory operations?<ol style="list-style-type: upper-alpha">
+          <li>Lifecycle management policies</li>
+          <li>Hierarchical Namespace (HNS)</li>
+          <li>Geo-redundant storage replication</li>
+          <li>Soft delete for blob containers</li>
+        </ol></li>
+      <li>An ADF pipeline needs to run every hour on a strict non-overlapping schedule with built-in retry for missed intervals. Which trigger type should be used?<ol style="list-style-type: upper-alpha">
+          <li>Schedule trigger</li>
+          <li>Event trigger</li>
+          <li>Tumbling Window trigger</li>
+          <li>Webhook trigger</li>
+        </ol></li>
+      <li>Which Delta Lake maintenance command reorganizes small fragmented files into larger optimized blocks to improve query performance?<ol style="list-style-type: upper-alpha">
+          <li>VACUUM</li>
+          <li>ZORDER BY</li>
+          <li>MERGE</li>
+          <li>OPTIMIZE</li>
+        </ol></li>
+      <li>How does Synapse Serverless SQL pool charge users for query execution?<ol style="list-style-type: upper-alpha">
+          <li>A flat hourly rate based on provisioned DWUs</li>
+          <li>Per Gigabyte of data scanned during query execution</li>
+          <li>Per number of concurrent users connected to the endpoint</li>
+          <li>A fixed monthly cost per storage account registered</li>
+        </ol></li>
+      <li>What Azure AD feature allows services such as ADF and Databricks to authenticate to Key Vault without storing credentials directly in code?<ol style="list-style-type: upper-alpha">
+          <li>Service Principal</li>
+          <li>Managed Identity</li>
+          <li>Shared Access Signature</li>
+          <li>Connection String</li>
+        </ol></li>
+      <li>What is the primary advantage of decoupling storage from compute in Azure data architectures?<ol style="list-style-type: upper-alpha">
+          <li>Data can only be accessed through a single compute engine</li>
+          <li>Storage and compute can be scaled independently, reducing costs during idle periods</li>
+          <li>Compute resources automatically provision storage when needed</li>
+          <li>Data is encrypted twice for enhanced security</li>
+        </ol></li>
+      <li>In incremental data ingestion, what is the purpose of a watermark table?<ol style="list-style-type: upper-alpha">
+          <li>To compress data files before storage</li>
+          <li>To track the last successfully processed timestamp or record identifier</li>
+          <li>To watermark files with ownership metadata for governance</li>
+          <li>To transform row-based data into columnar format</li>
+        </ol></li>
+      <li>Which type of Databricks cluster is recommended for production ETL workloads to minimize cost?<ol style="list-style-type: upper-alpha">
+          <li>Interactive cluster with auto-termination</li>
+          <li>High-Concurrency cluster</li>
+          <li>Job cluster</li>
+          <li>Single-Node cluster</li>
+        </ol></li>
+      <li>Which table distribution strategy in Synapse Dedicated SQL is best suited for small dimension tables under 2 GB?<ol style="list-style-type: upper-alpha">
+          <li>Hash distribution</li>
+          <li>Round-Robin distribution</li>
+          <li>Replicated distribution</li>
+          <li>Range distribution</li>
+        </ol></li>
+      <li>What is the first action engineers should take when provisioning resources to enable cost attribution in Azure Cost Management?<ol style="list-style-type: upper-alpha">
+          <li>Set up budget alerts at 50% and 90% thresholds</li>
+          <li>Assign metadata tags such as environment and project to each resource</li>
+          <li>Enable diagnostic logging on all storage accounts</li>
+          <li>Register all resources in Microsoft Purview</li>
+        </ol></li>
+      </ol>
     </section>
     <div class="related-docs">
       <h3>Related Documents</h3>

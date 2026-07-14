@@ -42,6 +42,11 @@ Before generating the HTML, do the following:
    - If diagrams exist, use them for image generation
    - If no diagrams file exists, extract mermaid code blocks from the module content itself
 
+3. Locate and read the Skill 5 quiz file at `outputs/[topic-slug]/05-[topic-slug]-quiz.md`:
+   - Extract **only the questions section** — everything from the start of the file up to (but not including) the `### ANSWER KEY` heading
+   - Discard the answer key entirely — it must never appear in the student-facing HTML
+   - Store the extracted questions to be included as a `## Quiz` section in the HTML output
+
 ---
 
 Generate the HTML following these specifications:
@@ -118,6 +123,12 @@ Images saved to: `outputs/[topic-slug]/images/`
     </section>
     [...repeat for each day]
 
+    <!-- QUIZ SECTION (from Skill 5, questions only) -->
+    <section class="quiz-section">
+      <h2>Quiz</h2>
+      [Quiz questions extracted from 05-*-quiz.md — numbered list, no answer key]
+    </section>
+
     <!-- RELATED DOCUMENTS -->
     <div class="related-docs">
       <h3>Related Documents</h3>
@@ -193,6 +204,13 @@ Images saved to: `outputs/[topic-slug]/images/`
 - Replace mermaid code blocks in HTML with `<a href="images/diagram-N.png" target="_blank"><img src="images/diagram-N.png" alt="Diagram for Day X"></a>` — diagram fills card width, clicking opens full size
 - Do NOT include the Mermaid.js CDN script — images are self-contained
 
+### Quiz section styling
+- Quiz container uses the same card style as day cards but with an amber left border (`#d69e2e`) and off-white background
+- Questions are rendered as a numbered `<ol>` list
+- Answer choices appear as a nested `<ol>` with `list-style-type: upper-alpha` below each question
+- No answer key or correct-answer indicators are ever shown — this is a student-facing document
+- Font size: 14px for questions, 13px for answer choices
+
 ### Table of Contents
 - Extract from the markdown: Day number, Domain, Topic, Delivery Format
 - Domain is the skill domain (e.g., Storage, Orchestration, Processing, Warehousing, Security, Governance, Capstone)
@@ -221,6 +239,8 @@ Constraints:
 - The metadata card must include both the visible table and a hidden HTML comment with tags
 - The Gantt chart image must be placed between the metadata card and the TOC table
 - The TOC must be a proper HTML table with thead/tbody, not a bullet list or div grid
+- The quiz section must contain **only the questions** — no answer key, no correct-answer indicators, no hints
+- If the quiz file cannot be found, skip the quiz section entirely (do not generate an empty placeholder)
 
 ---
 
