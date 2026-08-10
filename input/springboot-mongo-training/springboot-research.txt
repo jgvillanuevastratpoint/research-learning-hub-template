@@ -1,0 +1,471 @@
+Part 1: Extracted Training Plan (Spring Boot + MongoDB + Kafka)
+We have condensed the original 6-week enterprise syllabus into a hyper-focused curriculum. By cutting out non-essential services, we focus strictly on User, Wallet, and Transaction processing.
++---------------------------------------------------------------------------------------------+
+|                                 REFINED TRAINING TIMELINE                                   |
++----------+----------------------------------------------------------------------------------+
+| Week 1   | Dev Environment (Docker Compose), Domain Design, MongoDB Polymorphic Schemas     |
++----------+----------------------------------------------------------------------------------+
+| Week 2   | Sync API & MongoTemplate (Wallet Deposits/Withdrawals & ACID Transactions)       |
++----------+----------------------------------------------------------------------------------+
+| Week 3   | Async Broker (Kafka Cluster, JSON Serialization, Producer/Consumer Patterns)     |
++----------+----------------------------------------------------------------------------------+
+| Week 4   | Event-Driven Engine (Simulated Banking Loop, Outbox Pattern, Eventual Consistency)|
++----------+----------------------------------------------------------------------------------+
+| Week 5   | Aggregations & Analytical Inquiries (MongoDB pipelines for dashboards)           |
++----------+----------------------------------------------------------------------------------+
+| Week 6   | Resiliency & Local Chaos Testing (Simulating network drops and schema changes)   |
++----------+----------------------------------------------------------------------------------+
+
+Part 2: The Architecture Design with the Simulator
+The core engine of this setup is the Bank Simulator Engine. Instead of relying on manual Postman calls, we build a scheduler inside Spring Boot that acts as millions of simulated users making transfers.
+                                     +---------------------------------------------+
+                                      |             Bank Simulator Engine           |
+                                      |  (Spring Scheduler generating transactions) |
+                                      +---------------------------------------------+
+                                                             |
+                                                     Publishes events
+                                                             |
+                                                             v
+                                                      [ Kafka Broker ]
+                                               (Topic: "transaction-events")
+                                                             |
+                                                    Consumed asynchronously
+                                                             v
+                                            +---------------------------------+
+                                            |   Transaction & Wallet Service  |
+                                            |      (Spring Boot MVC + Web)    |
+                                            +---------------------------------+
+                                                             |
+                                                  Persists state & balances
+                                                             v
+                                                   [ MongoDB Replica Set ]
+                                               (Collections: Wallets, Txns)
+
+Part 3: Hands-On Code: The Dockerized Banking Sandbox
+To run this entirely on your machine with a single command, use this configuration.
+1. The Infrastructure (docker-compose.yml)
+This orchestrates MongoDB (single-node replica set for database transaction support), Kafka, Zookeeper, and UI monitoring tools.
+YAML
+version: '3.8'
+services:
+  # MongoDB Replica Set (Necessary for ACID Transactions in Mongo)
+  mongodb:
+    image: mongo:7.0
+    container_name: bank_mongo
+    ports:
+      - "27017:27017"
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    entrypoint: [
+      "/bin/sh", "-c",
+      "mongod --replSet rs0 --bind_ip_all & MONGOD_PID=$$!; sleep 4; mongosh --eval 'rs.initiate({_id:\"rs0\",members:[{_id:0,host:\"localhost:27017\"}]})'; wait $$MONGOD_PID"
+    ]
+
+  # Kafka Infrastructure
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: bank_zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: bank_kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+2. Spring Boot Implementation: The Banking Simulator
+
+https://www.openbankproject.com/solutions/sandbox/ ?? can we use this instead
+
+This service runs on a scheduled loop, randomly picking users, generating financial transaction amounts, and piping them straight into Kafka.
+The Transaction Event Data Model (POJO)
+Java
+package com.wallet.simulator.dto;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+
+public record TransactionEvent(
+    String transactionId,
+    String senderWalletId,
+    String receiverWalletId,
+    BigDecimal amount,
+    String currency,
+    Instant timestamp
+) {}
+
+The Automated Simulation Loop
+Using Spring's @Scheduled, we trigger synthetic transactions every 2 seconds.
+Java
+package com.wallet.simulator.service;
+
+import com.wallet.simulator.dto.TransactionEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
+@Service
+public class BankingSimulatorService {
+
+    private static final Logger log = LoggerFactory.getLogger(BankingSimulatorService.class);
+    private final KafkaTemplate<String, TransactionEvent> kafkaTemplate;
+    private final Random random = new Random();
+
+    // Mocking active wallet IDs in our ecosystem
+    private final List<String> mockWalletIds = List.of(
+        "wallet-user-001", "wallet-user-002", "wallet-user-003", "wallet-user-004"
+    );
+
+    public BankingSimulatorService(KafkaTemplate<String, TransactionEvent> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
+
+    @Scheduled(fixedRate = 2000) // Fires a simulated payment event every 2 seconds
+    public void generateSimulatedTransaction() {
+        String sender = mockWalletIds.get(random.nextInt(mockWalletIds.size()));
+        String receiver;
+        do {
+            receiver = mockWalletIds.get(random.nextInt(mockWalletIds.size()));
+        } while (sender.equals(receiver)); // Ensure sender isn't receiver
+
+        BigDecimal randomAmount = BigDecimal.valueOf(10 + (1000 - 10) * random.nextDouble())
+                                             .setScale(2, BigDecimal.ROUND_HALF_UP);
+
+        TransactionEvent event = new TransactionEvent(
+            UUID.randomUUID().toString(),
+            sender,
+            receiver,
+            randomAmount,
+            "USD",
+            Instant.now()
+        );
+
+        log.info("Simulator generated event: {} sends ${} to {}", sender, randomAmount, receiver);
+        
+        // Push payload to Kafka topic
+        kafkaTemplate.send("transaction-events", event.transactionId(), event);
+    }
+}
+
+3. Processing & Persisting in MongoDB (The Consumer)
+This component listens to the Kafka topic, consumes the transaction event, and updates the respective wallet documents inside MongoDB safely using multi-document transactions.
+The Mongo Entity
+Java
+package com.wallet.simulator.entity;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import java.math.BigDecimal;
+
+@Document(collection = "wallets")
+public class Wallet {
+    @Id 
+    private String id;
+    private String userId;
+    private BigDecimal balance;
+
+    // Getters, Setters, Constructors...
+}
+
+Atomic Processing & Safe DB Persistence
+Java
+package com.wallet.simulator.consumer;
+
+import com.wallet.simulator.dto.TransactionEvent;
+import com.wallet.simulator.entity.Wallet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class TransactionConsumer {
+
+    private static final Logger log = LoggerFactory.getLogger(TransactionConsumer.class);
+    private final MongoTemplate mongoTemplate;
+
+    public TransactionConsumer(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    @KafkaListener(topics = "transaction-events", groupId = "wallet-processing-group")
+    @Transactional // Ensured by the single-node Replica Set
+    public void processTransaction(TransactionEvent event) {
+        log.info("Consuming transaction: {}", event.transactionId());
+
+        // 1. Debit Sender
+        Query senderQuery = new Query(Criteria.where("id").is(event.senderWalletId()));
+        Update debit = new Update().inc("balance", event.amount().negate());
+        mongoTemplate.updateFirst(senderQuery, debit, Wallet.class);
+
+        // 2. Credit Receiver
+        Query receiverQuery = new Query(Criteria.where("id").is(event.receiverWalletId()));
+        Update credit = new Update().inc("balance", event.amount());
+        mongoTemplate.updateFirst(receiverQuery, credit, Wallet.class);
+
+        log.info("Successfully completed transaction audit logic for UUID {}", event.transactionId());
+    }
+}
+
+
+1. Metrics You Must Track
+A. Data Stream Metrics (Kafka)
+These metrics let you know if your consumer is keeping up with the volume of simulated transactions:
+Consumer Lag (kafka_consumer_fetch_manager_records_lag): The absolute number of messages published to a topic that have not yet been read by your consumers. A rising lag means your processing logic is too slow.
+Consumer Poll Latency (kafka_consumer_fetch_manager_fetch_latency_avg): How long it takes the consumer to pull a batch of transactions from the broker.
+Record Send Rate (kafka_producer_record_send_rate): The number of simulated events being piped into Kafka per second by the banking simulator.
+B. Database Metrics (MongoDB)
+Command Execution Latency (mongodb_driver_commands_seconds): The time it takes for updates, inserts, and transaction commits to execute on MongoDB.
+Connection Pool Metrics (mongodb_driver_pool_checked_out): Active connections vs. available pool size. Essential to prevent thread starvation under heavy simulated loads.
+C. JVM & System Metrics (Java 21)
+Virtual Threads Stack (jvm_threads_live_threads): With Java 21, monitor virtual thread counts and active platform threads.
+GC Pauses (jvm_gc_pause_seconds_sum): Garbage collection pauses. Long pauses freeze your Kafka consumer poll loop, which can trigger broker-level partition rebalances.
+D. 💡 Banking/Business Domain Metrics (Custom Metrics)
+By registering custom metrics inside your simulated services using Micrometer, you can build a true "Executive Financial Dashboard":
+Transaction Value Counter (banking_transactions_total_dollars): Cumulative sum of money processed in real-time.
+Failed Transaction Rate (banking_transactions_failed_total): Count of transaction rollbacks (e.g., due to insufficient funds).
+Active Simulated Users (banking_simulated_users_gauge): A gauge of active synthetic accounts sending money.
+2. Updated Architecture & Docker Stack
+We'll update our Docker environment to wire up Prometheus (to scrape the metrics from our Spring Boot container) and Grafana (configured with Prometheus as a datasource).
+Step 1: Update docker-compose.yml
+This setup adds Prometheus (port 9090) and Grafana (port 3000) on a shared monitoring network:
+YAML
+version: '3.8'
+
+networks:
+  bank-network:
+    driver: bridge
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: bank_mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - bank-network
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    entrypoint: [
+      "/bin/sh", "-c",
+      "mongod --replSet rs0 --bind_ip_all & MONGOD_PID=$$!; sleep 4; mongosh --eval 'rs.initiate({_id:\"rs0\",members:[{_id:0,host:\"localhost:27017\"}]})'; wait $$MONGOD_PID"
+    ]
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: bank_zookeeper
+    networks:
+      - bank-network
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: bank_kafka
+    ports:
+      - "9092:9092"
+    networks:
+      - bank-network
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+  # Prometheus Server
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: bank_prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - bank-network
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  # Grafana Dashboard UI (Default login: admin/admin)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: bank_grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - bank-network
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+
+Step 2: Configure Prometheus Scraper (prometheus.yml)
+Create a prometheus.yml file in your root folder. This instructs Prometheus to scrape your containerized Spring Boot app (running on internal port 8080 inside the network) every 5 seconds.
+YAML
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'spring-boot-wallet'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['wallet-service:8080'] # Assuming your Spring Boot service is named 'wallet-service' in docker-compose
+
+Step 3: Enable Metrics in Spring Boot
+1. Add Dependencies (pom.xml)
+Add the Prometheus registry to export Spring Actuator data in the format Prometheus understands:
+XML
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.micrometer</groupId>
+    <artifactId>micrometer-registry-prometheus</artifactId>
+    <scope>runtime</scope>
+</dependency>
+
+2. Configure application.yml
+Expose the scraper path and enable Kafka & MongoDB metric collections.
+YAML
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,prometheus"
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    # Tags all metrics with the application name for clean Grafana queries
+    tags:
+      application: wallet-simulator-app
+
+Step 4: Write Custom Financial Metrics Code
+We can register a Micrometer Counter to track the dollar volume of successfully simulated transactions, and a Counter for when transactions fail (such as database rollback issues).
+Java
+package com.wallet.simulator.consumer;
+
+import com.wallet.simulator.dto.TransactionEvent;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class TransactionConsumer {
+
+    private final MongoTemplate mongoTemplate;
+    
+    // Custom Micrometer metrics
+    private final Counter transactionVolumeCounter;
+    private final Counter transactionFailureCounter;
+
+    public TransactionConsumer(MongoTemplate mongoTemplate, MeterRegistry registry) {
+        this.mongoTemplate = mongoTemplate;
+        
+        // Register custom metrics in Micrometer's Global Registry
+        this.transactionVolumeCounter = Counter.builder("banking.transactions.volume")
+                .description("Total USD volume successfully transacted")
+                .register(registry);
+
+        this.transactionFailureCounter = Counter.builder("banking.transactions.failed")
+                .description("Total failed financial transactions")
+                .register(registry);
+    }
+
+    @KafkaListener(topics = "transaction-events", groupId = "wallet-processing-group")
+    @Transactional
+    public void processTransaction(TransactionEvent event) {
+        try {
+            // 1. Debit/Credit DB operations
+            executeDatabaseTransfer(event);
+
+            // Increment processed dollar metrics
+            this.transactionVolumeCounter.increment(event.amount().doubleValue());
+            
+        } catch (Exception e) {
+            this.transactionFailureCounter.increment();
+            throw e; // Cause rollback
+        }
+    }
+}
+
+4. Visualizing in Grafana
+Run docker compose up -d to start the entire ecosystem.
+Open your web browser and navigate to Grafana at http://localhost:3000 (User: admin, Pass: admin).
+Add a Data Source: Choose Prometheus and point the Connection URL to: http://prometheus:9090.
+Import pre-built dashboards to instantly visualize JVM & Kafka states without manual panel construction:
+JVM (Micrometer) Dashboard ID: Enter 4701 inside Grafana's Import menu.
+Spring Kafka Consumer Metric Panels: Search for Prometheus metrics starting with kafka_consumer_ to plot live consumer lag and records processed per second alongside your custom banking_transactions_volume graph.
+Repo Structure
+banking-wallet-sandbox/
+├── .github/                       # CI/CD pipelines (for later stages)
+│   └── workflows/
+├── docker/                        # Dedicated directory for infrastructure setup
+│   ├── grafana/
+│   │   └── provisioning/          # Autoload datasources/dashboards into Grafana
+│   │       ├── dashboards/
+│   │       └── datasources/
+│   │           └── prometheus.yml
+│   └── prometheus/
+│       └── prometheus.yml         # Prometheus scrape configurations
+├── docker-compose.yml             # Global orchestration file
+│
+├── shared-dto/                    # (Optional) Clean Java library for shared Kafka event payloads
+│   ├── pom.xml
+│   └── src/main/java/com/wallet/shared/dto/TransactionEvent.java
+│
+├── bank-simulator/                # Service 1: Synthetic Actor Generator
+│   ├── Dockerfile                 # Multi-stage build for the simulator
+│   ├── pom.xml
+│   └── src/
+│       └── main/
+│           ├── java/com/wallet/simulator/
+│           │   ├── BankSimulatorApplication.java
+│           │   ├── config/        # Kafka Producer Configs
+│           │   └── service/       # @Scheduled Loop generation
+│           └── resources/
+│               └── application.yml
+│
+└── wallet-service/                # Service 2: Target Processing Engine
+    ├── Dockerfile                 # Multi-stage build for the consumer app
+    ├── pom.xml
+    └── src/
+        ├── main/
+        │   ├── java/com/wallet/service/
+        │   │   ├── WalletApplication.java
+        │   │   ├── config/        # MongoDB Transaction & Kafka Consumer Configs
+        │   │   ├── consumer/      # @KafkaListener component
+        │   │   ├── controller/    # Spring MVC endpoints for inquiries
+        │   │   ├── entity/        # MongoDB @Document classes (Wallet, Ledger)
+        │   │   └── repository/    # Spring Data Mongo repositories
+        │   └── resources/
+        │       └── application.yml
+        └── test/
+            └── java/com/wallet/service/
+                └── integration/   # Testcontainers integration tests (Week 6)
+

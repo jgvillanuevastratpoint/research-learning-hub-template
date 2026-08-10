@@ -20,7 +20,6 @@
 | Target Audience | Junior data engineers with foundational data knowledge |
 | Knowledge Prerequisites | Medallion Architecture, ETL/ELT fundamentals, Apache Spark & SQL basics, cloud computing fundamentals |
 | Tools Needed | Azure subscription (trial or sandbox), ADLS Gen2, ADF, Azure Databricks, Synapse Analytics, Power BI Desktop, Azure Key Vault |
-| Dataset Reference | Climate Change Global Temperature Data — https://www.kaggle.com/datasets/sachinsarkar/climate-change-global-temperature-data (Kaggle, CC BY-NC 4.0) |
 | Total Duration | 15 days (120 hours) |
 
 ### Training Timeline
@@ -70,7 +69,7 @@ gantt
 | 12 | Microsoft Fabric: OneLake, Notebooks & Warehouse | Warehousing | Lecture + Demo | 8h | [THEORY ONLY] | [VISUAL RECOMMENDED] |
 | 13 | Security: Key Vault, RBAC, ACLs & Private Endpoints | Security | Lecture + Workshop | 8h | [HANDS-ON RECOMMENDED] | [VISUAL RECOMMENDED] |
 | 14 | Governance & FinOps: Purview, Cost Management & Budget Alerts | Governance | Lecture + Workshop | 8h | [HANDS-ON RECOMMENDED] | [VISUAL RECOMMENDED] |
-| 15 | Capstone: End-to-End Serverless Data Pipeline Project | Capstone | Project | — | [HANDS-ON RECOMMENDED] | [NO VISUAL NEEDED] |
+| 15 | Capstone: End-to-End Serverless Data Pipeline Project | Capstone | Project | 8h | [HANDS-ON RECOMMENDED] | [NO VISUAL NEEDED] |
 
 ### Day Details
 
@@ -285,3 +284,4 @@ Please confirm which visual flags to keep, remove, or adjust before proceeding t
 *Version: v1.0 | Created: 2026-07-06 | Author: Technical Curriculum Designer*
 
 Learning path skeleton complete. Please review the structure, day breakdown, and visual flags. Confirm, adjust, or add changes before proceeding to Skill 3: Module Content Builder.
+

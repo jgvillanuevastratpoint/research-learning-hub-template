@@ -154,20 +154,18 @@ Based on the source materials, the following architecture minimizes cost while m
 | Day | Topic | Phase | Tag |
 |-----|-------|-------|-----|
 | 1 | Azure Data Engineering Overview, Cloud & Lakehouse Concepts | Storage & Foundations | — |
-| 2 | ADLS Gen2: Storage Tiers, Lifecycle Management & File Formats | Storage & Foundations | — |
-| 3 | Batch vs Streaming Data Storage, Data Lake Design & Partitioning | Storage & Foundations | — |
-| 4 | Azure Data Factory: Pipelines, Activities & Debugging | Ingestion & Orchestration | — |
-| 5 | ADF Triggers, Variables & Integration Runtimes | Ingestion & Orchestration | — |
-| 6 | Pipeline Monitoring, Troubleshooting & Batch Ingestion Patterns | Ingestion & Orchestration | — |
-| 7 | Azure Databricks Environments & Cluster Configuration | Big Data Processing | — |
-| 8 | PySpark Data Transformation with Delta Lake | Big Data Processing | — |
-| 9 | Data Virtualization vs Physical Ingestion, Job Clusters & Cost Optimization | Big Data Processing | — |
-| 10 | Synapse Analytics: Serverless SQL & Data Virtualization | Warehousing & Analytics | — |
-| 11 | Data Warehousing Design (Star Schema) & Dedicated SQL Pools | Warehousing & Analytics | — |
-| 12 | Microsoft Fabric: OneLake, Notebooks & Warehouse | Warehousing & Analytics | [GAP] |
-| 13 | Security: Key Vault, RBAC, ACLs & Private Endpoints | Security & Governance | — |
-| 14 | Governance & FinOps: Purview, Cost Management & Budget Alerts | Security & Governance | — |
-| 15 | Capstone: End-to-End Serverless Data Pipeline Project | Capstone | — |
+| 1 | ADLS Gen2: Storage Tiers, Lifecycle Management & File Formats | Storage & Foundations | — |
+| 2 | Batch vs Streaming Data Storage, Data Lake Design & Partitioning | Storage & Foundations | — |
+| 3 | Azure Data Factory: Pipelines, Activities & Debugging | Ingestion & Orchestration | — |
+| 4 | ADF Triggers, Variables & Integration Runtimes | Ingestion & Orchestration | — |
+| 5 | Pipeline Monitoring, Troubleshooting & Batch Ingestion Patterns | Ingestion & Orchestration | — |
+| 6 | Azure Databricks Environments & Cluster Configuration | Big Data Processing | — |
+| 7 | Data Virtualization vs Physical Ingestion, Job Clusters & Cost Optimization | Big Data Processing | — |
+| 8 | Synapse Analytics: Serverless SQL & Data Virtualization | Warehousing & Analytics | — |
+| 9 | Data Warehousing Design (Star Schema) & Dedicated SQL Pools | Warehousing & Analytics | — |
+| 9 | Microsoft Fabric: OneLake, Notebooks & Warehouse | Warehousing & Analytics | [GAP] |4
+| 10 | Governance & FinOps: Purview, Cost Management & Budget Alerts | Security & Governance | — |
+| 11-15 | Capstone: End-to-End Serverless Data Pipeline Project | Capstone | — |
 
 [GAP] — Topic not directly covered in provided sources but included for comprehensive coverage.
 
