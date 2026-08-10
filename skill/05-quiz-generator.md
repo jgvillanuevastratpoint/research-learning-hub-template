@@ -114,7 +114,7 @@ This is the last checkpoint before the learning path is ready to publish or deli
 Review the full learning path — modules, visuals, and quiz — and check:
 
 - ✅ All module content reads correctly and follows the schema
-- ✅ All supplemental reading links have been manually validated
+- ✅ All supplemental reading links have been validated by the owner
 - ✅ All visuals are embedded and captions are accurate
 - ✅ Quiz questions are fair, clear, and answerable from the content
 - ✅ Answer key is accurate for all 10 questions

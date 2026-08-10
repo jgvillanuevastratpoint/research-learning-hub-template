@@ -338,7 +338,7 @@ All project decisions must be recorded in `/decision-log.md` at the root of the 
 
 ## A Note on Links
 
-AI will suggest supplemental reading links but **cannot guarantee they are live or accurate** at the time of use. The owner validates all links manually at Checkpoint 3 before any material is published or delivered.
+All supplemental reading links are reviewed and validated by the owner before publishing.
 
 ---
 
