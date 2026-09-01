@@ -37,7 +37,34 @@ Before writing any content, do the following:
      - Activity name and full description
      - Expected output
 
-3. Compile all extracted activities into a structured document following the format below. Output file name: `09-[topic-slug]-hands-on-activities.md`
+3. Present the use-case confirmation gate with this exact message:
+   "--- USE CASE FOR HANDS-ON ACTIVITIES ---
+    The hands-on activities need a concrete scenario, a way to replicate it, and a dataset or simulation approach so learners can follow along end to end.
+
+    Reply with:
+    - ⚡ Generate — 'Generate a real-world use case with a recommended dataset and simulation approach' (the skill synthesizes a scenario from the module content and ties every activity to it)
+    - ✅ Existing — 'I already have a use case and dataset' (reply with the scenario, dataset source, and any simulation setup, and the skill uses them verbatim)
+
+    Waiting for your response before compiling the activities document."
+
+   Do NOT proceed until the user confirms which path to take.
+
+4. Compile all extracted activities into a structured document following the format below. Output file name: `09-[topic-slug]-hands-on-activities.md`
+
+5. Present the HTML conversion gate with this exact message:
+   "--- PUBLISH AS HTML? ---
+    The hands-on activity document is complete and the .md file is retained.
+
+    Reply with:
+    - ✅ Yes — 'Convert to HTML' (generate a standalone styled HTML version alongside the .md file)
+    - ❌ No — 'Keep markdown only' (distribute the .md directly)
+
+    Waiting for your response."
+
+   Do NOT proceed to the end line until the user confirms.
+
+   If **Yes**: generate the HTML following the Skill 7 conventions (metadata card, design architecture diagram rendered as an image, tool tables, code blocks, and a footer). Save it as `outputs/[topic-slug]/09-[topic-slug]-html.html` and keep the `.md` file unchanged — the HTML is an additional artifact, not a replacement.
+   If **No**: keep markdown only and proceed.
 
 ---
 
@@ -46,6 +73,20 @@ Output format:
 ### Front Matter
 
 Copy the metadata block from the module content (title, version, target audience, prerequisites, tools, dataset reference with full URL).
+
+### Use Case & Replication Guide
+
+Required when **⚡ Generate** was chosen at the gate. Provide a concrete real-world scenario the learner will use, how to replicate it (environment setup, trigger, and test payloads), and the recommended dataset or recommended simulation approach with source URL and license. When the scenario requires infrastructure, include:
+- A **Tools to Be Used** table (everything beyond the main tool)
+- A **Prerequisites** section (software versions, free ports, disk space, and knowledge prerequisites)
+- A **Tool References** table (official documentation links for every tool used)
+- A **Design Architecture** diagram
+- The **recommended Docker setup** (full `docker-compose.yml`)
+- The **recommended project structure**
+- The **mock/simulation API setup** and **sample payloads**
+- A numbered **Procedure** taking the learner from prerequisites through setup, build, verification, and reset
+
+This makes the scenario reproducible end to end. If the user supplied an existing use case (**✅ Existing**), reproduce it verbatim here instead.
 
 ### Hands-On Activities
 
@@ -83,8 +124,10 @@ Constraints:
 - The dataset reference must include the full clickable URL (e.g., `[Dataset Name](https://www.kaggle.com/datasets/...)`)
 - Theory-only days must be excluded from the output
 - Activity descriptions must be copied verbatim from the module content, not rewritten
+- The Use Case & Replication Guide must be included when ⚡ Generate was chosen at the gate (or reproduce the user's existing use case verbatim when ✅ Existing was chosen)
 - 3rd person throughout
 - Output file path: `outputs/[topic-slug]/09-[topic-slug]-hands-on-activities.md`
+- When HTML conversion is confirmed (**✅ Yes**), the `.md` file must be kept and the HTML saved as `outputs/[topic-slug]/09-[topic-slug]-html.html`
 
 ---
 
@@ -100,7 +143,9 @@ End with this exact line:
 |---|---|
 | **Hands-On Activities Document** | Standalone `.md` file with dataset reference, per-day activity cards, dependency map, and consolidated checklist |
 | **Dataset Link** | Full clickable URL in the metadata header |
+| **Use Case & Replication Guide** | Real-world scenario, replication steps, and recommended dataset / simulation approach — generated from module content or taken from the user's existing use case |
 | **Activity Count** | Only hands-on days included (theory days excluded) |
+| **Published HTML (optional)** | Standalone styled HTML version generated when the user confirms **✅ Yes** at the HTML gate — the `.md` file is always kept |
 
 ---
 

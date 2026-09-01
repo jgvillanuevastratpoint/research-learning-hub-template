@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N8n for Developers — Foundation &amp; Week 1 — Hands-On Activities</title>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #ffffff; color: #1a202c; line-height: 1.6; }
+  .container { max-width: 960px; margin: 0 auto; padding: 20px; }
+
+  .review-badge { position: fixed; top: 16px; right: 16px; background: #dd6b20; color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; z-index: 100; letter-spacing: 0.3px; }
+
+  header { background: linear-gradient(135deg, #1a365d, #2b6cb0); color: #fff; padding: 40px; border-radius: 12px; margin-bottom: 24px; }
+  header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  header .subtitle { font-size: 15px; opacity: 0.85; }
+
+  .metadata-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 24px; }
+  .metadata-table { width: 100%; border-collapse: collapse; }
+  .metadata-table td { padding: 6px 12px; font-size: 14px; border-bottom: 1px solid #f1f5f9; }
+  .metadata-table td:first-child { color: #718096; font-weight: 500; width: 220px; }
+  .metadata-table td:last-child { color: #2d3748; }
+
+  h2.section-heading { font-size: 20px; font-weight: 700; margin: 28px 0 12px; color: #1a365d; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+  h3.sub-heading { font-size: 16px; font-weight: 700; margin: 20px 0 10px; color: #2b6cb0; }
+
+  .data-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin-bottom: 20px; }
+  .data-table thead { background: #1a365d; color: #fff; }
+  .data-table th { padding: 10px 14px; font-size: 13px; text-align: left; font-weight: 600; }
+  .data-table td { padding: 10px 14px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
+  .data-table tbody tr:nth-child(even) { background: #fafafa; }
+  .data-table tbody tr:hover { background: #f1f5f9; }
+  .data-table a { color: #2b6cb0; text-decoration: none; }
+  .data-table a:hover { text-decoration: underline; }
+  .data-table code { background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+
+  .toc-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin-bottom: 24px; }
+  .toc-table thead { background: #1a365d; color: #fff; }
+  .toc-table th { padding: 10px 14px; font-size: 13px; text-align: left; font-weight: 600; }
+  .toc-table td { padding: 10px 14px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
+  .toc-table tbody tr:nth-child(even) { background: #fafafa; }
+  .toc-table tbody tr:hover { background: #f1f5f9; }
+  .toc-table a { color: #2b6cb0; text-decoration: none; font-weight: 600; }
+  .toc-table a:hover { text-decoration: underline; }
+
+  .diagram-container { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; margin: 14px 0; text-align: center; }
+  .diagram-container a { display: block; }
+  .diagram-container img { width: 100%; height: auto; border-radius: 4px; cursor: zoom-in; }
+  .diagram-hint { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+
+  pre.code-block { background: #1a202c; color: #e2e8f0; border-radius: 8px; padding: 16px; margin: 12px 0; overflow-x: auto; font-size: 13px; line-height: 1.5; }
+  pre.code-block code { font-family: 'Consolas', 'SFMono-Regular', monospace; }
+  pre.tree-block { background: #f8fafc; color: #2d3748; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 12px 0; overflow-x: auto; font-size: 13px; line-height: 1.5; }
+  pre.tree-block code { font-family: 'Consolas', 'SFMono-Regular', monospace; }
+
+  blockquote.info-box { border-left: 4px solid #4299e1; background: #ebf8ff; padding: 12px 16px; margin: 14px 0; border-radius: 0 6px 6px 0; color: #2c5282; font-size: 14px; }
+
+  p.body { font-size: 14px; color: #2d3748; margin-bottom: 12px; }
+  p.body code, li code { background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  ol.procedure { padding-left: 24px; margin-bottom: 14px; }
+  ol.procedure li { font-size: 14px; color: #2d3748; margin-bottom: 10px; line-height: 1.6; }
+  ol.procedure li code { background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+
+  .day-card { background: #f8fafc; border-radius: 12px; padding: 28px; margin-bottom: 20px; border: 1px solid #e2e8f0; border-left: 4px solid #2b6cb0; }
+  .day-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 14px; color: #1a365d; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+  .day-card .field { margin-bottom: 12px; }
+  .day-card .field-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .day-card .field-label.day { color: #2b6cb0; }
+  .day-card .field-label.objective { color: #38a169; }
+  .day-card .field-label.activity { color: #dd6b20; }
+  .day-card .field-label.tools { color: #805ad5; }
+  .day-card .field-label.output { color: #d69e2e; }
+  .day-card .field-label.prereq { color: #d53f8c; }
+  .day-card .field-value { font-size: 14px; color: #2d3748; }
+  .day-card .field-value code { background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+
+  .related-docs { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 24px; }
+  .related-docs h3 { font-size: 16px; color: #1a365d; margin-bottom: 10px; }
+  .related-docs table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .related-docs th { text-align: left; padding: 6px 10px; background: #f1f5f9; color: #475569; border-bottom: 1px solid #e2e8f0; }
+  .related-docs td { padding: 6px 10px; border-bottom: 1px solid #f1f5f9; }
+  .related-docs code { background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+
+  footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 13px; margin-top: 12px; }
+  .outro { text-align: center; padding: 16px; color: #64748b; font-size: 14px; font-style: italic; }
+
+  @media (max-width: 640px) {
+    .container { padding: 10px; }
+    header { padding: 24px; }
+    header h1 { font-size: 22px; }
+    .day-card { padding: 18px; }
+    .metadata-table td { display: block; width: 100%; }
+    .metadata-table td:first-child { width: 100%; padding-bottom: 0; }
+    .review-badge { position: static; display: inline-block; margin-bottom: 12px; }
+  }
+</style>
+
+</head>
+<body>
+  <div class="container">
+    <div class="review-badge">#review: DRAFT</div>
+
+    <header>
+      <h1>N8n for Developers — Foundation &amp; Week 1</h1>
+      <p class="subtitle">09 — N8n Training Week 1 — Hands-On Activities</p>
+    </header>
+
+    <div class="metadata-card">
+      <table class="metadata-table">
+        <tr><td>Title</td><td>N8n for Developers — Foundation &amp; Week 1 (The Paradigm Shift)</td></tr>
+        <tr><td>Version</td><td>v1.0</td></tr>
+        <tr><td>Date Created</td><td>2026-08-13</td></tr>
+        <tr><td>Author</td><td>Jem Villanueva</td></tr>
+        <tr><td>Target Audience</td><td>Junior developers with API, JSON, and JavaScript experience</td></tr>
+        <tr><td>Knowledge Prerequisites</td><td>JavaScript fundamentals, JSON data structures, REST API concepts, HTTP &amp; webhook basics, command line &amp; Docker fundamentals</td></tr>
+        <tr><td>Tools Needed</td><td>Self-hosted n8n (Docker Compose), Docker Desktop, cURL or Postman, JSONPlaceholder mock API</td></tr>
+        <tr><td>Skill Domains</td><td>Automation, Integration, Software Development</td></tr>
+        <tr><td>Dataset Reference</td><td>JSONPlaceholder — public mock API used across the hands-on exercises</td></tr>
+        <tr><td>Total Duration</td><td>6 days / 24 hours</td></tr>
+        <tr><td>Suggested Pace</td><td>4 hours per day — 20% theory / 80% hands-on</td></tr>
+        <tr><td>Hands-On Days</td><td>5 (Days 1-5; Day 0 is a theory day and excluded)</td></tr>
+      </table>
+      <!-- tags: topic-slug=n8n-training-week-1, skill-domains=[automation integration software-development], audience=junior-developers, difficulty=beginner, delivery-methods=[lecture demo workshop hands-on-lab], total-days=6, status=draft -->
+    </div>
+
+    <h2 class="section-heading">Table of Contents</h2>
+    <table class="toc-table">
+      <thead>
+        <tr><th>#</th><th>Section</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><a href="#one-continuous-activity">1</a></td><td>One Continuous Activity</td></tr>
+        <tr><td><a href="#scenario">2</a></td><td>Use Case &amp; Replication Guide — Scenario</td></tr>
+        <tr><td><a href="#tools">3</a></td><td>Use Case &amp; Replication Guide — Tools, Prerequisites &amp; References</td></tr>
+        <tr><td><a href="#architecture">4</a></td><td>Use Case &amp; Replication Guide — Design Architecture</td></tr>
+        <tr><td><a href="#docker-setup">5</a></td><td>Use Case &amp; Replication Guide — Docker Setup &amp; Project Structure</td></tr>
+        <tr><td><a href="#mock-api">6</a></td><td>Use Case &amp; Replication Guide — Mock API, Payloads &amp; Procedure</td></tr>
+        <tr><td><a href="#activities">7</a></td><td>Hands-On Activities</td></tr>
+        <tr><td><a href="#dependency-map">8</a></td><td>Activity Dependency Map</td></tr>
+        <tr><td><a href="#checklist">9</a></td><td>Consolidated Checklist</td></tr>
+      </tbody>
+    </table>
+
+    <section id="one-continuous-activity">
+      <h2 class="section-heading">One Continuous Activity</h2>
+      <p class="body">The five hands-on sessions are not separate exercises — they are <strong>one continuous project</strong> built incrementally on a single shared scaffold. Day 1 creates the project environment, and every session after it extends the same Docker Compose project and the same self-hosted n8n instance. Nothing is built from scratch twice.</p>
+      <table class="data-table">
+        <thead><tr><th>Session</th><th>Builds On</th><th>Extends Into</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Day 1 — Self-Hosted Project Scaffold</strong></td><td>(starts the shared project)</td><td>Provides the running n8n instance and project folder used by every later session</td></tr>
+          <tr><td><strong>Day 2 — First Webhook Workflow</strong></td><td>Day 1 scaffold + instance</td><td>First workflow in the shared project; becomes the workflow Days 3-4 extend</td></tr>
+          <tr><td><strong>Day 3 — Expression Drill</strong></td><td>Day 2 workflow</td><td>Adds dynamic, expression-driven fields to the same workflow</td></tr>
+          <tr><td><strong>Day 4 — Routing Mini-Lab</strong></td><td>Day 3 expressions</td><td>Adds IF, Switch, and Filter logic to the same workflow</td></tr>
+          <tr><td><strong>Day 5 — Week 1 Lab</strong></td><td>Days 1-4 cumulative</td><td>Delivers the complete User Onboarding &amp; Security Routing Pipeline</td></tr>
+        </tbody>
+      </table>
+      <p class="body">The continuity rule: <strong>Day 5 is only possible because Days 1-4 were completed in place.</strong> The Day 5 pipeline reuses the exact webhook trigger from Day 2, the expression techniques from Day 3, and the logic nodes from Day 4, running inside the instance stood up on Day 1. The same incremental pattern extends into the capstone project (documented in <code>08-n8n-training-week-1-capstone.md</code>), which synthesizes the whole path into a Retail Order Intake Pipeline.</p>
+    </section>
+
+    <section id="scenario">
+      <h2 class="section-heading">Use Case &amp; Replication Guide</h2>
+      <h3 class="sub-heading">Scenario</h3>
+      <p class="body">A training organization receives user signup batches from its registration workflow. Each batch is a JSON body containing a <code>users</code> array. Every signup must be normalized to a standard shape — the email trimmed and lowercased — and routed by email domain: signups using a corporate domain (<code>@corporation.com</code>) are separated from all other signups and delivered to a mock CRM endpoint, while the rest are delivered to a mock analytics endpoint. The goal is purely mechanical: prove that webhook ingestion, per-item processing, expression-based normalization, and domain-based routing work end to end inside n8n. This is the exact scenario the five hands-on activities build toward, ending in the Day 5 User Onboarding &amp; Security Routing Pipeline.</p>
+    </section>
+
+    <section id="tools">
+      <h3 class="sub-heading">Tools to Be Used</h3>
+      <table class="data-table">
+        <thead><tr><th>Tool</th><th>Role in the Hands-On</th><th>Required</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Docker Desktop</strong></td><td>Runs the n8n and mock API containers locally</td><td>Required</td></tr>
+          <tr><td><strong>Docker Compose</strong></td><td>Starts and stops the two services; defines ports, volumes, and environment</td><td>Required</td></tr>
+          <tr><td><strong>n8n (self-hosted, <code>n8nio/n8n</code>)</strong></td><td>The automation platform where every workflow is built</td><td>Required</td></tr>
+          <tr><td><strong>JSON Server v0.17.4</strong></td><td>Local mock API — serves the <code>users</code> dataset and accepts <code>POST /crm</code> and <code>POST /analytics</code> so deliveries can be verified</td><td>Required</td></tr>
+          <tr><td><strong>Node.js + Express v4</strong></td><td>Optional custom mock API implementation (readable, extendable server code)</td><td>Optional</td></tr>
+          <tr><td><strong>cURL</strong></td><td>Sends webhook test payloads and inspects the mock API</td><td>Required</td></tr>
+          <tr><td><strong>Postman</strong></td><td>Optional GUI alternative to cURL</td><td>Optional</td></tr>
+          <tr><td><strong>Web browser</strong></td><td>Opens the n8n UI at <code>http://localhost:5678</code></td><td>Required</td></tr>
+          <tr><td><strong>Text editor</strong></td><td>Edits <code>docker-compose.yml</code>, <code>db.json</code>, and payload files</td><td>Required</td></tr>
+          <tr><td><strong>JSONPlaceholder</strong></td><td>Public reference dataset source used in the exercises</td><td>Reference</td></tr>
+        </tbody>
+      </table>
+      <blockquote class="info-box"><strong>Postman is not required.</strong> cURL is bundled with Docker Desktop's command line, Git Bash, and WSL, and ships with Windows 10+, macOS, and Linux. All payload and verification steps in this document use cURL so the hands-on runs without installing anything extra.</blockquote>
+
+      <h3 class="sub-heading">Prerequisites</h3>
+      <table class="data-table">
+        <thead><tr><th>Requirement</th><th>Details</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Docker Desktop</strong></td><td>Version 4.x with the WSL2 backend (Windows) or the Docker Desktop backend (macOS), including the Docker Compose v2 plugin. Must be running before <code>docker compose up -d</code>.</td></tr>
+          <tr><td><strong>Free ports</strong></td><td>Port <code>5678</code> (n8n) and port <code>3001</code> (mock API) must be free.</td></tr>
+          <tr><td><strong>Disk space</strong></td><td>Approximately 8 GB free for the n8n image and the <code>n8n_data</code> named volume.</td></tr>
+          <tr><td><strong>Web browser</strong></td><td>Chrome, Edge, or Firefox for the n8n UI at <code>http://localhost:5678</code>.</td></tr>
+          <tr><td><strong>cURL</strong></td><td>Bundled with Docker Desktop's CLI, Git Bash, and WSL; ships with Windows 10+, macOS, and Linux. Postman is an optional alternative.</td></tr>
+          <tr><td><strong>Text editor</strong></td><td>Any editor (VS Code, Notepad++) for <code>docker-compose.yml</code>, <code>db.json</code>, and payload files.</td></tr>
+          <tr><td><strong>Node.js 22+</strong></td><td>Required only if the optional custom Express mock API is used instead of JSON Server. Not needed for the default path.</td></tr>
+          <tr><td><strong>Knowledge prerequisites</strong></td><td>JavaScript fundamentals, JSON data structures, REST API concepts, HTTP &amp; webhook basics, command line &amp; Docker fundamentals (from the module prerequisites).</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-heading">Tool References</h3>
+      <table class="data-table">
+        <thead><tr><th>Tool</th><th>Reference</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Docker Desktop</strong></td><td><a href="https://www.docker.com/products/docker-desktop/" target="_blank">Docker Desktop download</a></td></tr>
+          <tr><td><strong>Docker Compose</strong></td><td><a href="https://docs.docker.com/compose/" target="_blank">Official documentation</a></td></tr>
+          <tr><td><strong>n8n — self-hosted install with Docker</strong></td><td><a href="https://docs.n8n.io/deploy/host-n8n/install-options/install-with-docker" target="_blank">Install with Docker</a></td></tr>
+          <tr><td><strong>n8n — items data structure</strong></td><td><a href="https://docs.n8n.io/build/work-with-data/understand-n8ns-data-structure" target="_blank">Understand n8n's data structure</a></td></tr>
+          <tr><td><strong>n8n — Webhook node</strong></td><td><a href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.webhook" target="_blank">Webhook node</a></td></tr>
+          <tr><td><strong>n8n — expressions</strong></td><td><a href="https://docs.n8n.io/build/work-with-data/transform-data/expressions-for-data-transformation" target="_blank">Expressions for data transformation</a></td></tr>
+          <tr><td><strong>n8n — referencing previous nodes</strong></td><td><a href="https://docs.n8n.io/build/work-with-data/reference-data/reference-previous-nodes" target="_blank">Reference data from previous nodes</a></td></tr>
+          <tr><td><strong>n8n — Edit Fields (Set) node</strong></td><td><a href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.set" target="_blank">Edit Fields (Set) node</a></td></tr>
+          <tr><td><strong>n8n — IF node</strong></td><td><a href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.if" target="_blank">IF node</a></td></tr>
+          <tr><td><strong>n8n — Switch node</strong></td><td><a href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.switch" target="_blank">Switch node</a></td></tr>
+          <tr><td><strong>n8n — Filter node</strong></td><td><a href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.filter" target="_blank">Filter node</a></td></tr>
+          <tr><td><strong>JSON Server</strong></td><td><a href="https://github.com/typicode/json-server" target="_blank">typicode/json-server</a></td></tr>
+          <tr><td><strong>Express (optional)</strong></td><td><a href="https://expressjs.com/" target="_blank">expressjs.com</a></td></tr>
+          <tr><td><strong>JSONPlaceholder</strong></td><td><a href="https://jsonplaceholder.typicode.com/" target="_blank">JSONPlaceholder mock API</a></td></tr>
+          <tr><td><strong>cURL</strong></td><td><a href="https://curl.se/docs/" target="_blank">curl documentation</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="architecture">
+      <h3 class="sub-heading">Design Architecture</h3>
+      <p class="body">The learner machine hosts Docker Desktop. Inside it, two containers run side by side: the n8n container (the workflow engine, port 5678) and the mock API container (the simulated systems, port 3001). cURL or Postman feeds batches into the n8n webhook; the n8n UI is reached through the browser; the workflow's HTTP Request nodes deliver corporate and public signups to the mock API endpoints, where <code>db.json</code> records them for verification.</p>
+      <div class="diagram-container"><a href="images/diagram-hands-on-architecture.png" target="_blank"><img src="images/diagram-hands-on-architecture.png" alt="Design architecture diagram showing the learner machine, n8n container, and mock API container"></a><div class="diagram-hint">Click diagram to open full size</div></div>
+    </section>
+
+    <section id="docker-setup">
+      <h3 class="sub-heading">Recommended Docker Setup</h3>
+      <p class="body">Create the project folder, then add <code>docker-compose.yml</code>:</p>
+      <pre class="code-block"><code>services:
+  n8n:
+    image: n8nio/n8n:latest
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=production
+      - GENERIC_TIMEZONE=Asia/Manila
+      - TZ=Asia/Manila
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./workflows:/workflows
+
+  mock-api:
+    image: node:22-alpine
+    restart: unless-stopped
+    working_dir: /data
+    volumes:
+      - ./db.json:/data/db.json
+    ports:
+      - "3001:3001"
+    command: npx json-server@0.17.4 --watch db.json --port 3001
+
+volumes:
+  n8n_data:</code></pre>
+      <p class="body">Start both services and complete the initial n8n owner setup:</p>
+      <pre class="code-block"><code>docker compose up -d
+# open http://localhost:5678 in the browser and create the owner account
+curl http://localhost:3001/users</code></pre>
+      <p class="body">The n8n container maps port 5678 and keeps its workflows and credentials in the <code>n8n_data</code> named volume (<code>/home/node/.n8n</code>). The mock API container maps port 3001, mounts <code>db.json</code>, and runs JSON Server v0.17.4 in watch mode. An <code>.env</code> file is optional for overriding the timezone or host settings; the values above work out of the box.</p>
+
+      <h3 class="sub-heading">Recommended Project Structure</h3>
+      <pre class="tree-block"><code>n8n-hands-on/
+├── docker-compose.yml              # n8n + mock-api services
+├── db.json                         # seed data: users, crm, analytics
+├── server.js                       # optional: custom Express mock API (alternative to JSON Server)
+├── package.json                    # optional: dependencies for server.js
+├── payloads/
+│   ├── users-corporate-public.json # 2 users — one per route
+│   └── users-batch-mixed.json      # 4 users — exercises both routes
+├── workflows/
+│   └── (exported n8n workflow JSON per day)
+├── scripts/
+│   ├── send-payload.sh             # POSTs a payload to the webhook
+│   └── verify.sh                   # GETs /crm and /analytics
+└── README.md                       # how to run and verify</code></pre>
+    </section>
+
+    <section id="mock-api">
+      <h3 class="sub-heading">Mock API Setup &amp; Seed Dataset</h3>
+      <blockquote class="info-box"><strong>An API does not need to be written.</strong> The data is simulated with <code>db.json</code> (seed records), and JSON Server turns that file into a working REST API automatically — it generates <code>GET</code>, <code>POST</code>, <code>PUT</code>, and <code>DELETE</code> routes for every resource. The dataset file <em>is</em> the simulation. Learners who want to read or extend the actual API code can use the optional Express implementation at the end of this section instead.</blockquote>
+      <p class="body">Create <code>db.json</code> (the <code>crm</code> and <code>analytics</code> arrays start empty so the workflow's deliveries are observable):</p>
+      <pre class="code-block"><code>{
+  "users": [
+    { "id": "1", "name": "Alice Johnson", "email": "  ALICE.JOHNSON@Corporation.com " },
+    { "id": "2", "name": "Bob Martin", "email": " bob@example.com " },
+    { "id": "3", "name": "Carol Reyes", "email": "carol@corporation.com" },
+    { "id": "4", "name": "Danilo Cruz", "email": " danilo@outlook.com " }
+  ],
+  "crm": [],
+  "analytics": []
+}</code></pre>
+      <p class="body">The seed deliberately mixes casing and whitespace so the Day 3 expression drill has real data to normalize. JSON Server exposes the following endpoints:</p>
+      <table class="data-table">
+        <thead><tr><th>Endpoint</th><th>Method</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>/users</code></td><td>GET</td><td>Lists the seed signups (dataset reference)</td></tr>
+          <tr><td><code>/crm</code></td><td>POST</td><td>Receives <code>@corporation.com</code> signups delivered by the workflow</td></tr>
+          <tr><td><code>/crm</code></td><td>GET</td><td>Verifies the corporate deliveries</td></tr>
+          <tr><td><code>/analytics</code></td><td>POST</td><td>Receives all other signups delivered by the workflow</td></tr>
+          <tr><td><code>/analytics</code></td><td>GET</td><td>Verifies the public deliveries</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-heading">Optional: Custom Mock API Code (Express)</h3>
+      <p class="body">The JSON Server command above is the recommended, zero-code approach. Learners who prefer a real server they can read, debug, and extend can replace it with this small Node.js + Express API, which exposes the exact same endpoints and persists deliveries back into <code>db.json</code>.</p>
+      <p class="body"><code>server.js</code>:</p>
+      <pre class="code-block"><code>const express = require('express');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+const PORT = 3001;
+const DB_FILE = path.join(__dirname, 'db.json');
+
+app.use(express.json());
+
+function readDb() {
+  return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+}
+
+function writeDb(db) {
+  fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+}
+
+app.get('/users', (req, res) => {
+  res.json(readDb().users);
+});
+
+function deliver(collection, req, res) {
+  const db = readDb();
+  const record = {
+    id: String(db[collection].length + 1),
+    ...req.body,
+    received_at: new Date().toISOString(),
+  };
+  db[collection].push(record);
+  writeDb(db);
+  res.status(201).json(record);
+}
+
+app.post('/crm', (req, res) => deliver('crm', req, res));
+app.get('/crm', (req, res) => res.json(readDb().crm));
+app.post('/analytics', (req, res) => deliver('analytics', req, res));
+app.get('/analytics', (req, res) => res.json(readDb().analytics));
+
+app.listen(PORT, () => {
+  console.log(`Mock API listening on http://localhost:${PORT}`);
+});</code></pre>
+      <p class="body"><code>package.json</code>:</p>
+      <pre class="code-block"><code>{
+  "name": "mock-api",
+  "version": "1.0.0",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}</code></pre>
+      <p class="body">Run it locally (Node.js 22+ required):</p>
+      <pre class="code-block"><code>npm install
+npm start
+# http://localhost:3001/users</code></pre>
+      <p class="body">To use the custom API inside Docker instead of JSON Server, replace the <code>mock-api</code> service in <code>docker-compose.yml</code> with a service that builds from these files (a <code>Dockerfile</code> mounting <code>server.js</code>, <code>package.json</code>, and <code>db.json</code>, running <code>npm install &amp;&amp; npm start</code>). The workflow's HTTP Request nodes, payloads, and verification steps stay identical — the endpoints are the same.</p>
+
+      <h3 class="sub-heading">Sample Payloads</h3>
+      <p class="body"><code>payloads/users-corporate-public.json</code> — one signup per route:</p>
+      <pre class="code-block"><code>{
+  "users": [
+    { "name": "Alice Johnson", "email": "ALICE.JOHNSON@Corporation.com" },
+    { "name": "Bob Martin", "email": " bob@example.com " }
+  ]
+}</code></pre>
+      <p class="body"><code>payloads/users-batch-mixed.json</code> — a mixed batch exercising both routes and the Split Out Items node:</p>
+      <pre class="code-block"><code>{
+  "users": [
+    { "name": "Alice Johnson", "email": "ALICE.JOHNSON@Corporation.com" },
+    { "name": "Bob Martin", "email": " bob@example.com " },
+    { "name": "Carol Reyes", "email": "carol@corporation.com" },
+    { "name": "Danilo Cruz", "email": " danilo@outlook.com " }
+  ]
+}</code></pre>
+      <p class="body">Send a payload to the webhook (while listening for a test event, the URL uses <code>/webhook-test/</code>; the permanent URL uses <code>/webhook/</code>):</p>
+      <pre class="code-block"><code>curl -X POST http://localhost:5678/webhook-test/signup-hook \
+  -H "Content-Type: application/json" \
+  -d @payloads/users-corporate-public.json</code></pre>
+
+      <h3 class="sub-heading">Procedure</h3>
+      <p class="body">Follow the sequence below end to end. Steps 1-3 prepare the environment; steps 4-7 build the continuous project described in the One Continuous Activity section; step 8 verifies; step 9 resets.</p>
+      <ol class="procedure">
+        <li><strong>Check prerequisites.</strong> Confirm Docker Desktop is installed and running (<code>docker version</code>), ports 5678 and 3001 are free, and cURL is available (<code>curl --version</code>). Review the knowledge prerequisites listed above.</li>
+        <li><strong>Create the project folder</strong> with the structure above — <code>docker-compose.yml</code>, <code>db.json</code>, <code>payloads/</code>, <code>workflows/</code>, <code>scripts/</code>, <code>README.md</code> (<code>server.js</code> and <code>package.json</code> only if the optional Express mock API is used).</li>
+        <li><strong>Stand up the environment (Day 1).</strong> Run <code>docker compose up -d</code>, complete the n8n owner setup at <code>http://localhost:5678</code>, and confirm the mock API with <code>curl http://localhost:3001/users</code>.</li>
+        <li><strong>Create the webhook trigger (Day 2).</strong> Add a Webhook node with <code>POST</code> on path <code>signup-hook</code> and connect an HTTP Request node; fire the trigger with <code>payloads/users-corporate-public.json</code> via cURL and confirm the JSON items appear in the execution view.</li>
+        <li><strong>Normalize with expressions (Day 3).</strong> Extend the workflow with an Edit Fields node that trims, lowercases, and combines fields using <code>$json</code> and <code>$node</code> expressions, verifying live results in the expression editor.</li>
+        <li><strong>Add routing logic (Day 4).</strong> Insert IF, Switch, and Filter nodes so the batch splits across branches per item.</li>
+        <li><strong>Complete the pipeline (Day 5).</strong> Split the <code>users</code> array into items with an Item Lists node, build <code>clean_email</code> with <code>{{ $json.email.trim().toLowerCase() }}</code>, and use a Switch node to route <code>@corporation.com</code> signups to <code>http://localhost:3001/crm</code> and all other domains to <code>http://localhost:3001/analytics</code>.</li>
+        <li><strong>Verify.</strong> Inspect the execution history to watch Alice travel down Route 0 and Bob down Route 1, then confirm the records arrived:
+          <pre class="code-block"><code>curl http://localhost:3001/crm
+curl http://localhost:3001/analytics</code></pre>
+        </li>
+        <li><strong>Reset (optional).</strong> To start a clean run, stop the mock API, restore the <code>crm</code> and <code>analytics</code> arrays to empty in <code>db.json</code>, and run <code>docker compose restart mock-api</code>.</li>
+      </ol>
+      <p class="body">The mock API binds to localhost only and exposes no authentication, so it must never be published to a public port.</p>
+    </section>
+
+    <section id="activities">
+      <h2 class="section-heading">Hands-On Activities</h2>
+
+      <div class="day-card">
+        <h3>Activity 1 — Self-Hosted Project Scaffold</h3>
+        <div class="field"><div class="field-label day">Day</div><div class="field-value">Day 1 — n8n Architecture, Self-Hosted Docker Setup &amp; UI Tour</div></div>
+        <div class="field"><div class="field-label objective">Learning Objective</div><div class="field-value">Stand up a self-hosted n8n instance in a sandboxed Docker environment and navigate the canvas, node library, and execution history.</div></div>
+        <div class="field"><div class="field-label activity">Activity</div><div class="field-value">Self-Hosted Project Scaffold — learners create the recommended project structure for self-hosted n8n from the official documentation (docker-compose.yml, environment settings, and a named data volume), launch the instance, complete the admin setup, and tour the canvas, node library, and execution history.</div></div>
+        <div class="field"><div class="field-label tools">Tools / Services</div><div class="field-value">Docker Desktop, Docker Compose, self-hosted n8n (<code>n8nio/n8n</code> image, port 5678), web browser</div></div>
+        <div class="field"><div class="field-label output">Expected Output</div><div class="field-value">A running self-hosted n8n instance at <code>http://localhost:5678</code> with the project scaffold (docker-compose.yml, environment settings, named data volume) in the shared project folder, owner account configured, and the canvas, node library, and execution history identified.</div></div>
+        <div class="field"><div class="field-label prereq">Prerequisite</div><div class="field-value">None — this session establishes the shared project environment that all later sessions reuse.</div></div>
+      </div>
+
+      <div class="day-card">
+        <h3>Activity 2 — First Webhook Workflow</h3>
+        <div class="field"><div class="field-label day">Day</div><div class="field-value">Day 2 — Triggers, Actions &amp; the Items Data Model</div></div>
+        <div class="field"><div class="field-label objective">Learning Objective</div><div class="field-value">Build a Webhook → HTTP Request workflow and explain how data flows between nodes as JSON items.</div></div>
+        <div class="field"><div class="field-label activity">Activity</div><div class="field-value">First Webhook Workflow — learners build a Webhook → HTTP Request workflow against the JSONPlaceholder mock API and inspect the JSON items produced at each step in the execution view.</div></div>
+        <div class="field"><div class="field-label tools">Tools / Services</div><div class="field-value">n8n Webhook node, n8n HTTP Request node, cURL or Postman, JSONPlaceholder</div></div>
+        <div class="field"><div class="field-label output">Expected Output</div><div class="field-value">A working Webhook → HTTP Request workflow (POST <code>/test-hook</code>) triggered by cURL or Postman, with the incoming payload and the <code>GET /users/1</code> response inspected as JSON items in the execution view.</div></div>
+        <div class="field"><div class="field-label prereq">Prerequisite</div><div class="field-value">Day 1 — runs on the shared scaffold; creates the first workflow in the shared project that later sessions extend.</div></div>
+      </div>
+
+      <div class="day-card">
+        <h3>Activity 3 — Expression Drill</h3>
+        <div class="field"><div class="field-label day">Day</div><div class="field-value">Day 3 — Expressions &amp; Dynamic Data</div></div>
+        <div class="field"><div class="field-label objective">Learning Objective</div><div class="field-value">Reference data from previous nodes using the expression editor with <code>$json</code> and <code>$node</code> scope resolution.</div></div>
+        <div class="field"><div class="field-label activity">Activity</div><div class="field-value">Expression Drill — learners send a webhook payload through an Edit Fields node, building <code>$json</code> and <code>$node</code> expressions that trim, lowercase, and combine fields, and verify live results in the expression editor.</div></div>
+        <div class="field"><div class="field-label tools">Tools / Services</div><div class="field-value">n8n Edit Fields node, n8n expression editor, cURL or Postman</div></div>
+        <div class="field"><div class="field-label output">Expected Output</div><div class="field-value">An Edit Fields node on the existing workflow that trims, lowercases, and combines webhook payload fields using <code>$json</code> and <code>$node</code> expressions, with live results verified in the expression editor.</div></div>
+        <div class="field"><div class="field-label prereq">Prerequisite</div><div class="field-value">Day 2 — extends the first workflow by making its fields dynamic and expression-driven.</div></div>
+      </div>
+
+      <div class="day-card">
+        <h3>Activity 4 — Routing Mini-Lab</h3>
+        <div class="field"><div class="field-label day">Day</div><div class="field-value">Day 4 — Core Logic Nodes</div></div>
+        <div class="field"><div class="field-label objective">Learning Objective</div><div class="field-value">Replace procedural JavaScript control flow with Edit Fields (Set), IF, Switch, and Filter nodes.</div></div>
+        <div class="field"><div class="field-label activity">Activity</div><div class="field-value">Routing Mini-Lab — learners feed a multi-item JSON array through Edit Fields, IF, Switch, and Filter nodes and observe items splitting across the true/false and route outputs per item.</div></div>
+        <div class="field"><div class="field-label tools">Tools / Services</div><div class="field-value">n8n Edit Fields (Set) node, IF node, Switch node, Filter node</div></div>
+        <div class="field"><div class="field-label output">Expected Output</div><div class="field-value">A multi-item JSON array split across IF true/false outputs and Switch routes, with Filter-discarded items removed, all observed per item in the execution view.</div></div>
+        <div class="field"><div class="field-label prereq">Prerequisite</div><div class="field-value">Day 3 — the expression techniques power the field assignments and routing conditions.</div></div>
+      </div>
+
+      <div class="day-card">
+        <h3>Activity 5 — User Onboarding &amp; Security Routing Pipeline</h3>
+        <div class="field"><div class="field-label day">Day</div><div class="field-value">Day 5 — Week 1 Lab — User Onboarding &amp; Security Routing Pipeline</div></div>
+        <div class="field"><div class="field-label objective">Learning Objective</div><div class="field-value">Build an end-to-end webhook workflow that normalizes signup data, checks email domains, and routes corporate and public users to different mock endpoints.</div></div>
+        <div class="field"><div class="field-label activity">Activity</div><div class="field-value">User Onboarding &amp; Security Routing Pipeline — learners build the full Week 1 lab: webhook trigger, item split, email normalization, domain-based Switch routing, and POST actions to two mock endpoints, verified in the execution history.</div></div>
+        <div class="field"><div class="field-label tools">Tools / Services</div><div class="field-value">n8n Webhook node, Item Lists (Split Out Items) node, Edit Fields node, Switch node, HTTP Request node, JSONPlaceholder</div></div>
+        <div class="field"><div class="field-label output">Expected Output</div><div class="field-value">The complete cumulative pipeline: a webhook receiving a <code>users</code> array, split into individual items, normalized into a <code>clean_email</code> field, routed by email domain to two mock endpoints (corporate CRM / public analytics), and verified in the execution history — Alice traveling down Route 0 and Bob down Route 1.</div></div>
+        <div class="field"><div class="field-label prereq">Prerequisite</div><div class="field-value">Days 1-4 — this is the cumulative synthesis of the entire shared project. The same build-and-extend pattern then scales into the capstone project (Retail Order Intake Pipeline).</div></div>
+      </div>
+    </section>
+
+    <section id="dependency-map">
+      <h2 class="section-heading">Activity Dependency Map</h2>
+      <pre class="tree-block"><code>Day 1 ──► Day 2 ──► Day 3 ──► Day 4 ──► Day 5 ──► Capstone (Skill 8)
+ (scaffold)  (webhook)   (expressions)  (logic)   (full pipeline)   (order intake)</code></pre>
+      <p class="body">Each arrow means "feeds into" — the later session reuses the running environment and workflow built by the earlier session. Day 1 is the foundation; Day 5 is the integration of Days 1-4; the capstone is the integration of the whole learning path.</p>
+    </section>
+
+    <section id="checklist">
+      <h2 class="section-heading">Consolidated Checklist</h2>
+      <table class="data-table">
+        <thead><tr><th>#</th><th>Day</th><th>Activity</th><th>Output</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Day 1</td><td>Self-Hosted Project Scaffold</td><td>Running self-hosted n8n instance at <code>http://localhost:5678</code> with docker-compose.yml, environment settings, and named data volume</td></tr>
+          <tr><td>2</td><td>Day 2</td><td>First Webhook Workflow</td><td>Webhook → HTTP Request workflow (POST <code>/test-hook</code>) with JSON items inspected in the execution view</td></tr>
+          <tr><td>3</td><td>Day 3</td><td>Expression Drill</td><td>Edit Fields node with <code>$json</code> / <code>$node</code> expressions trimming, lowercasing, and combining fields, verified live</td></tr>
+          <tr><td>4</td><td>Day 4</td><td>Routing Mini-Lab</td><td>Multi-item array split across IF true/false and Switch routes with Filter removals observed per item</td></tr>
+          <tr><td>5</td><td>Day 5</td><td>User Onboarding &amp; Security Routing Pipeline</td><td>Full pipeline: split, normalized <code>clean_email</code>, domain-based Switch routing to CRM and analytics mock endpoints, verified in execution history</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="related-docs">
+      <h3>Related Documents</h3>
+      <table><thead><tr><th>Document</th><th>Location</th></tr></thead><tbody>
+        <tr><td><strong>Hands-On Activities (Markdown)</strong></td><td><code>outputs/n8n-training-week-1/09-n8n-training-week-1-hands-on-activities.md</code></td></tr>
+        <tr><td><strong>Capstone Project Brief</strong></td><td><code>outputs/n8n-training-week-1/08-n8n-training-week-1-capstone.md — generated by Skill 8</code></td></tr>
+        <tr><td><strong>Published HTML (Module Content)</strong></td><td><code>outputs/n8n-training-week-1/07-n8n-training-week-1-html.html — generated by Skill 7</code></td></tr>
+        <tr><td><strong>db.json Reference</strong></td><td><code>outputs/n8n-training-week-1/db-json-reference.md</code></td></tr>
+      </tbody></table>
+    </div>
+
+    <footer>
+      <p>Version: v1.0 | Created: 2026-08-13 | Author: Jem Villanueva</p>
+    </footer>
+
+    <div class="outro">
+      <p>Hands-on activity document is complete. The markdown source is retained alongside this HTML version.</p>
+    </div>
+  </div>
+</body>
+</html>
